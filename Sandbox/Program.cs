@@ -18,4 +18,9 @@ namespace Sandbox
             }
         }
     }
+
+    internal class SandboxGame : Pyrite.IPyriteGame
+    {
+        public string Name => "Sandbox";
+    }
 }

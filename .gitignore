@@ -2,6 +2,8 @@
 
 bin/
 obj/
+Binary/
+Bin-Intermediate/
 
 .vscode/
 !.vscode/settings.json

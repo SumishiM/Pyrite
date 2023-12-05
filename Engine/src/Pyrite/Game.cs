@@ -67,11 +67,7 @@ namespace Pyrite
 
         // util
         public static Color ClearColor;
-        public static bool ExitOnEscapeKeypress;
 
-        // scene
-        //private Scene scene;
-        //private Scene nextScene;
 
         public Game(int width, int height, int windowWidth, int windowHeight, string windowTitle, bool fullscreen)
         {
@@ -117,10 +113,11 @@ namespace Pyrite
             Graphics.ApplyChanges();
 
             Content.RootDirectory = @"Content";
+            if( !Directory.Exists(Content.RootDirectory))
+                Directory.CreateDirectory(Content.RootDirectory);
 
             IsMouseVisible = false;
             IsFixedTimeStep = false;
-            ExitOnEscapeKeypress = true;
 
             GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         }
@@ -144,54 +141,31 @@ namespace Pyrite
         protected virtual void OnGraphicsReset(object? sender, EventArgs e)
         {
             UpdateView();
-
-            //if (scene != null)
-            //    scene.HandleGraphicsReset();
-            //if (nextScene != null && nextScene != scene)
-            //    nextScene.HandleGraphicsReset();
         }
 
         protected virtual void OnGraphicsCreate(object? sender, EventArgs e)
         {
             UpdateView();
-
-            //if (scene != null)
-            //    scene.HandleGraphicsCreate();
-            //if (nextScene != null && nextScene != scene)
-            //    nextScene.HandleGraphicsCreate();
         }
 
         protected override void OnActivated(object sender, EventArgs args)
         {
             base.OnActivated(sender, args);
-
-            //if (scene != null)
-            //    scene.GainFocus();
         }
 
         protected override void OnDeactivated(object sender, EventArgs args)
         {
             base.OnDeactivated(sender, args);
-
-            //if (scene != null)
-            //    scene.LoseFocus();
         }
 
         protected override void Initialize()
         {
             base.Initialize();
-
-            //MInput.Initialize();
-            //Tracker.Initialize();
-            //Pooler = new Monocle.Pooler();
-            //Commands = new Commands();
         }
 
         protected override void LoadContent()
         {
             base.LoadContent();
-
-            //Monocle.Draw.Initialize(GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
@@ -199,59 +173,12 @@ namespace Pyrite
             RawDeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             DeltaTime = RawDeltaTime * TimeRate;
 
-            //Update input
-            //MInput.Update();
-
-#if !CONSOLE
-            /*
-            if (ExitOnEscapeKeypress && MInput.Keyboard.Pressed(Microsoft.Xna.Framework.Input.Keys.Escape))
-            {
-                Exit();
-                return;
-            }
-            */
-#endif
-
             if (OverloadGameLoop != null)
             {
                 OverloadGameLoop();
                 base.Update(gameTime);
                 return;
             }
-
-            //Update current scene
-            /*
-            if (FreezeTimer > 0)
-                FreezeTimer = Math.Max(FreezeTimer - RawDeltaTime, 0);
-            else if (scene != null)
-            {
-                scene.BeforeUpdate();
-                scene.Update();
-                scene.AfterUpdate();
-            }
-            */
-#if DEBUG
-            //Debug Console
-            /*
-             * if (Commands.Open)
-                Commands.UpdateOpen();
-            else if (Commands.Enabled)
-                Commands.UpdateClosed();
-            */
-#endif
-
-            //Changing scenes
-            /*
-            if (scene != nextScene)
-            {
-                var lastScene = scene;
-                if (scene != null)
-                    scene.End();
-                scene = nextScene;
-                OnSceneTransition(lastScene, nextScene);
-                if (scene != null)
-                    scene.Begin();
-            }*/
 
             base.Update(gameTime);
         }
@@ -284,20 +211,9 @@ namespace Pyrite
         /// </summary>
         protected virtual void RenderCore()
         {
-            /*
-            if (scene != null)
-                scene.BeforeRender();
-
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Viewport = Viewport;
             GraphicsDevice.Clear(new Color(ClearColor.R, ClearColor.G, ClearColor.B, 0.6f));
-
-            if (scene != null)
-            {
-                scene.Render();
-                scene.AfterRender();
-            }
-            */
         }
 
         protected override void OnExiting(object sender, EventArgs args)
@@ -313,6 +229,7 @@ namespace Pyrite
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
             }
         }
 
