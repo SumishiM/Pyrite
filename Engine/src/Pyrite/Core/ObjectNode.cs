@@ -5,8 +5,8 @@ namespace Pyrite.Core
 {
     public class ObjectNode : Node
     {
-        public TransformComponent? Transform { get; protected set; }
-        public TransformComponent? WorldTransform { get; protected set; }
+        public Transform Transform { get; protected set; }
+        public Transform WorldTransform { get; protected set; }
 
         public IList<Node> Children;
         public event EventHandler<Node>? OnChildAdded;
@@ -20,6 +20,8 @@ namespace Pyrite.Core
         {
             Children = new List<Node>();
             Components = new List<Component>();
+            Transform = Transform.Default;
+            WorldTransform = Transform.Default;
         }
 
         /// <inheritdoc/>
