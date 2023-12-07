@@ -23,7 +23,7 @@ namespace Pyrite.Physics
                 return; // No movement to apply
 
             IList<DynamicActor> ridingActors = new List<DynamicActor>();
-            Vector2 Position = Parent.Transform.Position;
+            Point Position = Parent.Transform.Position;
 
             if (moveX != 0)
             {
@@ -31,12 +31,13 @@ namespace Pyrite.Physics
                 Position.X = moveX;
                 if( moveX > 0)
                 {
-                    foreach (DynamicActor actor in ridingActors) // Level.AllActors
+                    // Moving rigth
+                    foreach (DynamicActor actor in ridingActors) // PhysicActors.AllDynamicActors
                     {
                         if (actor.Collider == null)
                             continue;
 
-                        if (Collider.OverlapWith(actor))
+                        if (Collider.OverlapWith(actor.Collider))
                         {
                             // push right
                             actor.MoveX(this.Collider.Right - actor.Collider.Left, actor.Squish);
@@ -44,26 +45,27 @@ namespace Pyrite.Physics
                         else if (ridingActors.Contains(actor))
                         {
                             //Carry right 
-                            actor.MoveX(moveX, null);
+                            actor.MoveX(moveX);
                         }
                     }
                 }
                 else
                 {
-                    foreach (DynamicActor actor in ridingActors) // Level.AllActors
+                    // Moving left
+                    foreach (DynamicActor actor in ridingActors) // PhysicActors.AllDynamicActors
                     {
                         if (actor.Collider == null)
                             continue;
 
-                        if (Collider.OverlapWith(actor))
+                        if (Collider.OverlapWith(actor.Collider))
                         {
-                            // push right
+                            // push left
                             actor.MoveX(Collider.Left - actor.Collider.Right, actor.Squish);
                         }
                         else if (ridingActors.Contains(actor))
                         {
-                            //Carry right 
-                            actor.MoveX(moveX, null);
+                            //Carry left 
+                            actor.MoveX(moveX);
                         }
                     }
                 }
@@ -75,12 +77,13 @@ namespace Pyrite.Physics
                 Position.Y = moveY;
                 if (moveY > 0)
                 {
-                    foreach (DynamicActor actor in ridingActors) // Level.AllActors
+                    // Moving Top
+                    foreach (DynamicActor actor in ridingActors) // PhysicActors.AllDynamicActors
                     {
                         if (actor.Collider == null)
                             continue;
 
-                        if (Collider.OverlapWith(actor))
+                        if (Collider.OverlapWith(actor.Collider))
                         {
                             // push right
                             actor.MoveY(this.Collider.Top - actor.Collider.Bottom, actor.Squish);
@@ -88,18 +91,19 @@ namespace Pyrite.Physics
                         else if (ridingActors.Contains(actor))
                         {
                             //Carry right 
-                            actor.MoveY(moveX, null);
+                            actor.MoveY(moveX);
                         }
                     }
                 }
                 else
                 {
-                    foreach (DynamicActor actor in ridingActors) // Level.AllActors
+                    // Moving down
+                    foreach (DynamicActor actor in ridingActors) // PhysicActors.AllDynamicActors
                     {
                         if (actor.Collider == null)
                             continue;
 
-                        if (Collider.OverlapWith(actor))
+                        if (Collider.OverlapWith(actor.Collider))
                         {
                             // push right
                             actor.MoveY(Collider.Bottom - actor.Collider.Top, actor.Squish);
@@ -107,7 +111,7 @@ namespace Pyrite.Physics
                         else if (ridingActors.Contains(actor))
                         {
                             //Carry right 
-                            actor.MoveY(moveX, null);
+                            actor.MoveY(moveX);
                         }
                     }
                 }

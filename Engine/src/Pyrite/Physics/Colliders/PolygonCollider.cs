@@ -24,7 +24,7 @@
             _lowestPoint = Points.OrderByDescending(p => p.Y).ToList()[0];
 
             // Create a bound that encapsulate the collision to make the collision faster
-            Bounds = new Rectangle(Point.Zero, new Point(_leftestPoint.X - _rightestPoint.X, _lowestPoint.Y - _highestPoint.Y));
+            _bounds = new Rectangle(Point.Zero, new Point(_leftestPoint.X - _rightestPoint.X, _lowestPoint.Y - _highestPoint.Y));
         }
     }
 }

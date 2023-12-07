@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pyrite.Core
 {
-    public abstract class Node
+    public abstract class Node : ICloneable
     {
         public string Name = "Node";
         public ObjectNode? Parent;
@@ -39,12 +39,12 @@ namespace Pyrite.Core
         /// <summary>
         /// Called every frame.
         /// </summary>
-        public virtual void Update() { }
+        public abstract void Update();
 
         /// <summary>
         /// Called every fixed tick.
         /// </summary>
-        public virtual void FixedUpdate() { }
+        public abstract void FixedUpdate();
 
         /// <summary>
         /// Change the parent node of a node.
@@ -54,6 +54,11 @@ namespace Pyrite.Core
         {
             Parent = parent;
             OnParentChanged?.Invoke(this, parent);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

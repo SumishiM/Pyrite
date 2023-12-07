@@ -4,13 +4,14 @@
     {
         public int Radius = 1;
 
-        public CircleCollider(Point center, int radius)
+        public CircleCollider(int radius, Point offset)
         {
-            Bounds = new Rectangle()
+            _bounds = new Rectangle()
             {
-                Location = Point.Zero,
+                Location = (Parent == null ? Point.Zero : Parent.WorldTransform.Position) + offset,
                 Size = new Point(radius * 2, radius * 2),
             };
+
             Radius = radius;
         }
     }

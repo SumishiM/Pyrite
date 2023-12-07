@@ -1,16 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
+using Pyrite.Physics.Colliders;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Pyrite.Physics
 {
     public class DynamicActor : PhysicActor
     {
+        public Vector2 Velocity { get; set; }
+
+        public event Action? OnCollide;
+
         // https://maddythorson.medium.com/celeste-and-towerfall-physics-d24bd2ae0fc5
-        public void MoveX(float amount, Action? OnCollide)
+        public void MoveX(float amount, Action? SpecificOnCollide = null)
         {
+            if (Parent == null)
+                return;
+
             _xRemainder += amount;
             int move = (int)MathF.Round(_xRemainder);
 
-            if (move == 0) 
+            if (move == 0)
                 return; // No need to move 
 
             _xRemainder -= move;
@@ -18,29 +27,41 @@ namespace Pyrite.Physics
 
             while (move != 0)
             {
-                if (!Collider(PhysicActors.StaticActor, Parent, new Vector2(sign, 0)))
+                if (!Collision.Check(PhysicActors.StaticActor, this, new Point(sign, 0)))
                 {
                     // No static actor immediately beside us
                     // we can move the actor one pixel further
-                    Parent!.Transform!.Position += new Vector2(sign, 0);
+                    Parent.Transform.Position += new Point(sign, 0);
                     move -= sign;
                 }
                 else
                 {
                     // Collide with a static actor
-                    OnCollide?.Invoke();
+                    // try catch to not block the game physics
+                    try
+                    {
+                        SpecificOnCollide?.Invoke();
+                        OnCollide?.Invoke();
+                    }
+                    catch (Exception e)
+                    {
+                        // log e
+                    }
                     break;
                 }
             }
         }
 
         // https://maddythorson.medium.com/celeste-and-towerfall-physics-d24bd2ae0fc5
-        public void MoveY(float amount, Action? OnCollide)
+        public void MoveY(float amount, Action? SpecificOnCollide = null)
         {
+            if (Parent == null)
+                return;
+
             _yRemainder += amount;
             int move = (int)MathF.Round(_yRemainder);
 
-            if (move == 0) 
+            if (move == 0)
                 return; // No need to move 
 
             _yRemainder -= move;
@@ -48,18 +69,38 @@ namespace Pyrite.Physics
 
             while (move != 0)
             {
-                if (!ColliderAt(PhysicActors.StaticActors, Parent, new Vector2(0, sign)))
+                if (!Collision.Check(PhysicActors.StaticActors, this, new Point(0, sign)))
                 {
-                    Parent!.Transform!.Position += new Vector2(0, sign);
+                    // No static actor immediately beside us
+                    // we can move the actor one pixel further
+                    Parent.Transform.Position += new Point(0, sign);
                     move -= sign;
                 }
                 else
                 {
-                    OnCollide?.Invoke();
+                    // Collide with a static actor
+                    // try catch to not block the game physics
+                    try
+                    {
+                        SpecificOnCollide?.Invoke();
+                        OnCollide?.Invoke();
+                    }
+                    catch (Exception e)
+                    {
+                        // log e
+                    }
                     break;
                 }
             }
         }
+
+
+        public override void Update()
+        {
+            MoveX(Velocity.X);
+            MoveY(Velocity.Y);
+        }
+
 
         public virtual bool IsRiding(StaticActor actor) => false;
         public virtual void Squish() { }
