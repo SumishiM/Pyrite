@@ -39,19 +39,6 @@ namespace Pyrite.Core
 
         /// <inheritdoc/>
         /// <remarks>
-        /// Components are updated first, then children.
-        /// </remarks>
-        public override void FixedUpdate()
-        {
-            foreach (Component component in Components)
-                component.FixedUpdate();
-
-            foreach (Node child in Children)
-                child.FixedUpdate();
-        }
-
-        /// <inheritdoc/>
-        /// <remarks>
         /// Remove itself from the old parent children list and is added to the new parent children list.
         /// </remarks>
         /// <param name="parent">New parent of the node.</param>

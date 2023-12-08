@@ -48,23 +48,7 @@ namespace Pyrite
         private TimeSpan counterElapsed = TimeSpan.Zero;
         private int fpsCounter = 0;
 
-        // content directory
-#if !CONSOLE
-        private static string? AssemblyDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
-#endif
 
-        public static string ContentDirectory
-        {
-#if PS4
-            get { return Path.Combine("/app0/", Instance.Content.RootDirectory); }
-#elif NSWITCH
-            get { return Path.Combine("rom:/", Instance.Content.RootDirectory); }
-#elif XBOXONE
-            get { return Instance.Content.RootDirectory; }
-#else
-            get { return Path.Combine(AssemblyDirectory!, Instance.Content.RootDirectory); }
-#endif
-        }
 
         // util
         public static Color ClearColor;

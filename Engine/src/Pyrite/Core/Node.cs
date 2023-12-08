@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pyrite.Core
+﻿namespace Pyrite.Core
 {
-    public abstract class Node : ICloneable
+    public abstract class Node : ICloneable, IDisposable, IEquatable<Node>
     {
         public string Name = "Node";
         public ObjectNode? Parent;
@@ -42,17 +35,12 @@ namespace Pyrite.Core
         /// Destroy the object from the node tree.
         /// You need to call base.Destroy() before setting the object to null
         /// </summary>
-        public virtual void Destroy() => OnDestroyed?.Invoke(this, EventArgs.Empty);
+        protected virtual void Destroy() => OnDestroyed?.Invoke(this, EventArgs.Empty);
 
         /// <summary>
         /// Called every frame.
         /// </summary>
         public abstract void Update();
-
-        /// <summary>
-        /// Called every fixed tick.
-        /// </summary>
-        public abstract void FixedUpdate();
 
         /// <summary>
         /// Change the parent node of a node.
@@ -72,6 +60,17 @@ namespace Pyrite.Core
         private void GenerateUID()
         {
             UID = 0;
+        }
+
+        public bool Equals(Node? other)
+        {
+            return other?.UID == UID;
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this);
         }
     }
 }

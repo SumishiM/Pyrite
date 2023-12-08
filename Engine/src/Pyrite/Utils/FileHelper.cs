@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +25,24 @@ namespace Pyrite.Utils
             return path
                 .Replace('\\', Path.DirectorySeparatorChar)
                 .Replace('/', Path.DirectorySeparatorChar);
+        }
+
+        // content directory
+#if !CONSOLE
+        private static string? AssemblyDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+#endif
+
+        public static string ContentDirectory
+        {
+#if PS4
+            get { return Path.Combine("/app0/", Game.Instance.Content.RootDirectory); }
+#elif NSWITCH
+            get { return Path.Combine("rom:/", Game.Instance.Content.RootDirectory); }
+#elif XBOXONE
+            get { return Game.Instance.Content.RootDirectory; }
+#else
+            get { return Path.Combine(AssemblyDirectory!, Game.Instance.Content.RootDirectory); }
+#endif
         }
     }
 }

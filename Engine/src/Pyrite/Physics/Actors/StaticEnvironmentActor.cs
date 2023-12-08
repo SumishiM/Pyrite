@@ -21,18 +21,37 @@ namespace Pyrite.Physics
         public StaticEnvironmentActor(ICollection<Collider> colliders)
         {
             Colliders = colliders;
+            UpdateBounds();
         }
 
         public void AddCollider([DisallowNull] Collider collider)
         {
-            if (!collider.IsStatic)
+            if (!collider.IsStatic || Colliders.Contains(collider))
                 return;
+
+            Colliders.Add(collider);
+            UpdateBounds();
         }
 
-        public void RemoveCollider([DisallowNull]Collider collider)
+        public void RemoveCollider([DisallowNull] Collider collider)
         {
-            if( Colliders.Contains(collider)) 
+            if (Colliders.Contains(collider))
+            {
                 Colliders.Remove(collider);
+                UpdateBounds();
+            }
+        }
+
+        public void UpdateBounds()
+        {
+            Point topLeft = new Point(0, 0);
+            Point size = new Point(0, 0);
+
+            // calculate the leftest collider
+            // + highest
+            // righest
+            // lowest
+            // then recreate a bound from this informations
         }
 
         public void Clear()

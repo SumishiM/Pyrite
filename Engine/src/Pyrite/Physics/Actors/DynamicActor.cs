@@ -4,8 +4,9 @@ namespace Pyrite.Physics
 {
     /// <summary>
     /// Actors for moving object controled by player or AI.
-    /// <para>Cannot collide with other <see cref="DynamicActor"/>.</para>
-    /// <para>A <see cref="DynamicActor"/> can't be inside of a <see cref="StaticActor"/> nor <see cref="StaticEnvironmentActor"/>.</para>
+    /// <para>Cannot collide with other <see cref="DynamicActor"/>.
+    /// Also it can't be inside of a <see cref="StaticActor"/> 
+    /// nor <see cref="StaticEnvironmentActor"/>.</para>
     /// </summary>
     public class DynamicActor : PhysicActor
     {
@@ -30,7 +31,7 @@ namespace Pyrite.Physics
 
             while (move != 0)
             {
-                if (!Collision.Check(PhysicActors.StaticActor, this, new Point(sign, 0)))
+                if (!Collision.Check(PhysicActors.StaticActors, this, new Point(sign, 0)))
                 {
                     // No static actor immediately beside us
                     // we can move the actor one pixel further

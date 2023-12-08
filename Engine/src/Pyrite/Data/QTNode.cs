@@ -1,9 +1,10 @@
-﻿using Pyrite.Core;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Pyrite.Core;
 using System.Collections.Immutable;
 
 namespace Pyrite.Utils
 {
-    public readonly struct QTNodeInfo<T>
+    public readonly struct QTNodeInfo<T> where T : notnull
     {
         public readonly T Entity;
         public readonly Rectangle Bounds;
@@ -15,7 +16,7 @@ namespace Pyrite.Utils
         }
     }
 
-    public class QTNode<T>
+    public class QTNode<T> : IDebugDrawable where T : notnull
     {
         private const int MAX_OBJECTS = 6;
         private const int MAX_LEVELS = 6;
@@ -30,6 +31,11 @@ namespace Pyrite.Utils
         {
             Bounds = bounds;
             Level = level;
+        }
+
+        public void DebugDraw(SpriteBatch batch)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
