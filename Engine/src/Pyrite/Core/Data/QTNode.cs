@@ -1,8 +1,7 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Pyrite.Core;
+﻿using Pyrite.Utils;
 using System.Collections.Immutable;
 
-namespace Pyrite.Utils
+namespace Pyrite.Core.Data
 {
     public readonly struct QTNodeInfo<T> where T : notnull
     {

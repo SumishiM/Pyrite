@@ -1,5 +1,8 @@
 ﻿namespace Pyrite.Core
 {
+    /// <summary>
+    /// Main class for the engine managed objects 
+    /// </summary>
     public abstract class Node : ICloneable, IDisposable, IEquatable<Node>
     {
         public string Name = "Node";

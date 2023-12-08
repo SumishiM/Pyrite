@@ -1,6 +1,6 @@
 ﻿using Pyrite.Core;
 
-namespace Pyrite.Physics.Colliders
+namespace Pyrite.Core.Physics.Colliders
 {
     /// <summary>
     /// Base collider class 

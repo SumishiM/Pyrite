@@ -1,9 +1,6 @@
-﻿using Pyrite.Core;
-using Pyrite.Physics;
-using Pyrite.Physics.Colliders;
-using System.Reflection.Metadata.Ecma335;
+﻿using Pyrite.Core.Physics;
 
-namespace Pyrite.Utils
+namespace Pyrite.Core.Data
 {
     public class QuadTree<T> where T : ObjectNode
     {

@@ -1,12 +1,6 @@
-﻿using Pyrite.Core;
-using Pyrite.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Pyrite.Core.Data;
 
-namespace Pyrite.Physics
+namespace Pyrite.Core.Physics
 {
     public class PhysicActors
     {

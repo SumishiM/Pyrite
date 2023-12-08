@@ -1,4 +1,4 @@
-﻿namespace Pyrite.Physics.Colliders
+﻿namespace Pyrite.Core.Physics.Colliders
 {
     public class CircleCollider : Collider
     {

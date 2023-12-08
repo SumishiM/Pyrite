@@ -1,19 +1,17 @@
-﻿using Pyrite.Diagnostics;
-using Pyrite.Physics.Colliders;
+﻿using Pyrite.Core.Diagnostics;
+using Pyrite.Core.Physics.Colliders;
 
-namespace Pyrite.Physics
+namespace Pyrite.Core.Physics
 {
     /// <summary>
     /// Actors for moving object controled by player or AI.
-    /// <para>Cannot collide with other <see cref="DynamicActor"/>.
-    /// Also it can't be inside of a <see cref="StaticActor"/> 
-    /// nor <see cref="StaticEnvironmentActor"/>.</para>
+    /// It can't be inside of a <see cref="StaticActor"/> nor <see cref="StaticEnvironmentActor"/>.</para>
     /// </summary>
     public class DynamicActor : PhysicActor
     {
         public Vector2 Velocity { get; set; }
 
-        public event Action? OnCollide;
+        public event EventHandler? OnCollide;
 
         // https://maddythorson.medium.com/celeste-and-towerfall-physics-d24bd2ae0fc5
         public void MoveX(float amount, Action? SpecificOnCollide = null)
@@ -46,7 +44,7 @@ namespace Pyrite.Physics
                     try
                     {
                         SpecificOnCollide?.Invoke();
-                        OnCollide?.Invoke();
+                        OnCollide?.Invoke(this, EventArgs.Empty);
                     }
                     catch (Exception e)
                     {
@@ -74,7 +72,7 @@ namespace Pyrite.Physics
 
             while (move != 0)
             {
-                if (!Collision.Check(PhysicActors.StaticActors, this, new Point(0, sign)))
+                if (!Collision.Check(PhysicActors.AllActors, this, new Point(0, sign)))
                 {
                     // No static actor immediately beside us
                     // we can move the actor one pixel further
@@ -88,7 +86,7 @@ namespace Pyrite.Physics
                     try
                     {
                         SpecificOnCollide?.Invoke();
-                        OnCollide?.Invoke();
+                        OnCollide?.Invoke(this, EventArgs.Empty);
                     }
                     catch (Exception e)
                     {

@@ -1,7 +1,7 @@
 ﻿using Pyrite.Core;
-using Pyrite.Physics.Colliders;
+using Pyrite.Core.Physics.Colliders;
 
-namespace Pyrite.Physics
+namespace Pyrite.Core.Physics
 {
     /// <summary>
     /// Base physic object class. 

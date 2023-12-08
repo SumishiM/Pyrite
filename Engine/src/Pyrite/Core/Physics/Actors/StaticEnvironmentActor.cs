@@ -1,7 +1,7 @@
-﻿using Pyrite.Physics.Colliders;
+﻿using Pyrite.Core.Physics.Colliders;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Pyrite.Physics
+namespace Pyrite.Core.Physics
 {
     /// <summary>
     /// Class for environment <see cref="Colliders.Collider"/>s.

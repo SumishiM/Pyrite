@@ -1,4 +1,4 @@
-﻿namespace Pyrite.Physics
+﻿namespace Pyrite.Core.Physics
 {
     /// <summary>
     /// Class for Physic Actors that act as solid objects which cannot be moved by <see cref="DynamicActor"/> by default.

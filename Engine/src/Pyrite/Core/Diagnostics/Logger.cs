@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Runtime.CompilerServices;
 using System.Diagnostics;
-using System.Dynamic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Pyrite.Diagnostics
+namespace Pyrite.Core.Diagnostics
 {
     public class Logger
     {

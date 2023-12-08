@@ -3,6 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Pyrite.Core
 {
+    /// <summary>
+    /// Main class for instantiated objects in a scene. Can have children and <see cref="Component"/>s.
+    /// </summary>
     public class ObjectNode : Node
     {
         public Transform Transform { get; protected set; }

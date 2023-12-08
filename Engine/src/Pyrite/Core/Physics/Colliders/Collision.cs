@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Pyrite.Physics.Colliders
+namespace Pyrite.Core.Physics.Colliders
 {
     public static class Collision
     {
@@ -33,8 +33,8 @@ namespace Pyrite.Physics.Colliders
 
         public static bool PolygonToPolygon(PolygonCollider a, PolygonCollider b) { return false; }
 
-        public static bool CircleToCircle(CircleCollider a, CircleCollider b) 
-        { 
+        public static bool CircleToCircle(CircleCollider a, CircleCollider b)
+        {
             return Vector2.DistanceSquared(a.Center, b.Center) < a.Radius * a.Radius + b.Radius * b.Radius;
         }
 
@@ -44,24 +44,35 @@ namespace Pyrite.Physics.Colliders
         }
 
         public static bool Check(
-            ICollection<StaticActor> statics, 
-            [DisallowNull] DynamicActor dynamicActor, 
+            IEnumerable<PhysicActor> actors,
+            [DisallowNull] DynamicActor dynamicActor,
             Point movement)
         {
-            if( dynamicActor.Collider == null) return false;
+            if (dynamicActor.Collider == null) return false;
 
             Collider movedCollider = dynamicActor.Collider.PredicateMove(movement);
 
-            foreach (StaticActor solid in statics)
+            foreach (PhysicActor actor in actors)
             {
-                if( solid.Collider == null)
+                if (actor.Collider == null)
                     continue;
 
-                if (!Collision.ColliderToCollider(solid.Collider, movedCollider))
-                    return false;
+                if (actor is StaticEnvironmentActor eActor)
+                {
+                    foreach (Collider collider in eActor.Colliders)
+                    {
+                        if (Collision.ColliderToCollider(collider, movedCollider))
+                            return true;
+                    }
+                }
+                else
+                {
+                    if (Collision.ColliderToCollider(actor.Collider, movedCollider))
+                        return true;
+                }
             }
 
-            return true;
+            return false;
         }
     }
 }
