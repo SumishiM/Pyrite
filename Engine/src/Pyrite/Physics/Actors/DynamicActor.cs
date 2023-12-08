@@ -1,9 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Pyrite.Physics.Colliders;
-using System.Security.Cryptography.X509Certificates;
+﻿using Pyrite.Physics.Colliders;
 
 namespace Pyrite.Physics
 {
+    /// <summary>
+    /// Actors for moving object controled by player or AI.
+    /// <para>Cannot collide with other <see cref="DynamicActor"/>.</para>
+    /// <para>A <see cref="DynamicActor"/> can't be inside of a <see cref="StaticActor"/> nor <see cref="StaticEnvironmentActor"/>.</para>
+    /// </summary>
     public class DynamicActor : PhysicActor
     {
         public Vector2 Velocity { get; set; }

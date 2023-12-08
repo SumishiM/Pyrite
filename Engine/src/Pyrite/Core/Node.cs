@@ -12,6 +12,8 @@ namespace Pyrite.Core
         public string Name = "Node";
         public ObjectNode? Parent;
 
+        public uint UID { get; private set; } = 0;
+        public bool IsActive { get; set; } = true;
         public bool IsOrphan => Parent == null;
 
         public event EventHandler<ObjectNode?>? OnParentChanged;
@@ -21,6 +23,12 @@ namespace Pyrite.Core
         public event EventHandler? OnDeactivated;
         public event EventHandler? OnInitialized;
         public event EventHandler? OnDestroyed;
+
+        public Node()
+        {
+            if (UID == 0)
+                GenerateUID();
+        }
 
         public virtual void Activate() => OnActivated?.Invoke(this, EventArgs.Empty);
         public virtual void Deactivate() => OnDeactivated?.Invoke(this, EventArgs.Empty);
@@ -59,6 +67,11 @@ namespace Pyrite.Core
         public object Clone()
         {
             return MemberwiseClone();
+        }
+
+        private void GenerateUID()
+        {
+            UID = 0;
         }
     }
 }

@@ -1,16 +1,14 @@
-﻿
-
-using Microsoft.Xna.Framework;
-using System.Net.Security;
-
-namespace Pyrite.Physics
+﻿namespace Pyrite.Physics
 {
+    /// <summary>
+    /// Class for Physic Actors that act as solid objects which cannot be moved by <see cref="DynamicActor"/> by default.
+    /// This kind of actor will move no matter the other collisions from other actors.
+    /// </summary>
     public class StaticActor : PhysicActor
     {
         // https://maddythorson.medium.com/celeste-and-towerfall-physics-d24bd2ae0fc5
         public void Move(float x, float y)
         {
-
             if (this.Collider == null) return;
 
             _xRemainder += x;
@@ -23,7 +21,7 @@ namespace Pyrite.Physics
                 return; // No movement to apply
 
             IList<DynamicActor> ridingActors = new List<DynamicActor>();
-            Point Position = Parent.Transform.Position;
+            Point Position = Collider.Location;
 
             if (moveX != 0)
             {
