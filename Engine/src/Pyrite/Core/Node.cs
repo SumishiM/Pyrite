@@ -40,7 +40,7 @@
         /// <summary>
         /// Called every frame.
         /// </summary>
-        public abstract void Update();
+        public virtual void Update() { }
 
         /// <summary>
         /// Change the parent node of a node.

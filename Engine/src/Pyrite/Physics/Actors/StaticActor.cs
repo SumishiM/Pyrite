@@ -6,6 +6,7 @@
     /// </summary>
     public class StaticActor : PhysicActor
     {
+
         // https://maddythorson.medium.com/celeste-and-towerfall-physics-d24bd2ae0fc5
         public void Move(float x, float y)
         {

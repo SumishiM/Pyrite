@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pyrite.Core
 {
-    public class Component : Node
+    public abstract class Component : Node
     {
         /// <inheritdoc/>
         /// <remarks>

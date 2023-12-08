@@ -1,4 +1,5 @@
-﻿using Pyrite.Physics.Colliders;
+﻿using Pyrite.Diagnostics;
+using Pyrite.Physics.Colliders;
 
 namespace Pyrite.Physics
 {
@@ -49,7 +50,7 @@ namespace Pyrite.Physics
                     }
                     catch (Exception e)
                     {
-                        // log e
+                        Logger.Error(e.Message, nameof(DynamicActor.MoveX), 53);
                     }
                     break;
                 }
@@ -91,7 +92,7 @@ namespace Pyrite.Physics
                     }
                     catch (Exception e)
                     {
-                        // log e
+                        Logger.Error(e.Message, nameof(DynamicActor.MoveY), 95);
                     }
                     break;
                 }

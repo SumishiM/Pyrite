@@ -5,7 +5,7 @@ using Pyrite.Utils;
 
 namespace Pyrite.Assets
 {
-    internal abstract class GameAsset
+    public abstract class GameAsset
     {
         // hide in editor
         public string Name { get; set; } = string.Empty;

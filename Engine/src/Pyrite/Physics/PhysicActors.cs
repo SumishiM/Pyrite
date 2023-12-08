@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Pyrite.Physics
 {
-    public class PhysicActors : Component
+    public class PhysicActors
     {
         public static ICollection<DynamicActor> DynamicActors { get; private set; } = [];
         public static ICollection<StaticActor> StaticActors { get; private set; } = [];
@@ -23,8 +23,5 @@ namespace Pyrite.Physics
                 .Concat(StaticEnvironmentActors);
 
         public static QuadTree<ObjectNode> QuadTree { get; private set; }
-    
-        
-    
     }
 }
