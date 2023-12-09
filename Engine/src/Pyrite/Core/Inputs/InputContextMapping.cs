@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Pyrite.Core.Inputs
 {
-    internal interface IVirtualInput
+    public class InputContextMapping
     {
-        public void Update(InputState state);
+        IList<InputAction> actions;
     }
 }

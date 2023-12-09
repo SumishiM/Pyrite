@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <BaseOutputPath>..\..\..\Binary\Engine\$(AssemblyName)</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\..\..\Bin-Intermediate\Engine\$(AssemblyName)</BaseIntermediateOutputPath>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
+	<PropertyGroup>
+		<BaseOutputPath>..\..\..\Binary\Engine\$(AssemblyName)</BaseOutputPath>
+		<BaseIntermediateOutputPath>..\..\..\Bin-Intermediate\Engine\$(AssemblyName)</BaseIntermediateOutputPath>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="obj\**" />
-    <EmbeddedResource Remove="obj\**" />
-    <None Remove="obj\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Attributes\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Attributes\" />
+	</ItemGroup>
 
 </Project>

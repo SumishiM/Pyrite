@@ -53,7 +53,7 @@ namespace Pyrite.Core.Diagnostics
 
         private bool CheckRepeat(string message)
         {
-            if (_log[^1].Message == message)
+            if (_log.LastOrDefault().Message == message)
             {
                 LogLine lastLog = _log.Last();
                 _log[^1] = lastLog with { Repeats = lastLog.Repeats + 1 };

@@ -14,4 +14,18 @@ namespace Pyrite.Core.Inputs
         GamePad = 2,
         GamePadAxis = 3
     }
+
+    public enum GamepadAxis
+    {
+        LeftThumb,
+        RightThumb,
+        Dpad
+    }
+
+    public enum MouseButtons
+    {
+        Left,
+        Middle,
+        Right
+    }
 }
