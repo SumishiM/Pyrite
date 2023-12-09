@@ -34,10 +34,24 @@ namespace Pyrite.Core.Inputs
 			}
 
 			if( !Down)
-				Consumed = false;
+            {
+                Consumed = false;
+            }
 
-		
-		    throw new NotImplementedException();
+			if (Pressed)
+			{
+				OnPressed?.Invoke(state);
+				// definitly need to change
+				LastPressed = DateTime.Now.Ticks;
+			}
+
+			if(Released)
+			{
+				OnReleased?.Invoke(state);
+				LastReleased= DateTime.Now.Ticks;
+			}
+
+            throw new NotImplementedException();
         }
     }
 }

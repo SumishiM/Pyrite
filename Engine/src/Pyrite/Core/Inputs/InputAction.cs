@@ -10,9 +10,9 @@ namespace Pyrite.Core.Inputs
 {
     public class InputAction
     {
-        IList<Action<CallbackContext>> _listeners;
+        IList<Action<CallbackContext>>? _listeners;
 
-        ReadOnlyCollection<VirtualInput> _inputs;
+        ReadOnlyCollection<VirtualInput>? _inputs;
 
 
 

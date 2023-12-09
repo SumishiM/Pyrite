@@ -8,6 +8,6 @@ namespace Pyrite.Core.Inputs
 {
     public class InputContextMapping
     {
-        IList<InputAction> actions;
+        IList<InputAction>? actions;
     }
 }
