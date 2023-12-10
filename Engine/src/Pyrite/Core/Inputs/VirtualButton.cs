@@ -5,10 +5,10 @@ namespace Pyrite.Core.Inputs
 		public List<ButtonBinding> Buttons = [];
 		public ButtonBinding?[] _lastPressed = new ButtonBinding?[MAX_INPUT_MEMORY];
 
-		public bool Pressed;
-		public bool Released;
-		public bool Previous;
-		public bool Down;
+		public bool Pressed => Down && !Previous && !Consumed;
+		public bool Released => Previous && !Down;
+		public bool Previous = false;
+		public bool Down = false;
 
 		public float LastPressed = 0f;
 		public float LastReleased = 0f;
