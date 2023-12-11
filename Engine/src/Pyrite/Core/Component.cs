@@ -7,8 +7,21 @@ using System.Threading.Tasks;
 
 namespace Pyrite.Core
 {
+    public class ComponentPriority
+    {
+        public const int INPUT = 10;
+        public const int DEFAULT = 100;
+
+
+
+        // this class should never be an object
+        protected ComponentPriority() { }
+    }
+
     public abstract class Component : Node
     {
+        public virtual int Priority => ComponentPriority.DEFAULT;
+
         /// <inheritdoc/>
         /// <remarks>
         /// Remove itself from the old parent component list and is added to the new parent component list.

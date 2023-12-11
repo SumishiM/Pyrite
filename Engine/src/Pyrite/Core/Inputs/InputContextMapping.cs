@@ -8,6 +8,7 @@ namespace Pyrite.Core.Inputs
 {
     public class InputContextMapping
     {
-        IList<InputAction>? actions;
+        IDictionary<InputAction, HashSet<ButtonBinding>> _buttonsMapping;
+        IDictionary<InputAction, HashSet<AxisBinding>> _axisMapping;
     }
 }

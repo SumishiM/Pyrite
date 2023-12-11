@@ -8,6 +8,10 @@ namespace Pyrite.Core.Inputs
 {
     public class PlayerInput : Component
     {
+        public override int Priority => ComponentPriority.INPUT;
+
+
+
         public InputContextMapping? IMC;
     }
 }

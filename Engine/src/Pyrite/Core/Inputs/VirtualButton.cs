@@ -14,9 +14,6 @@ namespace Pyrite.Core.Inputs
 		public float LastReleased = 0f;
 
 
-		public event Action<InputState>? OnPressed;
-		public event Action<InputState>? OnReleased;
-
 
         public override void Update(InputState state)
         {

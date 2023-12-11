@@ -44,16 +44,27 @@ namespace Pyrite.Core.Inputs
 			Single = new(axis);
 		}
 
-		public Vector2 Check(InputState state)
+		public bool Check(InputState state)
 		{
-			if (Single != null)
-				return Single.Value.GetAxis(state.Gamepad);
+			return IsNotDefault(GetAxis(state));
+		}
 
-			int x = Right.Check(state) ? 1 : 0;
-			int y = Down.Check(state) ? 1 : 0;
-			x -= Left.Check(state) ? 1 : 0;
-			y -= Up.Check(state) ? 1 : 0;
-			return new(x, y);
+		public Vector2 GetAxis(InputState state)
+        {
+            if (Single != null)
+                return Single.Value.GetAxis(state.Gamepad);
+
+            int x = Right.Check(state) ? 1 : 0;
+            int y = Down.Check(state) ? 1 : 0;
+            x -= Left.Check(state) ? 1 : 0;
+            y -= Up.Check(state) ? 1 : 0;
+
+            return new(x, y);
+        }
+
+		private bool IsNotDefault(Vector2 axis)
+		{
+			return axis.X != 0f && axis.Y != 0f;	
 		}
 	}
 }

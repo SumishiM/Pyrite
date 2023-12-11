@@ -54,7 +54,9 @@ namespace Pyrite.Core.Inputs
 			};
 		}
 
-		public readonly Vector2 GetAxis(GamePadState state)
+        /// <returns>Value of the axis</returns>
+        /// <exception cref="Exception">Non supported axis exception</exception>
+        public readonly Vector2 GetAxis(GamePadState state)
 		{
 			if (Source != InputSource.GamePadAxis)
 				return Vector2.Zero;
@@ -73,6 +75,10 @@ namespace Pyrite.Core.Inputs
 			};
 		}
 
+		/// <summary>
+		/// Create a axis value from 4 button value
+		/// </summary>
+		/// <returns>Input axis value</returns>
 		public static Vector2 AxisFromButtons(bool up, bool down, bool left, bool right)
 		{
 			int x = right ? 1 : 0;
