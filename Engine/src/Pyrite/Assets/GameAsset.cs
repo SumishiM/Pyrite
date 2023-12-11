@@ -21,7 +21,7 @@ namespace Pyrite.Assets
         public virtual bool CanBeSaved => true;
 
         /** **/
-        public string EditorFolder = string.Empty;
+        public virtual string EditorFolder => string.Empty;
 
         /** Cache strings **/
         private string[]? _nameSplit = null;
