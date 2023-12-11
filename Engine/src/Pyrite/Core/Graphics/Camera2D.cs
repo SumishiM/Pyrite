@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pyrite.Core.Graphics
 {
-    internal class TextureAtlas
+    internal class Camera2D
     {
-
     }
 }
