@@ -1,18 +1,12 @@
-﻿using Pyrite.Utils;
+﻿using Pyrite.Graphics;
 using System.Collections.Immutable;
 
 namespace Pyrite.Core.Data
 {
-    public readonly struct QTNodeInfo<T> where T : notnull
+    public readonly struct QTNodeInfo<T>(T entity, Rectangle bounds) where T : notnull
     {
-        public readonly T Entity;
-        public readonly Rectangle Bounds;
-
-        public QTNodeInfo(T entity, Rectangle bounds)
-        {
-            Entity = entity;
-            Bounds = bounds;
-        }
+        public readonly T Entity = entity;
+        public readonly Rectangle Bounds = bounds;
     }
 
     public class QTNode<T> : IDebugDrawable where T : notnull

@@ -2,17 +2,10 @@
 
 namespace Pyrite.Core.Inputs
 {
-    public readonly struct InputState
+    public readonly struct InputState(KeyboardState keyboard, MouseState mouse, GamePadState gamePad)
     {
-        public readonly KeyboardState Keyboard;
-        public readonly MouseState Mouse;
-        public readonly GamePadState Gamepad;
-
-        public InputState (KeyboardState keyboard, MouseState mouse, GamePadState gamePad)
-        {
-            Keyboard = keyboard;
-            Mouse = mouse;
-            Gamepad = gamePad;
-        }
+        public readonly KeyboardState Keyboard = keyboard;
+        public readonly MouseState Mouse = mouse;
+        public readonly GamePadState Gamepad = gamePad;
     }
 }

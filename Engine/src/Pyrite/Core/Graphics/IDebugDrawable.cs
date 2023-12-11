@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Pyrite.Utils
+namespace Pyrite.Graphics
 {
     public interface IDebugDrawable
     {

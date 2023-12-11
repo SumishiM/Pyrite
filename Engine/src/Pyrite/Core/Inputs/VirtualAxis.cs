@@ -37,11 +37,6 @@ namespace Pyrite.Core.Inputs
 			{
 				var v = axis.Check(state);
 
-				if( v.X != 0 || v.Y != 0)
-				{
-					Down = true;
-					Value += v;
-				}
 			}
 
 			var lengthSq = Value.LengthSquared();

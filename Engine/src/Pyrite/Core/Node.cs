@@ -65,15 +65,26 @@
             UID = 0;
         }
 
-        public bool Equals(Node? other)
-        {
-            return other?.UID == UID;
-        }
 
         public void Dispose()
         {
             Destroy();
             GC.SuppressFinalize(this);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Node);
+        }
+
+        public bool Equals(Node? other)
+        {
+            return UID == other?.UID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

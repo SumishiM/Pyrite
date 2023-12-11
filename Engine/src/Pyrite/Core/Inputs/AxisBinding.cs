@@ -62,7 +62,7 @@ namespace Pyrite.Core.Inputs
             return new(x, y);
         }
 
-		private bool IsNotDefault(Vector2 axis)
+        private static bool IsNotDefault(Vector2 axis)
 		{
 			return axis.X != 0f && axis.Y != 0f;	
 		}

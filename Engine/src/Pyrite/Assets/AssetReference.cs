@@ -7,17 +7,12 @@ using System.Threading.Tasks;
 
 namespace Pyrite.Assets
 {
-    public class AssetReference<T> where T : GameAsset
+    public class AssetReference<T>(Guid guid) where T : GameAsset
     {
-        public static AssetReference<T> Empty = new AssetReference<T>(Guid.Empty);
+        public static AssetReference<T> Empty => new(Guid.Empty);
 
         public bool HasValue => Guid != Guid.Empty;
-        public readonly Guid Guid;
-
-        public AssetReference(Guid guid)
-        {
-            Guid = guid;
-        }
+        public readonly Guid Guid = guid;
 
         public T Asset => AssetDatabase.GetAsset<T>(Guid);
         public T? TryAsset => AssetDatabase.TryGetAsset<T>(Guid);

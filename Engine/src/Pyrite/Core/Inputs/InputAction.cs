@@ -12,7 +12,7 @@ namespace Pyrite.Core.Inputs
 {
     public class InputAction
     {
-        private List<Action<CallbackContext>> _listeners = [];
+        private readonly List<Action<CallbackContext>> _listeners = [];
 
         public bool Consumed { get; protected set; } = false;
         public void Consume() => Consumed = true;
@@ -30,7 +30,7 @@ namespace Pyrite.Core.Inputs
 
         public void Invoke(ICollection<ButtonBinding> bindings, InputState state)
         {
-            CallbackContext context = new CallbackContext
+            CallbackContext context = new()
             {
                 Action = this,
                 ValueType = typeof(bool)
