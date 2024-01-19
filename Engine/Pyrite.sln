@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scribe", "Scribe", "{BB549E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scribe", "src\Scribe\src\Scribe.csproj", "{3B13C0DE-422F-4205-BD5A-601070359D80}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Coral", "Coral", "{67CF9A54-ECCE-41A0-A1CE-A539BF9EEA77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

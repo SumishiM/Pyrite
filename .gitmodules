@@ -4,3 +4,6 @@
 [submodule "Engine/src/Scribe"]
 	path = Engine/src/Scribe
 	url = https://github.com/SumishiM/Scribe.git
+[submodule "Engine/src/Coral"]
+	path = Engine/src/Coral
+	url = https://github.com/SumishiM/Coral.git
