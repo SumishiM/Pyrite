@@ -1,3 +1,6 @@
 [submodule "Engine/src/Ignite"]
 	path = Engine/src/Ignite
 	url = https://github.com/SumishiM/Ignite.git
+[submodule "Engine/src/Scribe"]
+	path = Engine/src/Scribe
+	url = https://github.com/SumishiM/Scribe.git
