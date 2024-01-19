@@ -16,11 +16,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Engine\src\Pyrite\Pyrite.csproj" />
-		<ProjectReference Include="..\Ignite\Analyzers\Ignite.Generator\Ignite.Generator.csproj">
+		<ProjectReference Include="..\Engine\src\Ignite\Analyzers\Ignite.Generator\Ignite.Generator.csproj">
 			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
 			<OutputItemType>Analyzer</OutputItemType>
 		</ProjectReference>
+		<ProjectReference Include="..\Engine\src\Pyrite\Pyrite.csproj" />
 	</ItemGroup>
 
 </Project>

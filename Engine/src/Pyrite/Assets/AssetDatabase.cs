@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pyrite.Assets
+﻿namespace Pyrite.Assets
 {
     public class AssetDatabase
     {
@@ -16,6 +10,7 @@ namespace Pyrite.Assets
             _allAssets = [];
             _database = [];
         }
+
         public AssetDatabase () 
         {
             _db = this;

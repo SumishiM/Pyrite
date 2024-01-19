@@ -28,6 +28,8 @@
 
 	<ItemGroup>
 		<Folder Include="Attributes\" />
+		<Folder Include="Core\Rendering\" />
+		<Folder Include="Extentions\" />
 	</ItemGroup>
 
 	<ItemGroup>
