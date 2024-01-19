@@ -1,12 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<BaseOutputPath>..\..\..\Binary\Engine\$(AssemblyName)</BaseOutputPath>
-		<BaseIntermediateOutputPath>..\..\..\Bin-Intermediate\Engine\$(AssemblyName)</BaseIntermediateOutputPath>
+		<AssemblyName>Pyrite</AssemblyName>
+		<RootNamespace>Pyrite</RootNamespace>
+		
 		<TargetFramework>net8.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		
+		<BaseOutputPath>..\..\..\Binary\Engine\$(AssemblyName)</BaseOutputPath>
+		<BaseIntermediateOutputPath>..\..\..\Bin-Intermediate\Engine\$(AssemblyName)</BaseIntermediateOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -22,6 +28,14 @@
 
 	<ItemGroup>
 		<Folder Include="Attributes\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Ignite\Analyzers\Ignite.Generator\Ignite.Generator.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<OutputItemType>Analyzer</OutputItemType>
+		</ProjectReference>
+		<ProjectReference Include="..\Ignite\Ignite\Ignite.csproj" />
 	</ItemGroup>
 
 </Project>

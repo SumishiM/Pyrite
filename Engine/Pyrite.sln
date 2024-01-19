@@ -9,6 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "..\Sandbox\Sandb
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ignite", "Ignite", "{B8F13E76-8766-4A7B-8458-424441AAEE7B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ignite", "src\Ignite\Ignite\Ignite.csproj", "{CF6713B8-C22C-44B7-ADAB-23FCFFE0C037}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analyzers", "Analyzers", "{E9FF0716-A78C-4CD6-8C20-9CC208CCA133}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ignite.Generator", "src\Ignite\Analyzers\Ignite.Generator\Ignite.Generator.csproj", "{985B7C47-354B-4A10-9DFF-B843162B9666}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pyrite.Editor", "src\Pyrite.Editor\Pyrite.Editor.csproj", "{AB2FEB20-A2A5-4DB9-842E-4D4008DDCF7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,9 +31,26 @@ Global
 		{C73717CE-2FBD-4C64-A265-83A5B60A8C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C73717CE-2FBD-4C64-A265-83A5B60A8C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C73717CE-2FBD-4C64-A265-83A5B60A8C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF6713B8-C22C-44B7-ADAB-23FCFFE0C037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF6713B8-C22C-44B7-ADAB-23FCFFE0C037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF6713B8-C22C-44B7-ADAB-23FCFFE0C037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF6713B8-C22C-44B7-ADAB-23FCFFE0C037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{985B7C47-354B-4A10-9DFF-B843162B9666}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{985B7C47-354B-4A10-9DFF-B843162B9666}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{985B7C47-354B-4A10-9DFF-B843162B9666}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{985B7C47-354B-4A10-9DFF-B843162B9666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB2FEB20-A2A5-4DB9-842E-4D4008DDCF7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB2FEB20-A2A5-4DB9-842E-4D4008DDCF7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB2FEB20-A2A5-4DB9-842E-4D4008DDCF7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB2FEB20-A2A5-4DB9-842E-4D4008DDCF7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CF6713B8-C22C-44B7-ADAB-23FCFFE0C037} = {B8F13E76-8766-4A7B-8458-424441AAEE7B}
+		{E9FF0716-A78C-4CD6-8C20-9CC208CCA133} = {B8F13E76-8766-4A7B-8458-424441AAEE7B}
+		{985B7C47-354B-4A10-9DFF-B843162B9666} = {E9FF0716-A78C-4CD6-8C20-9CC208CCA133}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0288FDE6-A602-4089-A033-3E0D6D0332E9}
