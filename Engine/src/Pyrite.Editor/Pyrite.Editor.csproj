@@ -10,6 +10,9 @@
 		
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		
+		<BaseOutputPath>..\..\..\Binary\Engine\$(AssemblyName)</BaseOutputPath>
+		<BaseIntermediateOutputPath>..\..\..\Bin-Intermediate\Engine\$(AssemblyName)</BaseIntermediateOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
