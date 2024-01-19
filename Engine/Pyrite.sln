@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pyrite", "src\Pyrite\Pyrite.csproj", "{60F52802-859A-443A-A8C2-ACD9E91A1F45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "..\Sandbox\Sandbox.csproj", "{C73717CE-2FBD-4C64-A265-83A5B60A8C13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "..\Sandbox\Sandbox.csproj", "{C73717CE-2FBD-4C64-A265-83A5B60A8C13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ignite", "Ignite", "{B8F13E76-8766-4A7B-8458-424441AAEE7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
