@@ -27,7 +27,7 @@ namespace Pyrite
 
         public event Action? OnLoad;
         public event Action<double>? OnUpdate;
-        public event Action<double>? OnRender;
+        public event Action? OnRender;
         public event Action? OnClose;
 
         public int Width;
@@ -53,12 +53,12 @@ namespace Pyrite
             _native = SilkWindow.Create(options);
 
             // Set events
-            _native.Load += OnLoad;
             _native.Load += () =>
             {
 
                 // todo : Create input system instance and set appropriate callbacks
                 //Set-up input context.
+                Console.WriteLine("load;");
                 IInputContext input = _native.CreateInput();
                 for (int i = 0; i < input.Keyboards.Count; i++)
                 {
@@ -71,22 +71,13 @@ namespace Pyrite
                     var raw = _icon.Raw;
                     _native.SetWindowIcon(ref raw);
                 }
+
+                OnLoad?.Invoke();
             };
 
-            _native.Update += OnUpdate;
-            _native.Render += OnRender;
-            _native.Closing += OnClose;
-
-            try
-            {
-                _native.Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-
-            _native.Dispose();
+            _native.Update += (dt) => OnUpdate?.Invoke(dt);
+            _native.Render += _ => OnRender?.Invoke();
+            _native.Closing += () => OnClose?.Invoke();
         }
 
         private void KeyDown(IKeyboard keyboard, Key key, int arg3)
@@ -110,6 +101,8 @@ namespace Pyrite
             OnUpdate = null;
             OnRender = null;
             OnClose = null;
+
+            _native.Dispose();
         }
     }
 }

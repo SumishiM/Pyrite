@@ -1,7 +1,9 @@
 ﻿using Ignite;
 using Ignite.Systems;
 using Pyrite.Core.Graphics.Rendering;
+using Pyrite.Utils;
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Pyrite
 {
@@ -33,7 +35,7 @@ namespace Pyrite
         private readonly List<ISystem> _systems = [];
         public List<ISystem> Systems => _systems;
 
-        protected Renderer Renderer { get; set; }
+        protected Renderer? Renderer { get; set; }
 
         public Game()
         {
@@ -57,34 +59,32 @@ namespace Pyrite
 
         public void Run()
         {
-            try
-            {
-                _window?.Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            if( _window == null)
+                throw new NullReferenceException();
+
+            _window.Run();
         }
 
         private void OnLoad()
         {
-            Renderer.Initialize();
             Initialize();
+            Renderer?.Initialize();
             _percistentWorld?.Start();
         }
 
         private void OnUpdate(double deltaTime)
         {
+            Time.Update(deltaTime);
+
             _percistentWorld?.Update();
             FixedUpdate();
             Update();
         }
 
-        private void OnRender(double deltaTime)
+        private void OnRender()
         {
             _percistentWorld?.Render();
-            Renderer.Draw();
+            Renderer?.Draw();
         }
 
         private void OnClose()
