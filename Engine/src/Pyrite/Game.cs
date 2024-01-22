@@ -1,17 +1,14 @@
-﻿using Silk.NET.Windowing;
-using SilkWindow = Silk.NET.Windowing.Window;
-using Silk.NET.Maths;
-using Silk.NET.Input;
-
-using Ignite;
+﻿using Ignite;
 using Ignite.Systems;
+using Pyrite.Core.Graphics.Rendering;
+using System.Drawing;
 
 namespace Pyrite
 {
     public class Game : IDisposable
     {
-        private static IWindow? _window = null;
-        public static IWindow? Window => _window;
+        private static Window? _window = null;
+        public static Window? Window => _window;
 
         private static Game? _instance = null;
         public static Game Instance
@@ -36,77 +33,63 @@ namespace Pyrite
         private readonly List<ISystem> _systems = [];
         public List<ISystem> Systems => _systems;
 
+        protected Renderer Renderer { get; set; }
+
         public Game()
         {
+            _instance = this;
+
+            _window = new Window(new WindowInfo
+            {
+                Title = "Pyrite",
+                Width = 1080,
+                Height = 720,
+                BackgroundColor = Color.Black,
+                Maximized = false,
+                Resizable = true,
+            });
+
+            _window.OnLoad += OnLoad;
+            _window.OnUpdate += OnUpdate;
+            _window.OnRender += OnRender;
+            _window.OnClose += OnClose;
         }
 
         public void Run()
         {
-            _instance = this;
-            var options = WindowOptions.Default;
-            options.Size = new Vector2D<int>(1080, 720);
-            options.Title = "Pyrite";
-
-            _window = SilkWindow.Create(options);
-
-            _window.Load += OnLoad;
-            _window.Update += OnUpdate;
-            _window.Render += OnRender;
-            _window.Closing += OnClose;
-
             try
             {
-                _window.Run();
+                _window?.Run();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-
-            _window.Dispose();
         }
 
         private void OnLoad()
         {
-            if (_window == null)
-                return;
-
-            // todo : Create input system instance and set appropriate callbacks
-            //Set-up input context.
-            IInputContext input = _window.CreateInput();
-            for (int i = 0; i < input.Keyboards.Count; i++)
-            {
-                input.Keyboards[i].KeyDown += KeyDown;
-            }
-
+            Renderer.Initialize();
             Initialize();
-        }
-
-        private void KeyDown(IKeyboard keyboard, Key key, int arg3)
-        {
-            if (_window == null)
-                return;
-
-            //Check to close the window on escape.
-            if (key == Key.Escape)
-            {
-                _window.Close();
-            }
+            _percistentWorld?.Start();
         }
 
         private void OnUpdate(double deltaTime)
         {
+            _percistentWorld?.Update();
             FixedUpdate();
             Update();
         }
 
         private void OnRender(double deltaTime)
         {
-            Draw();
+            _percistentWorld?.Render();
+            Renderer.Draw();
         }
 
         private void OnClose()
         {
+            _percistentWorld?.Exit();
             Destroy();
         }
 
@@ -114,7 +97,6 @@ namespace Pyrite
         protected virtual void Initialize() { }
         protected virtual void Update() { }
         protected virtual void FixedUpdate() { }
-        protected virtual void Draw() { }
         protected virtual void Destroy() { }
 
 

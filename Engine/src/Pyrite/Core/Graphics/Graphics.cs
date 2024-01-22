@@ -9,7 +9,7 @@ namespace Pyrite.Core.Graphics
         {
             get
             {
-                _gl ??= GL.GetApi(Game.Window);
+                _gl ??= GL.GetApi(Game.Window?.Native());
                 return _gl;
             }
         }

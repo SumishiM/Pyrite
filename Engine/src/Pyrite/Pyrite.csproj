@@ -36,19 +36,17 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<None Update="..\Pyrite\Shaders\shader.frag">
+		<None Update="..\Pyrite\Shaders\**">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="..\Pyrite\Shaders\shader.vert">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="..\Pyrite\Content\silk.png">
+		<None Update="..\Pyrite\Content\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="StbImageSharp" Version="2.27.13" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

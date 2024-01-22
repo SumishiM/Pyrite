@@ -1,5 +1,4 @@
-﻿using Silk.NET.Input;
-using Silk.NET.OpenGL;
+﻿using Silk.NET.OpenGL;
 
 namespace Pyrite.Core.Graphics.Rendering
 {
@@ -48,7 +47,7 @@ namespace Pyrite.Core.Graphics.Rendering
             // need to move
             Shader = new Shaders.Shader("Shaders\\shader.vert", "Shaders\\shader.frag");
 
-            Texture = new OGLTexture("Content\\silk.png");
+            Texture = new OGLTexture("Content\\PyriteIcon512.png");
         }
 
         public unsafe override void Draw()
