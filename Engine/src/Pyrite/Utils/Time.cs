@@ -7,9 +7,9 @@
         public static float FixedDeltaTime => 0.2f;
         public static float TimeScale { get; set; } = 1f;
 
-        public static void Update(GameTime gameTime)
+        public static void Update(double deltaTime)
         {
-            RawDeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            RawDeltaTime = (float)deltaTime;
             DeltaTime = RawDeltaTime * TimeScale;
         }
     }

@@ -31,7 +31,7 @@ namespace Pyrite.Utils
 #if !CONSOLE
         private static string? AssemblyDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
 #endif
-
+        /*
         public static string ContentDirectory
         {
 #if PS4
@@ -44,5 +44,6 @@ namespace Pyrite.Utils
             get { return Path.Combine(AssemblyDirectory!, Game.Instance.Content.RootDirectory); }
 #endif
         }
+        */
     }
 }

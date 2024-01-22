@@ -1,6 +1,4 @@
-﻿
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Pyrite.Utils;
 
 namespace Pyrite.Assets

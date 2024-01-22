@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Pyrite;
 
 namespace Sandbox
 {
@@ -9,8 +9,7 @@ namespace Sandbox
         {
             try
             {
-                using Game game = new Pyrite.Game(1280, 720, 1280, 720, "Pyrite Debug", false);
-                game.Run();
+                using Game game = new SandboxGame();
             }
             catch (Exception ex)
             {
@@ -19,7 +18,7 @@ namespace Sandbox
         }
     }
 
-    internal class SandboxGame : Pyrite.IPyriteGame
+    internal class SandboxGame : Game, IPyriteGame
     {
         public string Name => "Sandbox";
     }

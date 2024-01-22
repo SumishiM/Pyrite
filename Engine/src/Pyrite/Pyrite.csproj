@@ -22,8 +22,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Silk.NET.OpenGL" Version="2.20.0" />
+		<PackageReference Include="Silk.NET.Vulkan" Version="2.20.0" />
+		<PackageReference Include="Silk.NET.Windowing" Version="2.20.0" />
+		<PackageReference Include="Silk.NET.Input.Common" Version="2.20.0" />
 	</ItemGroup>
 
 	<ItemGroup>
