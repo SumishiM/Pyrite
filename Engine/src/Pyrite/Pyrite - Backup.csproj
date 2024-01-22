@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>Pyrite</AssemblyName>
+		<RootNamespace>Pyrite</RootNamespace>
+		
+		<TargetFramework>net8.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		
+		<BaseOutputPath>..\..\..\Binary\Engine\$(AssemblyName)</BaseOutputPath>
+		<BaseIntermediateOutputPath>..\..\..\Bin-Intermediate\Engine\$(AssemblyName)</BaseIntermediateOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Silk.NET.OpenGL" Version="2.20.0" />
+		<PackageReference Include="Silk.NET.Vulkan" Version="2.20.0" />
+		<PackageReference Include="Silk.NET.Windowing" Version="2.20.0" />
+		<PackageReference Include="Silk.NET.Input" Version="2.20.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Attributes\" />
+		<Folder Include="Core\Graphics\Rendering\Shaders\" />
+		<Folder Include="Extentions\" />
+		<Folder Include="Content\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Update="..\Pyrite\Shaders\shader.frag">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="..\Pyrite\Shaders\shader.vert">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="..\Pyrite\Content\silk.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="StbImageSharp" Version="2.27.13" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Ignite\Analyzers\Ignite.Generator\Ignite.Generator.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<OutputItemType>Analyzer</OutputItemType>
+		</ProjectReference>
+		<ProjectReference Include="..\Ignite\Ignite\Ignite.csproj" />
+	</ItemGroup>
+
+</Project>

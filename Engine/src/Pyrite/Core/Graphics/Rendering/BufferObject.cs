@@ -1,12 +1,6 @@
 ﻿using Silk.NET.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Pyrite.Core.Rendering
+namespace Pyrite.Core.Graphics.Rendering
 {
     public class BufferObject <T> : IDisposable
         where T : unmanaged

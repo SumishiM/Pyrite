@@ -1,43 +1,19 @@
 ﻿using Silk.NET.Input;
 using Silk.NET.OpenGL;
 
-namespace Pyrite.Core.Rendering
+namespace Pyrite.Core.Graphics.Rendering
 {
     public class OGLRenderer : Renderer
     {
-        private static GL Gl;
+        private GL Gl;
 
         //Our new abstracted objects, here we specify what the types are.
-        private static BufferObject<float> Vbo;
-        private static BufferObject<uint> Ebo;
-        private static VertexArrayObject<float, uint> Vao;
+        private BufferObject<float> Vbo;
+        private BufferObject<uint> Ebo;
+        private VertexArrayObject<float, uint> Vao;
 
-        private static Shaders.Shader Shader;
-        public static OGLTexture Texture;
-
-
-
-        //Vertex shaders are run on each vertex.
-        private static readonly string VertexShaderSource = @"
-        #version 330 core //Using version GLSL version 3.3
-        layout (location = 0) in vec4 vPos;
-        
-        void main()
-        {
-            gl_Position = vec4(vPos.x, vPos.y, vPos.z, 1.0);
-        }
-        ";
-
-        //Fragment shaders are run on each fragment/pixel of the geometry.
-        private static readonly string FragmentShaderSource = @"
-        #version 330 core
-        out vec4 FragColor;
-
-        void main()
-        {
-            FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-        }
-        ";
+        private Shaders.Shader Shader;
+        public OGLTexture Texture;
 
         //Vertex data, uploaded to the VBO.
         private static readonly float[] Vertices =
@@ -58,7 +34,7 @@ namespace Pyrite.Core.Rendering
 
         public unsafe override void Initialize()
         {
-            Gl = GL.GetApi(Game.Window);
+            Gl = Graphics.Gl;
 
             //Instantiating our new abstractions
             Ebo = new BufferObject<uint>(Gl, Indices, BufferTargetARB.ElementArrayBuffer);
@@ -69,9 +45,10 @@ namespace Pyrite.Core.Rendering
             Vao.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, 5, 0);
             Vao.VertexAttributePointer(1, 2, VertexAttribPointerType.Float, 5, 3);
 
-            Shader = new Shaders.Shader(Gl, "Shaders\\shader.vert", "Shaders\\shader.frag");
+            // need to move
+            Shader = new Shaders.Shader("Shaders\\shader.vert", "Shaders\\shader.frag");
 
-            Texture = new OGLTexture(Gl, "Content\\silk.png");
+            Texture = new OGLTexture("Content\\silk.png");
         }
 
         public unsafe override void Draw()

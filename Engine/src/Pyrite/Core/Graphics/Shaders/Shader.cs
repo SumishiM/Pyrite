@@ -1,11 +1,6 @@
 ﻿using Silk.NET.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Pyrite.Core.Rendering.Shaders
+namespace Pyrite.Core.Graphics.Shaders
 {
     public class Shader : IDisposable
     {
@@ -14,9 +9,9 @@ namespace Pyrite.Core.Rendering.Shaders
         private uint _handle;
         private GL _gl;
 
-        public Shader(GL gl, string vertexPath, string fragmentPath)
+        public Shader(string vertexPath, string fragmentPath)
         {
-            _gl = gl;
+            _gl = Graphics.Gl;
 
             uint vertex = LoadShader(ShaderType.VertexShader, vertexPath);
             uint fragment = LoadShader(ShaderType.FragmentShader, fragmentPath);

@@ -1,5 +1,5 @@
 ﻿using Pyrite;
-using Pyrite.Core.Rendering;
+using Pyrite.Core.Graphics.Rendering;
 
 namespace Sandbox
 {

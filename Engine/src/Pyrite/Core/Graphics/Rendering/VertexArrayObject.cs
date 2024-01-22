@@ -1,12 +1,6 @@
 ﻿using Silk.NET.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Pyrite.Core.Rendering
+namespace Pyrite.Core.Graphics.Rendering
 {
     public class VertexArrayObject<TVertex, TIndex> : IDisposable
         where TVertex : unmanaged

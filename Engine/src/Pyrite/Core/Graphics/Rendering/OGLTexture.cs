@@ -1,23 +1,17 @@
 ﻿using Silk.NET.OpenGL;
-using Silk.NET.Vulkan;
 using StbImageSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Pyrite.Core.Rendering
+namespace Pyrite.Core.Graphics.Rendering
 {
-    public class OGLTexture : TextureBase, IDisposable
+    public class OGLTexture : IDisposable
     {
         private uint _handle;
         private GL _gl;
 
-        public unsafe OGLTexture(GL gl, string path)
+        public unsafe OGLTexture(string path)
         {
             //Saving the gl instance.
-            _gl = gl;
+            _gl = Graphics.Gl;
 
             //Generating the opengl handle;
             _handle = _gl.GenTexture();
@@ -36,10 +30,10 @@ namespace Pyrite.Core.Rendering
             SetParameters();
         }
 
-        public unsafe OGLTexture(GL gl, Span<byte> data, uint width, uint height)
+        public unsafe OGLTexture(Span<byte> data, uint width, uint height)
         {
             //Saving the gl instance.
-            _gl = gl;
+            _gl = Graphics.Gl;
 
             //Generating the opengl handle;
             _handle = _gl.GenTexture();
