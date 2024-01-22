@@ -10,11 +10,11 @@ namespace Pyrite
 
         public Game()
         {
-            var option = WindowOptions.Default;
-            option.Size = new Vector2D<int>(1080, 720);
-            option.Title = "Pyrite";
+            var options = WindowOptions.Default;
+            options.Size = new Vector2D<int>(1080, 720);
+            options.Title = "Pyrite";
 
-            _window = Window.Create(option);
+            _window = Window.Create(options);
 
             _window.Load += OnLoad;
             _window.Update += OnUpdate;
@@ -26,7 +26,7 @@ namespace Pyrite
         }
 
 
-        private void OnLoad()
+        private static void OnLoad()
         {
             if (_window == null)
                 return;
@@ -39,7 +39,7 @@ namespace Pyrite
             }
         }
 
-        private void KeyDown(IKeyboard keyboard, Key key, int arg3)
+        private static void KeyDown(IKeyboard keyboard, Key key, int arg3)
         {
             if (_window == null)
                 return;
@@ -51,11 +51,11 @@ namespace Pyrite
             }
         }
 
-        private void OnUpdate(double deltaTime)
+        private static void OnUpdate(double deltaTime)
         {
         }
 
-        private void OnRender(double deltaTime)
+        private static void OnRender(double deltaTime)
         {
         }
 
