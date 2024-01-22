@@ -31,8 +31,24 @@
 
 	<ItemGroup>
 		<Folder Include="Attributes\" />
-		<Folder Include="Core\Rendering\" />
 		<Folder Include="Extentions\" />
+		<Folder Include="Content\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Update="..\Pyrite\Shaders\shader.frag">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="..\Pyrite\Shaders\shader.vert">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="..\Pyrite\Content\silk.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="StbImageSharp" Version="2.27.13" />
 	</ItemGroup>
 
 	<ItemGroup>

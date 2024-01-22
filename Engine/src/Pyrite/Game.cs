@@ -1,45 +1,88 @@
 ﻿using Silk.NET.Windowing;
+using SilkWindow = Silk.NET.Windowing.Window;
 using Silk.NET.Maths;
 using Silk.NET.Input;
 
+using Ignite;
+using Ignite.Systems;
+
 namespace Pyrite
 {
-    public abstract class Game : IDisposable
+    public class Game : IDisposable
     {
-        private static IWindow? _window;
+        private static IWindow? _window = null;
+        public static IWindow? Window => _window;
+
+        private static Game? _instance = null;
+        public static Game Instance
+        {
+            get
+            {
+                _instance ??= new Game();
+                return _instance;
+            }
+        }
+
+        private World? _percistentWorld = null;
+        public World PercistentWorld
+        {
+            get
+            {
+                _percistentWorld ??= new World(_systems);
+                return _percistentWorld;
+            }
+        }
+
+        private readonly List<ISystem> _systems = [];
+        public List<ISystem> Systems => _systems;
 
         public Game()
         {
+        }
+
+        public void Run()
+        {
+            _instance = this;
             var options = WindowOptions.Default;
             options.Size = new Vector2D<int>(1080, 720);
             options.Title = "Pyrite";
 
-            _window = Window.Create(options);
+            _window = SilkWindow.Create(options);
 
             _window.Load += OnLoad;
             _window.Update += OnUpdate;
             _window.Render += OnRender;
+            _window.Closing += OnClose;
 
-            _window.Run();
+            try
+            {
+                _window.Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
 
             _window.Dispose();
         }
 
-
-        private static void OnLoad()
+        private void OnLoad()
         {
             if (_window == null)
                 return;
 
+            // todo : Create input system instance and set appropriate callbacks
             //Set-up input context.
             IInputContext input = _window.CreateInput();
             for (int i = 0; i < input.Keyboards.Count; i++)
             {
                 input.Keyboards[i].KeyDown += KeyDown;
             }
+
+            Initialize();
         }
 
-        private static void KeyDown(IKeyboard keyboard, Key key, int arg3)
+        private void KeyDown(IKeyboard keyboard, Key key, int arg3)
         {
             if (_window == null)
                 return;
@@ -51,16 +94,37 @@ namespace Pyrite
             }
         }
 
-        private static void OnUpdate(double deltaTime)
+        private void OnUpdate(double deltaTime)
         {
+            FixedUpdate();
+            Update();
         }
 
-        private static void OnRender(double deltaTime)
+        private void OnRender(double deltaTime)
         {
+            Draw();
         }
+
+        private void OnClose()
+        {
+            Destroy();
+        }
+
+
+        protected virtual void Initialize() { }
+        protected virtual void Update() { }
+        protected virtual void FixedUpdate() { }
+        protected virtual void Draw() { }
+        protected virtual void Destroy() { }
+
 
         public void Dispose()
         {
+            _instance = null;
+            _percistentWorld?.Dispose();
+            _systems.Clear();
+
+            GC.SuppressFinalize(this);
         }
 
 
