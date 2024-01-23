@@ -1,5 +1,4 @@
 ﻿using Ignite.Components;
-using Pyrite.Core.Physics;
 
 namespace Pyrite.Core.Components
 {

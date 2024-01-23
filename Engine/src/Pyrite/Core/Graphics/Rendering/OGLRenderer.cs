@@ -1,18 +1,22 @@
 ﻿using Silk.NET.OpenGL;
+using System.Numerics;
 
 namespace Pyrite.Core.Graphics.Rendering
 {
     public class OGLRenderer : Renderer
     {
+#nullable disable
         private GL Gl;
 
         //Our new abstracted objects, here we specify what the types are.
         private BufferObject<float> Vbo;
         private BufferObject<uint> Ebo;
         private VertexArrayObject<float, uint> Vao;
+#nullable enable
 
         private Shaders.Shader Shader;
         public OGLTexture Texture;
+        //Creating transforms for the transformations
 
         //Vertex data, uploaded to the VBO.
         private static readonly float[] Vertices =
@@ -48,6 +52,21 @@ namespace Pyrite.Core.Graphics.Rendering
             Shader = new Shaders.Shader("Shaders\\shader.vert", "Shaders\\shader.frag");
 
             Texture = new OGLTexture("Content\\PyriteIcon512.png");
+            //Unlike in the transformation, because of our abstraction, order doesn't matter here.
+            //Translation.
+            Transforms[0] = new Transform();
+            Transforms[0].Position = new Vector3(0.5f, 0.5f, 0f);
+            //Rotation.
+            Transforms[1] = new Transform();
+            Transforms[1].Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, 1f);
+            //Scaling.
+            Transforms[2] = new Transform();
+            Transforms[2].Scale = 0.5f;
+            //Mixed transformation.
+            Transforms[3] = new Transform();
+            Transforms[3].Position = new Vector3(-0.5f, 0.5f, 0f);
+            Transforms[3].Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, 1f);
+            Transforms[3].Scale = 0.5f;
         }
 
         public unsafe override void Draw()
@@ -58,12 +77,15 @@ namespace Pyrite.Core.Graphics.Rendering
             Vao.Bind();
             Shader.Use();
 
-            Texture.Bind(TextureUnit.Texture0);
+            Shader.SetUniform("uTexture0", 0);
 
-            //Setting a uniform.
-            Shader.SetUniform("uTexture", 0);
+            for (int i = 0; i < Transforms.Length; i++)
+            {
+                //Using the transformations.
+                Shader.SetUniform("uModel", Transforms[i].ViewMatrix);
 
-            Gl.DrawElements(PrimitiveType.Triangles, (uint)Indices.Length, DrawElementsType.UnsignedInt, null);
+                Gl.DrawElements(PrimitiveType.Triangles, (uint)Indices.Length, DrawElementsType.UnsignedInt, null);
+            }
         }
 
         public override void Dispose()
