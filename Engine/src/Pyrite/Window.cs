@@ -6,7 +6,6 @@ using System.Drawing;
 
 using SilkWindow = Silk.NET.Windowing.Window;
 using Icon = Pyrite.Core.Graphics.Icon;
-using Silk.NET.OpenGL;
 
 namespace Pyrite
 {   
@@ -55,10 +54,8 @@ namespace Pyrite
             // Set events
             _native.Load += () =>
             {
-
                 // todo : Create input system instance and set appropriate callbacks
                 //Set-up input context.
-                Console.WriteLine("load;");
                 IInputContext input = _native.CreateInput();
                 for (int i = 0; i < input.Keyboards.Count; i++)
                 {

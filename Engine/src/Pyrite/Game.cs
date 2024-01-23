@@ -3,7 +3,6 @@ using Ignite.Systems;
 using Pyrite.Core.Graphics.Rendering;
 using Pyrite.Utils;
 using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Pyrite
 {
@@ -36,20 +35,22 @@ namespace Pyrite
         public List<ISystem> Systems => _systems;
 
         protected Renderer? Renderer { get; set; }
+        protected virtual WindowInfo WindowInfo => new()
+        {
+            Title = "Pyrite",
+            Width = 1080,
+            Height = 720,
+            BackgroundColor = Color.Black,
+            Maximized = false,
+            Resizable = true,
+        };
+        
 
         public Game()
         {
             _instance = this;
 
-            _window = new Window(new WindowInfo
-            {
-                Title = "Pyrite",
-                Width = 1080,
-                Height = 720,
-                BackgroundColor = Color.Black,
-                Maximized = false,
-                Resizable = true,
-            });
+            _window = new Window(WindowInfo);
 
             _window.OnLoad += OnLoad;
             _window.OnUpdate += OnUpdate;

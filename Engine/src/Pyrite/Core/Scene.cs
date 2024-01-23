@@ -12,43 +12,45 @@ namespace Pyrite.Core
         {
             get
             {
-                _world ??= new World(Array.Empty<ISystem>());
+                if(_world == null)
+                {
+                    List<ISystem> systems = [];
+                    foreach (Type type in _systems)
+                    {
+                        if (Activator.CreateInstance(type) is ISystem system)
+                            systems.Add(system);
+                        //else
+                        // throw warning 
+                    }
+                    _world = new World(Array.Empty<ISystem>());
+                }
                 return _world;
             }
         }
 
         private List<Type> _systems = [];
 
-        public Scene()
+        internal Scene()
         {
-            List<ISystem> systems = [];
-            foreach (Type type in _systems)
-            {
-                if (Activator.CreateInstance(type) is ISystem system)
-                    systems.Add(system);
-                //else
-                // throw warning 
-            }
 
-            _world ??= new World(systems);
         }
 
-        public void Start()
+        internal void Start()
         {
             World.Start();
         }
 
-        public void Update()
+        internal void Update()
         {
             World.Update();
         }
 
-        public void Render()
+        internal void Render()
         {
             World.Render();
         }
 
-        public void Exit()
+        internal void Exit()
         {
             World.Exit();
         }

@@ -1,5 +1,6 @@
 ﻿using Pyrite;
 using Pyrite.Core.Graphics.Rendering;
+using System.Drawing;
 
 namespace Sandbox
 {
@@ -13,9 +14,17 @@ namespace Sandbox
         }
     }
 
-    internal class SandboxGame : Game, IPyriteGame
+    internal class SandboxGame : Game
     {
-        public string Name => "Sandbox";
+        protected override WindowInfo? WindowInfo => new()
+        {
+            Title = "Pyrite Sandbox",
+            Width = 1080,
+            Height = 720,
+            BackgroundColor = Color.Black,
+            Maximized = false,
+            Resizable = true,
+        };
 
         public SandboxGame()
         {
