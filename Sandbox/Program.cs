@@ -16,7 +16,7 @@ namespace Sandbox
 
     internal class SandboxGame : Game
     {
-        protected override WindowInfo? WindowInfo => new()
+        protected override WindowInfo WindowInfo => new()
         {
             Title = "Pyrite Sandbox",
             Width = 1080,

@@ -1,6 +1,6 @@
 ﻿namespace Pyrite.Core.Physics
 {
-    public class Matrix2x2
+    public struct Matrix2x2
     {
         float m00, m01;
         float m10, m11;
@@ -26,7 +26,7 @@
                 s, c);
         }
 
-        public Matrix2x2 Transpose()
+        public readonly Matrix2x2 Transpose()
         {
             return new Matrix2x2(
                 m00, m10,

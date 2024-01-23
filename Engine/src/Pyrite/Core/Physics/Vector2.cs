@@ -1,14 +1,6 @@
-﻿using Silk.NET.Maths;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pyrite.Core.Physics
+﻿namespace Pyrite.Core.Physics
 {
-    public class Vector2
+    public struct Vector2
     {
         public float X;
         public float Y;
@@ -24,9 +16,9 @@ namespace Pyrite.Core.Physics
         public static Vector2 UnitY => new(0f, 1f);
         public static Vector2 One => new(1f, 1f);
 
-        public float Length()
+        public readonly float Length()
             => MathF.Sqrt(X * X + Y * Y);
-        public float SqrLength() 
+        public readonly float SqrLength() 
             => X * X + Y * Y;
 
         public void Normalize()

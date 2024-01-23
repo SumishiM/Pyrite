@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pyrite.Core
+namespace Pyrite.Core.Physics
 {
-    public class Transform
+    public class Shape2D
     {
     }
 }
