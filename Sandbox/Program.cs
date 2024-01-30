@@ -1,5 +1,8 @@
-﻿using Pyrite;
+﻿using Ignite;
+using Ignite.Systems;
+using Pyrite;
 using Pyrite.Core;
+using Pyrite.Core.Components;
 using Pyrite.Core.Graphics;
 using Pyrite.Core.Graphics.Rendering;
 using System.Drawing;
@@ -28,10 +31,13 @@ namespace Sandbox
             Title = "Pyrite Sandbox YEPEE" 
         };
 
+        protected override List<Type> Systems => [
+            typeof(SimpleRendererSystem),
+            typeof(SpinSystem)
+        ];
+
         protected override void Initialize()
         {
-            Renderer = new OGLRenderer();
-
             Sprite sprite = new(
                 "Content\\toothless.png",
                 new Transform()
@@ -39,8 +45,12 @@ namespace Sandbox
                     Rotation = 45f
                 });
 
-            Camera.Main.Zoom = 1f;
-            Renderer.Queue(sprite);
+            var Toothless =
+                Node.CreateBuilder(PercistentWorld, "Toothless")
+                    .AddComponent<SpriteComponent>(sprite)
+                    .AddComponent<SpinComponent>();
+
+            PercistentWorld.AddNode(Toothless);
         }
     }
 }

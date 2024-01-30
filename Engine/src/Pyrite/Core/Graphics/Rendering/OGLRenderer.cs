@@ -21,10 +21,10 @@ namespace Pyrite.Core.Graphics.Rendering
         private static readonly float[] _vertices = //! might move to renderer
         [
             //X    Y      Z     S    T
-             0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
-             0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
+            0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+            0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
             -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-            -0.5f,  0.5f, 0.0f, 0.0f, 0.0f
+            -0.5f, 0.5f, 0.0f, 0.0f, 0.0f
         ];
 
         //Index data, uploaded to the EBO.
@@ -35,7 +35,7 @@ namespace Pyrite.Core.Graphics.Rendering
         ];
 
         /// <inheritdoc/>
-        public unsafe override void Initialize()
+        public unsafe override void Initialize ()
         {
             //Instantiating our new abstractions
             _ebo = new BufferObject<uint>(Graphics.Gl, _indices, BufferTargetARB.ElementArrayBuffer);
@@ -47,52 +47,45 @@ namespace Pyrite.Core.Graphics.Rendering
             _vao.VertexAttributePointer(1, 2, VertexAttribPointerType.Float, 5, 3);
         }
 
-        /// <summary>
-        /// Draw every sprites registered, note that this function do 1 draw call per sprite.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">Main <see cref="Camera"/> is null</exception>
-        public unsafe override void Draw()
+        public override void ClearScreen ()
         {
-            if ( Camera.Main == null )
-            {
-                throw new ArgumentNullException(
-                    nameof(Camera.Main), 
-                    "No main camera found for render.");
-            }
-
             // Clear screen
             Graphics.Gl.Clear((uint)ClearBufferMask.ColorBufferBit);
             Graphics.Gl.ClearColor(Window.BackgroundColor);
+        }
+
+        /// <summary>
+        /// Draw every sprites registered, note that this function do 1 draw call per sprite.
+        /// </summary>
+        public unsafe override void Draw ( Sprite sprite )
+        {
 
             // Set default shader and bind vao
             Shaders.Shader shader = Shaders.Shader.Default;
             _vao.Bind();
 
-            // draw every sprites
-            foreach ( var sprite in _sprites.OrderBy(s => s.SortingOrder))
-            {
-                shader = sprite.Shader ?? Shaders.Shader.Default;
-                shader.Use();
-                sprite.Texture.Bind();
-                shader.SetUniform("uTexture0", 0);
-                shader.SetUniform("uModel", sprite.ModelMatrix);
-                shader.SetUniform("uProjection", Camera.Main.ProjectionMatrix);
+            // send data to shader
+            shader = sprite.Shader ?? Shaders.Shader.Default;
+            shader.Use();
+            sprite.Texture.Bind();
+            shader.SetUniform("uTexture0", 0);
+            shader.SetUniform("uModel", sprite.ModelMatrix);
+            shader.SetUniform("uProjection", Camera.Main.ProjectionMatrix);
 
-                Graphics.Gl.DrawElements(
-                    PrimitiveType.Triangles,
-                    (uint)_indices.Length,
-                    DrawElementsType.UnsignedInt,
-                    null);
-            }
+            // draw sprite
+            Graphics.Gl.DrawElements(
+                PrimitiveType.Triangles,
+                (uint)_indices.Length,
+                DrawElementsType.UnsignedInt,
+                null);
         }
 
-        public override void Dispose()
+        public override void Dispose ()
         {
             //Remember to dispose all the instances.
             _vbo.Dispose();
             _ebo.Dispose();
             _vao.Dispose();
-            _sprites.Clear();
 
             GC.SuppressFinalize(this);
         }

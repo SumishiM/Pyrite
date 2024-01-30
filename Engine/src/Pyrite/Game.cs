@@ -45,16 +45,21 @@ namespace Pyrite
         {
             get
             {
-                _percistentWorld ??= new World(_systems);
+                List<ISystem> systems = new List<ISystem>();
+                foreach ( var type in Systems )
+                {
+                    if ( Activator.CreateInstance(type) is ISystem system )
+                        systems.Add(system);
+                    else
+                        throw new Exception("Trying to create a system that isn't one.");
+                }
+
+                _percistentWorld ??= new World(systems);
                 return _percistentWorld;
             }
         }
+        protected virtual List<Type> Systems => [];
 
-        // systems for percistent world
-        private readonly List<ISystem> _systems = [];
-        public List<ISystem> Systems => _systems;
-
-        protected RendererBase? Renderer { get; set; }
         protected virtual WindowInfo WindowInfo => new()
         {
             Title = "Pyrite",
@@ -111,7 +116,6 @@ namespace Pyrite
             Console.WriteLine("Start Initialization Game");
 #endif
             Initialize();
-            Renderer?.Initialize();
             PercistentWorld.Start();
 #if DEBUG
             Console.WriteLine("Finished Initialization Game");
@@ -123,14 +127,12 @@ namespace Pyrite
             Time.Update(deltaTime);
 
             PercistentWorld.Update();
-            Camera.Main.Zoom = 2f + MathF.Cos(Time.TotalTime);
             //PercistentWorld.FixedUpdate();
         }
 
         private void OnRender ()
         {
             _percistentWorld?.Render();
-            Renderer?.Draw();
         }
 
         private void OnClose ()
@@ -151,9 +153,8 @@ namespace Pyrite
 
         public void Dispose ()
         {
+            PercistentWorld.Dispose();
             _instance = null;
-            _percistentWorld?.Dispose();
-            _systems.Clear();
 
             GC.SuppressFinalize(this);
         }
