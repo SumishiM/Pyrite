@@ -10,9 +10,23 @@ namespace Pyrite
     public class Game : IDisposable
     {
         private static Window? _window = null;
-        public static Window? Window => _window;
+        /// <summary>
+        /// Main game window instance
+        /// </summary>
+        public static Window Window
+        {
+            get
+            {
+                if ( _window == null )
+                    throw new NullReferenceException("The game window isn't created yet.");
+                return _window;
+            }
+        }
 
         private static Game? _instance = null;
+        /// <summary>
+        /// Game instance
+        /// </summary>
         public static Game Instance
         {
             get
@@ -23,6 +37,10 @@ namespace Pyrite
         }
 
         private World? _percistentWorld = null;
+        /// <summary>
+        /// <see cref="Ignite.World"/> that is running for the entire life cycle of the game.
+        /// It will be destroyed when the game stops
+        /// </summary>
         public World PercistentWorld
         {
             get
@@ -32,21 +50,35 @@ namespace Pyrite
             }
         }
 
+        // systems for percistent world
         private readonly List<ISystem> _systems = [];
         public List<ISystem> Systems => _systems;
 
-        protected Renderer? Renderer { get; set; }
+        protected RendererBase? Renderer { get; set; }
         protected virtual WindowInfo WindowInfo => new()
         {
             Title = "Pyrite",
+            BackgroundColor = Color.Black,
+
+#if PS4 || XBOXONE
+            Width = 1920,
+            Height = 1080,
+            Maximized = true,
+            Resizable = false,
+#elif NSWITCH
+            Width = 1280,
+            Height = 720,
+            Maximized = true,
+            Resizable = false,
+#else
             Width = 1080,
             Height = 720,
-            BackgroundColor = Color.Black,
             Maximized = false,
             Resizable = true,
+#endif
         };
 
-        public Game()
+        public Game ()
         {
 #if DEBUG
             Console.WriteLine($"Initializing {WindowInfo.Title}");
@@ -62,62 +94,62 @@ namespace Pyrite
             _window.OnClose += OnClose;
         }
 
-        public void Run()
+        public void Run ()
         {
 #if DEBUG
             Console.WriteLine("Run Game");
 #endif
-            if ( _window == null)
+            if ( _window == null )
                 throw new NullReferenceException();
 
             _window.Run();
         }
 
-        private void OnLoad()
+        private void OnLoad ()
         {
 #if DEBUG
             Console.WriteLine("Start Initialization Game");
 #endif
             Initialize();
             Renderer?.Initialize();
-            _percistentWorld?.Start();
+            PercistentWorld.Start();
 #if DEBUG
             Console.WriteLine("Finished Initialization Game");
 #endif
         }
 
-        private void OnUpdate(double deltaTime)
+        private void OnUpdate ( double deltaTime )
         {
             Time.Update(deltaTime);
 
-            _percistentWorld?.Update();
-            FixedUpdate();
-            Update();
+            PercistentWorld.Update();
+            Camera.Main.Zoom = 2f + MathF.Cos(Time.TotalTime);
+            //PercistentWorld.FixedUpdate();
         }
 
-        private void OnRender()
+        private void OnRender ()
         {
             _percistentWorld?.Render();
             Renderer?.Draw();
         }
 
-        private void OnClose()
+        private void OnClose ()
         {
 #if DEBUG
             Console.WriteLine("Close Game");
 #endif
-            _percistentWorld?.Exit();
-            Destroy();
+            PercistentWorld.Exit();
         }
 
 
-        protected virtual void Initialize() { }
-        protected virtual void Update() { }
-        protected virtual void FixedUpdate() { }
-        protected virtual void Destroy() { }
+        /// <summary>
+        /// Called once on game initialisation. 
+        /// Used to initialize game data.
+        /// </summary>
+        protected virtual void Initialize () { }
 
 
-        public void Dispose()
+        public void Dispose ()
         {
             _instance = null;
             _percistentWorld?.Dispose();
@@ -126,15 +158,6 @@ namespace Pyrite
             GC.SuppressFinalize(this);
         }
 
-
-        //        public string? Title;
-        //        public Version? Version;
-
-        //        // references
-        //#nullable disable
-        //        public static Game Instance { get; private set; }
-        //        public static GraphicsDeviceManager Graphics { get; private set; }
-        //#nullable enable
         //        //public static Commands Commands { get; private set; }
         //        //public static Pooler Pooler { get; private set; }
         //        public static Action? OverloadGameLoop;
@@ -156,20 +179,6 @@ namespace Pyrite
         //        private static int viewPadding = 0;
         //        private static bool resizing;
 
-        //        // time
-        //        public static float DeltaTime { get; private set; }
-        //        public static float RawDeltaTime { get; private set; }
-        //        public static float TimeRate = 1f;
-        //        public static float FreezeTimer;
-        //        public static int FPS;
-        //        private TimeSpan counterElapsed = TimeSpan.Zero;
-        //        private int fpsCounter = 0;
-
-
-
-        //        // util
-        //        public static Color ClearColor;
-
 
         //        public Game(int width, int height, int windowWidth, int windowHeight, string windowTitle, bool fullscreen)
         //        {
@@ -179,15 +188,6 @@ namespace Pyrite
         //            Width = width;
         //            Height = height;
         //            ClearColor = Color.Black;
-
-        //            Graphics = new GraphicsDeviceManager(this);
-        //            Graphics.DeviceReset += OnGraphicsReset;
-        //            Graphics.DeviceCreated += OnGraphicsCreate;
-        //            Graphics.SynchronizeWithVerticalRetrace = true;
-        //            Graphics.PreferMultiSampling = false;
-        //            Graphics.GraphicsProfile = GraphicsProfile.HiDef;
-        //            Graphics.PreferredBackBufferFormat = SurfaceFormat.Color;
-        //            Graphics.PreferredDepthStencilFormat = DepthFormat.Depth24Stencil8;
 
         //#if PS4 || XBOXONE
         //            Graphics.PreferredBackBufferWidth = 1920;

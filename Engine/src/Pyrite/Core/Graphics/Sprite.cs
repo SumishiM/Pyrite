@@ -7,8 +7,9 @@ namespace Pyrite.Core.Graphics
     public class Sprite : IDisposable
     {
 
-        public readonly Shader Shader;
+        public readonly Shader? Shader = null;
         public readonly Texture Texture;
+        // move to ParentNode.Tranform
         public readonly Transform Transform;
 
         public int SortingOrder { get; set; }
@@ -20,14 +21,13 @@ namespace Pyrite.Core.Graphics
 
         public Sprite ( string path, Transform transform )
         {
-            Shader = Shader.Default;
             Texture = new(path);
             Transform = transform;
         }
 
         public void Dispose ()
         {
-            Shader.Dispose();
+            Shader?.Dispose();
             Texture.Dispose();
 
             GC.SuppressFinalize( this );

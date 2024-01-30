@@ -8,9 +8,11 @@
         public static float TimeScale { get; set; } = 1f;
         public static int FPS => (int)(1f / DeltaTime);
         public static int RawFPS => (int)(1f / RawDeltaTime);
+        public static float TotalTime { get; private set; } = 0f;
 
         public static void Update(double deltaTime)
         {
+            TotalTime += (float)deltaTime;
             RawDeltaTime = (float)deltaTime;
 
             if (TimeScale == 0f)

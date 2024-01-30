@@ -32,16 +32,15 @@ namespace Sandbox
         {
             Renderer = new OGLRenderer();
 
-            Sprite pyriteLogo = new(
-                "Content\\PyriteIcon512.png",
+            Sprite sprite = new(
+                "Content\\toothless.png",
                 new Transform()
                 {
-                    Position = new Vector2(200f, 200f),
-                    Rotation = 180f
+                    Rotation = 45f
                 });
-            Camera.Main.Zoom = 4f;
-            Camera.Main.Position = new Vector2(200f, 200f);
-            Renderer.Queue(pyriteLogo);
+
+            Camera.Main.Zoom = 1f;
+            Renderer.Queue(sprite);
         }
     }
 }

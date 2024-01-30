@@ -83,6 +83,13 @@ namespace Pyrite
             _native.Update += (dt) => OnUpdate?.Invoke(dt);
             _native.Render += _ => OnRender?.Invoke();
             _native.Closing += () => OnClose?.Invoke();
+            _native.Resize += OnResize;
+        }
+
+        private void OnResize ( Vector2D<int> d )
+        {
+            Width = d.X;
+            Height = d.Y;
         }
 
         private void KeyDown(IKeyboard keyboard, Key key, int arg3)

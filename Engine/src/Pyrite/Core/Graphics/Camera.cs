@@ -8,7 +8,7 @@ namespace Pyrite.Core.Graphics
     {
         private readonly Window _window;
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position { get; set; } // parent.Transform ? 
         public float Zoom { get; set; } = 1f;
 
         internal Matrix4x4 ProjectionMatrix

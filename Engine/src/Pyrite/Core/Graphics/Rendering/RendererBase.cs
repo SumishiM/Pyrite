@@ -1,6 +1,6 @@
 ﻿namespace Pyrite.Core.Graphics.Rendering
 {
-    public abstract class Renderer : IDisposable
+    public abstract class RendererBase : IDisposable
     {
 
         protected readonly List<Sprite> _sprites = [];

@@ -3,6 +3,7 @@ using Silk.NET.Vulkan;
 
 namespace Pyrite.Core.Graphics.Rendering
 {
+    // WIP
     public class Batch2D
     {
         List<Sprite> Sprites;
