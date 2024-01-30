@@ -1,6 +1,7 @@
 ﻿using Silk.NET.OpenGL;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Numerics;
 
 namespace Pyrite.Core.Graphics.Rendering
 {
@@ -8,6 +9,7 @@ namespace Pyrite.Core.Graphics.Rendering
     {
         private readonly uint _handle;
         private readonly GL _gl;
+        public Vector2 Size { get; private set; }
 
         public unsafe OGLTexture(string path)
         {
@@ -20,6 +22,7 @@ namespace Pyrite.Core.Graphics.Rendering
 
             using (var img = Image.Load<Rgba32>(path))
             {
+                Size = new Vector2(img.Bounds.Width, img.Bounds.Height);
                 _gl.TexImage2D(
                     TextureTarget.Texture2D, 
                     0, 

@@ -33,12 +33,17 @@ namespace Pyrite
         public int Height;
 
         private readonly Icon _icon;
-        public Color BackgroundColor;
+        public static Color BackgroundColor { get; private set; } = Color.Black;
+
 
         public Window(WindowInfo info)
         {
             Width = info.Width;
             Height = info.Height;
+
+#if DEBUG
+            Console.WriteLine($"Create window [{Width}, {Height}]");
+#endif
 
             var options = WindowOptions.Default;
             options.Size = new Vector2D<int>(Width, Height);
@@ -54,6 +59,9 @@ namespace Pyrite
             // Set events
             _native.Load += () =>
             {
+#if DEBUG
+                Console.WriteLine($"OnLoad window");
+#endif
                 // todo : Create input system instance and set appropriate callbacks
                 //Set-up input context.
                 IInputContext input = _native.CreateInput();
@@ -88,9 +96,21 @@ namespace Pyrite
 
         internal IWindow Native() => _native;
 
-        public void Run() => _native.Run();
+        public void Run ()
+        {
+#if DEBUG
+            Console.WriteLine($"Run window");
+#endif
+            _native.Run();
+        }
 
-        public void Close() => _native.Close();
+        public void Close ()
+        {
+#if DEBUG
+            Console.WriteLine($"Close window");
+#endif
+            _native.Close();
+        }
 
         public void Dispose()
         {
@@ -100,6 +120,7 @@ namespace Pyrite
             OnClose = null;
 
             _native.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

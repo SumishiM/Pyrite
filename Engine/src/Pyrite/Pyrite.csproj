@@ -32,11 +32,10 @@
 	<ItemGroup>
 		<Folder Include="Attributes\" />
 		<Folder Include="Extentions\" />
-		<Folder Include="Content\" />
 	</ItemGroup>
 	
 	<ItemGroup>
-		<None Update="..\Pyrite\Shaders\**">
+		<None Update="..\Pyrite\Content\Shaders\**">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="..\Pyrite\Content\**">

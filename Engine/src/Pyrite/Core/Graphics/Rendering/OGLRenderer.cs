@@ -1,4 +1,6 @@
 ﻿using Silk.NET.OpenGL;
+using Silk.NET.Vulkan;
+using System.Drawing;
 using System.Numerics;
 
 namespace Pyrite.Core.Graphics.Rendering
@@ -6,96 +8,87 @@ namespace Pyrite.Core.Graphics.Rendering
     public class OGLRenderer : Renderer
     {
 #nullable disable
-        private GL Gl;
+        private readonly GL Gl;
 
         //Our new abstracted objects, here we specify what the types are.
-        private BufferObject<float> Vbo;
-        private BufferObject<uint> Ebo;
-        private VertexArrayObject<float, uint> Vao;
+        private BufferObject<float> _vbo;
+        private BufferObject<uint> _ebo;
+        private VertexArrayObject<float, uint> _vao;
 #nullable enable
 
-        private Shaders.Shader Shader;
-        public OGLTexture Texture;
-        //Creating transforms for the transformations
 
         //Vertex data, uploaded to the VBO.
-        private static readonly float[] Vertices =
-        {
+        private static readonly float[] _vertices =
+        [
             //X    Y      Z     S    T
              0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
              0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
             -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-            -0.5f,  0.5f, 0.5f, 0.0f, 0.0f
-        };
+            -0.5f,  0.5f, 0.0f, 0.0f, 0.0f
+        ];
 
         //Index data, uploaded to the EBO.
-        private static readonly uint[] Indices =
-        {
+        private static readonly uint[] _indices =
+        [
             0, 1, 3,
             1, 2, 3
-        };
+        ];
 
         public unsafe override void Initialize()
         {
-            Gl = Graphics.Gl;
-
             //Instantiating our new abstractions
-            Ebo = new BufferObject<uint>(Gl, Indices, BufferTargetARB.ElementArrayBuffer);
-            Vbo = new BufferObject<float>(Gl, Vertices, BufferTargetARB.ArrayBuffer);
-            Vao = new VertexArrayObject<float, uint>(Gl, Vbo, Ebo);
+            _ebo = new BufferObject<uint>(Graphics.Gl, _indices, BufferTargetARB.ElementArrayBuffer);
+            _vbo = new BufferObject<float>(Graphics.Gl, _vertices, BufferTargetARB.ArrayBuffer);
+            _vao = new VertexArrayObject<float, uint>(Graphics.Gl, _vbo, _ebo);
 
             //Telling the VAO object how to lay out the attribute pointers
-            Vao.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, 5, 0);
-            Vao.VertexAttributePointer(1, 2, VertexAttribPointerType.Float, 5, 3);
-
-            // need to move
-            Shader = new Shaders.Shader("Shaders\\shader.vert", "Shaders\\shader.frag");
-
-            Texture = new OGLTexture("Content\\PyriteIcon512.png");
-            //Unlike in the transformation, because of our abstraction, order doesn't matter here.
-            //Translation.
-            Transforms[0] = new Transform();
-            Transforms[0].Position = new Vector3(0.5f, 0.5f, 0f);
-            //Rotation.
-            Transforms[1] = new Transform();
-            Transforms[1].Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, 1f);
-            //Scaling.
-            Transforms[2] = new Transform();
-            Transforms[2].Scale = 0.5f;
-            //Mixed transformation.
-            Transforms[3] = new Transform();
-            Transforms[3].Position = new Vector3(-0.5f, 0.5f, 0f);
-            Transforms[3].Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, 1f);
-            Transforms[3].Scale = 0.5f;
+            _vao.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, 5, 0);
+            _vao.VertexAttributePointer(1, 2, VertexAttribPointerType.Float, 5, 3);
         }
+
 
         public unsafe override void Draw()
         {
-            Gl.Clear((uint)ClearBufferMask.ColorBufferBit);
-
-            //Binding and using our VAO and shader.
-            Vao.Bind();
-            Shader.Use();
-
-            Shader.SetUniform("uTexture0", 0);
-
-            for (int i = 0; i < Transforms.Length; i++)
+            if ( Camera.Main == null )
             {
-                //Using the transformations.
-                Shader.SetUniform("uModel", Transforms[i].ViewMatrix);
+                throw new ArgumentNullException(
+                    nameof(Camera.Main), 
+                    "No main camera found for render.");
+            }
 
-                Gl.DrawElements(PrimitiveType.Triangles, (uint)Indices.Length, DrawElementsType.UnsignedInt, null);
+            Graphics.Gl.Clear((uint)ClearBufferMask.ColorBufferBit);
+            Graphics.Gl.ClearColor(Window.BackgroundColor);
+
+            _vao.Bind();
+
+            foreach ( var sprite in _sprites.OrderBy(s => s.SortingOrder))
+            {
+#if DEBUG
+                //Console.WriteLine($"Render sprite at {sprite.Transform.Position}");
+#endif
+                sprite.Shader.Use();
+                sprite.Texture.Bind();
+                sprite.Shader.SetUniform("uTexture0", 0);
+                sprite.Shader.SetUniform("uModel", sprite.ModelMatrix);
+                sprite.Shader.SetUniform("uProjection", Camera.Main.ProjectionMatrix);
+
+                Graphics.Gl.DrawElements(
+                    PrimitiveType.Triangles,
+                    (uint)_indices.Length,
+                    DrawElementsType.UnsignedInt,
+                    null);
             }
         }
 
         public override void Dispose()
         {
             //Remember to dispose all the instances.
-            Vbo.Dispose();
-            Ebo.Dispose();
-            Vao.Dispose();
-            Shader.Dispose();
-            Texture.Dispose();
+            _vbo.Dispose();
+            _ebo.Dispose();
+            _vao.Dispose();
+            _sprites.Clear();
+
+            GC.SuppressFinalize(this);
         }
     }
 }

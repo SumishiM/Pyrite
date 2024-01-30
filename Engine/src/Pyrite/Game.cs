@@ -1,5 +1,6 @@
 ﻿using Ignite;
 using Ignite.Systems;
+using Pyrite.Core.Graphics;
 using Pyrite.Core.Graphics.Rendering;
 using Pyrite.Utils;
 using System.Drawing;
@@ -44,13 +45,16 @@ namespace Pyrite
             Maximized = false,
             Resizable = true,
         };
-        
 
         public Game()
         {
+#if DEBUG
+            Console.WriteLine($"Initializing {WindowInfo.Title}");
+#endif
             _instance = this;
 
             _window = new Window(WindowInfo);
+            _ = new Camera(_window);
 
             _window.OnLoad += OnLoad;
             _window.OnUpdate += OnUpdate;
@@ -60,7 +64,10 @@ namespace Pyrite
 
         public void Run()
         {
-            if( _window == null)
+#if DEBUG
+            Console.WriteLine("Run Game");
+#endif
+            if ( _window == null)
                 throw new NullReferenceException();
 
             _window.Run();
@@ -68,9 +75,15 @@ namespace Pyrite
 
         private void OnLoad()
         {
+#if DEBUG
+            Console.WriteLine("Start Initialization Game");
+#endif
             Initialize();
             Renderer?.Initialize();
             _percistentWorld?.Start();
+#if DEBUG
+            Console.WriteLine("Finished Initialization Game");
+#endif
         }
 
         private void OnUpdate(double deltaTime)
@@ -90,6 +103,9 @@ namespace Pyrite
 
         private void OnClose()
         {
+#if DEBUG
+            Console.WriteLine("Close Game");
+#endif
             _percistentWorld?.Exit();
             Destroy();
         }

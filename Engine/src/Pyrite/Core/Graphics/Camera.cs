@@ -1,4 +1,5 @@
 ﻿using Ignite.Components;
+using Silk.NET.Vulkan;
 using System.Numerics;
 
 namespace Pyrite.Core.Graphics
@@ -7,14 +8,8 @@ namespace Pyrite.Core.Graphics
     {
         private readonly Window _window;
 
-        public float Zoom { get; set; } = 1f;
-
-        public Camera(Window window)
-        {
-            _window = window;
-        }
-
         public Vector2 Position { get; set; }
+        public float Zoom { get; set; } = 1f;
 
         internal Matrix4x4 ProjectionMatrix
         {
@@ -29,6 +24,14 @@ namespace Pyrite.Core.Graphics
                 var zoomMatrix = Matrix4x4.CreateScale(Zoom);
                 return orthographicMatrix * zoomMatrix;
             }
+        }
+
+        public static Camera? Main { get; private set; } = null;
+
+        public Camera ( Window window )
+        {
+            _window = window;
+            Main ??= this;
         }
     }
 }

@@ -7,8 +7,11 @@ namespace Pyrite.Core.Graphics.Shaders
     {
         //Our handle and the GL instance this class will use, these are private because they have no reason to be public.
         //Most of the time you would want to abstract items to make things like this invisible.
-        private uint _handle;
-        private GL _gl;
+        private readonly uint _handle;
+        private readonly GL _gl;
+
+        private readonly static Shader _default = new("Content\\Shaders\\shader.vert", "Content\\Shaders\\shader.frag");
+        public static Shader Default => _default;
 
         public Shader(string vertexPath, string fragmentPath)
         {
@@ -75,6 +78,7 @@ namespace Pyrite.Core.Graphics.Shaders
         {
             //Remember to delete the program when we are done.
             _gl.DeleteProgram(_handle);
+            GC.SuppressFinalize(this);
         }
         private uint LoadShader(ShaderType type, string path)
         {

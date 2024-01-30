@@ -8,8 +8,8 @@ namespace Pyrite.Core.Graphics.Rendering
     {
         //Our handle and the GL instance this class will use, these are private because they have no reason to be public.
         //Most of the time you would want to abstract items to make things like this invisible.
-        private uint _handle;
-        private GL _gl;
+        private readonly uint _handle;
+        private readonly GL _gl;
 
         public VertexArrayObject(GL gl, BufferObject<TVertex> vbo, BufferObject<TIndex> ebo)
         {
@@ -40,6 +40,7 @@ namespace Pyrite.Core.Graphics.Rendering
             //Remember to dispose this object so the data GPU side is cleared.
             //We dont delete the VBO and EBO here, as you can have one VBO stored under multiple VAO's.
             _gl.DeleteVertexArray(_handle);
+            GC.SuppressFinalize(this);
         }
     }
 }

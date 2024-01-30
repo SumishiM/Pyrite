@@ -22,5 +22,4 @@
 		</ProjectReference>
 		<ProjectReference Include="..\Engine\src\Pyrite\Pyrite.csproj" />
 	</ItemGroup>
-
 </Project>
