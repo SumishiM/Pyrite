@@ -8,7 +8,7 @@ using SilkWindow = Silk.NET.Windowing.Window;
 using Icon = Pyrite.Core.Graphics.Icon;
 
 namespace Pyrite
-{   
+{
     public struct WindowInfo
     {
         public string Title;
@@ -36,7 +36,7 @@ namespace Pyrite
         public static Color BackgroundColor { get; private set; } = Color.Black;
 
 
-        public Window(WindowInfo info)
+        public Window ( WindowInfo info )
         {
             Width = info.Width;
             Height = info.Height;
@@ -65,13 +65,13 @@ namespace Pyrite
                 // todo : Create input system instance and set appropriate callbacks
                 //Set-up input context.
                 IInputContext input = _native.CreateInput();
-                for (int i = 0; i < input.Keyboards.Count; i++)
+                for ( int i = 0; i < input.Keyboards.Count; i++ )
                 {
                     input.Keyboards[i].KeyDown += KeyDown;
                 }
 
                 _native.Center();
-                if (_icon is not null)
+                if ( _icon is not null )
                 {
                     var raw = _icon.Raw;
                     _native.SetWindowIcon(ref raw);
@@ -80,7 +80,7 @@ namespace Pyrite
                 OnLoad?.Invoke();
             };
 
-            _native.Update += (dt) => OnUpdate?.Invoke(dt);
+            _native.Update += ( dt ) => OnUpdate?.Invoke(dt);
             _native.Render += _ => OnRender?.Invoke();
             _native.Closing += () => OnClose?.Invoke();
             _native.Resize += OnResize;
@@ -92,16 +92,23 @@ namespace Pyrite
             Height = d.Y;
         }
 
-        private void KeyDown(IKeyboard keyboard, Key key, int arg3)
+        private void KeyDown ( IKeyboard keyboard, Key key, int arg3 )
         {
             //Check to close the window on escape.
-            if (key == Key.Escape)
+            if ( key == Key.Escape )
             {
                 _native.Close();
             }
+            if ( key == Key.P )
+            {
+                if ( Game.Instance.PercistentWorld.IsPaused )
+                    Game.Instance.PercistentWorld.Resume();
+                else
+                    Game.Instance.PercistentWorld.Pause();
+            }
         }
 
-        internal IWindow Native() => _native;
+        internal IWindow Native () => _native;
 
         public void Run ()
         {
@@ -119,7 +126,7 @@ namespace Pyrite
             _native.Close();
         }
 
-        public void Dispose()
+        public void Dispose ()
         {
             OnLoad = null;
             OnUpdate = null;
