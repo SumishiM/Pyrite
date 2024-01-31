@@ -7,7 +7,6 @@ namespace Pyrite.Graphics.Rendering
     // WIP
     public class Batch2D
     {
-        List<Sprite> Sprites;
 
         Dictionary<int, Shader> Shaders;
         Dictionary<int, Texture> Textures;
@@ -25,7 +24,6 @@ namespace Pyrite.Graphics.Rendering
 
         public Batch2D()
         {
-            Sprites = new List<Sprite>();
         }
     }
 }
