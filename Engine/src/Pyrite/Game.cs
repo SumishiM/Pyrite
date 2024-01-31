@@ -90,7 +90,7 @@ namespace Pyrite
             _instance = this;
 
             _window = new Window(WindowInfo);
-            _ = new Camera(_window);
+            _ = new CameraComponent();
 
             _window.OnLoad += OnLoad;
             _window.OnUpdate += OnUpdate;

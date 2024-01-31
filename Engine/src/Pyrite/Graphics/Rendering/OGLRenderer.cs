@@ -67,7 +67,7 @@ namespace Pyrite.Graphics.Rendering
             sprite.Texture.Bind();
             shader.SetUniform("uTexture0", 0);
             shader.SetUniform("uModel", sprite.ModelMatrix);
-            shader.SetUniform("uProjection", Camera.Main.ProjectionMatrix);
+            shader.SetUniform("uProjection", CameraComponent.Main.ProjectionMatrix);
 
             // draw sprite
             Graphics.Gl.DrawElements(

@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace Pyrite.Graphics
 {
-    public class Camera : IComponent
+    public class CameraComponent : IComponent
     {
         private readonly Window _window;
 
@@ -26,12 +26,26 @@ namespace Pyrite.Graphics
             }
         }
 
-        public static Camera? Main { get; private set; } = null;
+        private static CameraComponent? _main = null;
+        public static CameraComponent Main 
+        {
+            get
+            {
+                _main ??= new();
+                return _main;
+            }
+        }
 
-        public Camera ( Window window )
+        public CameraComponent()
+        {
+            _window = Game.Window;
+            _main ??= this;
+        }
+
+        public CameraComponent ( Window window )
         {
             _window = window;
-            Main ??= this;
+            _main ??= this;
         }
     }
 }

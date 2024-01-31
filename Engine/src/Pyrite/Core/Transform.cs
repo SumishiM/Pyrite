@@ -1,10 +1,4 @@
-﻿using Pyrite.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
 namespace Pyrite.Core
 {
@@ -21,7 +15,6 @@ namespace Pyrite.Core
 
         public float Rotation { get; set; } = 0f;
 
-        //Note: The order here does matter.
-
+        public static Transform Empty => new();
     }
 }
