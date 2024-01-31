@@ -13,6 +13,5 @@ namespace Pyrite.Components
         protected Component()
         {
         }
-
     }
 }

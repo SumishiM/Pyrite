@@ -16,7 +16,7 @@ namespace Pyrite.Graphics.Rendering
 
         public void Render ( Context context )
         {
-            if ( CameraComponent.Main == null )
+            if ( Camera.Main == null )
                 throw new NullReferenceException("No main camera found for render.");
 
             ClearScreen();

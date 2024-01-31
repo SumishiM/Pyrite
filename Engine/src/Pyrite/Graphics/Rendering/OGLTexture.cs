@@ -57,43 +57,42 @@ namespace Pyrite.Graphics.Rendering
         public unsafe OGLTexture(Span<byte> data, uint width, uint height)
         {
             //Saving the gl instance.
-            _gl = Graphics.Gl;
 
             //Generating the opengl handle;
-            _handle = _gl.GenTexture();
+            _handle = Graphics.Gl.GenTexture();
             Bind();
 
             //We want the ability to create a texture using data generated from code aswell.
             fixed (void* d = &data[0])
             {
                 //Setting the data of a texture.
-                _gl.TexImage2D(TextureTarget.Texture2D, 0, (int)InternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, d);
+                Graphics.Gl.TexImage2D(TextureTarget.Texture2D, 0, (int)InternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, d);
                 SetParameters();
             }
         }
 
         private void SetParameters()
         {
-            _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)GLEnum.ClampToEdge);
-            _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)GLEnum.ClampToEdge);
-            _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)GLEnum.LinearMipmapLinear);
-            _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)GLEnum.Linear);
-            _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
-            _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 8);
-            _gl.GenerateMipmap(TextureTarget.Texture2D);
+            Graphics.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)GLEnum.ClampToEdge);
+            Graphics.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)GLEnum.ClampToEdge);
+            Graphics.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)GLEnum.LinearMipmapLinear);
+            Graphics.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)GLEnum.Linear);
+            Graphics.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureBaseLevel, 0);
+            Graphics.Gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, 8);
+            Graphics.Gl.GenerateMipmap(TextureTarget.Texture2D);
         }
 
         public void Bind(TextureUnit textureSlot = TextureUnit.Texture0)
         {
             //When we bind a texture we can choose which textureslot we can bind it to.
-            _gl.ActiveTexture(textureSlot);
-            _gl.BindTexture(TextureTarget.Texture2D, _handle);
+            Graphics.Gl.ActiveTexture(textureSlot);
+            Graphics.Gl.BindTexture(TextureTarget.Texture2D, _handle);
         }
 
         public void Dispose()
         {
             //In order to dispose we need to delete the opengl handle for the texure.
-            _gl.DeleteTexture(_handle);
+            Graphics.Gl.DeleteTexture(_handle);
         }
     }
 }

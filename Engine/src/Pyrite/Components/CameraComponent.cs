@@ -27,26 +27,27 @@ namespace Pyrite.Graphics
             }
         }
 
+        public CameraComponent()
+        {
+            _window = Game.Window;
+        }
+
+        public CameraComponent ( Window window )
+        {
+            _window = window;
+        }
+    }
+
+    public static class Camera
+    {
         private static CameraComponent? _main = null;
-        public static CameraComponent Main 
+        public static CameraComponent Main
         {
             get
             {
                 _main ??= new();
                 return _main;
             }
-        }
-
-        public CameraComponent()
-        {
-            _window = Game.Window;
-            _main ??= this;
-        }
-
-        public CameraComponent ( Window window )
-        {
-            _window = window;
-            _main ??= this;
         }
     }
 }
