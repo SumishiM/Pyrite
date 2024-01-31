@@ -1,12 +1,9 @@
 ﻿using Ignite;
-using Ignite.Systems;
 using Pyrite;
 using Pyrite.Core;
-using Pyrite.Core.Components;
-using Pyrite.Core.Graphics;
-using Pyrite.Core.Graphics.Rendering;
-using System.Drawing;
-using System.Numerics;
+using Pyrite.Components;
+using Pyrite.Graphics;
+using Pyrite.Graphics.Rendering;
 
 namespace Sandbox
 {

@@ -1,7 +1,7 @@
 ﻿using Ignite.Components;
-using Pyrite.Core.Graphics;
+using Pyrite.Graphics;
 
-namespace Pyrite.Core.Components
+namespace Pyrite.Components
 {
     public class SpriteComponent : IComponent
     {

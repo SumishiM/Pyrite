@@ -1,10 +1,9 @@
 ﻿using Ignite;
 using Ignite.Attributes;
 using Ignite.Systems;
-using Pyrite.Core.Components;
-using Pyrite.Utils;
+using Pyrite.Components;
 
-namespace Pyrite.Core.Graphics.Rendering
+namespace Pyrite.Graphics.Rendering
 {
     [FilterComponent(typeof(SpriteComponent))]
     public class SimpleRendererSystem : 

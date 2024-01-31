@@ -1,7 +1,7 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
-using Pyrite.Core.Components;
-using Pyrite.Core.Graphics;
+using Pyrite.Components;
+using Pyrite.Graphics;
 using Pyrite.Utils;
 
 namespace Sandbox

@@ -19,8 +19,8 @@ namespace Pyrite.Core
                     {
                         if (Activator.CreateInstance(type) is ISystem system)
                             systems.Add(system);
-                        //else
-                        // throw warning 
+                        else
+                            throw new Exception("Trying to create a system that isn't one.");
                     }
                     _world = new World(Array.Empty<ISystem>());
                 }

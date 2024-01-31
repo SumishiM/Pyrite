@@ -2,7 +2,7 @@
 using Silk.NET.Vulkan;
 using System.Numerics;
 
-namespace Pyrite.Core.Graphics
+namespace Pyrite.Graphics
 {
     public class Camera : IComponent
     {

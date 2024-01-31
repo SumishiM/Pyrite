@@ -5,7 +5,7 @@ using Silk.NET.Input;
 using System.Drawing;
 
 using SilkWindow = Silk.NET.Windowing.Window;
-using Icon = Pyrite.Core.Graphics.Icon;
+using Icon = Pyrite.Graphics.Icon;
 
 namespace Pyrite
 {

@@ -1,8 +1,9 @@
-﻿using Pyrite.Core.Graphics.Shaders;
+﻿using Pyrite.Core;
+using Pyrite.Graphics.Shaders;
 using Pyrite.Utils;
 using System.Numerics;
 
-namespace Pyrite.Core.Graphics
+namespace Pyrite.Graphics
 {
     public class Sprite : IDisposable
     {

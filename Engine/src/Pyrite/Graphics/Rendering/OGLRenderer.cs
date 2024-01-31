@@ -1,9 +1,6 @@
 ﻿using Silk.NET.OpenGL;
-using Silk.NET.Vulkan;
-using System.Drawing;
-using System.Numerics;
 
-namespace Pyrite.Core.Graphics.Rendering
+namespace Pyrite.Graphics.Rendering
 {
     public class OGLRenderer : RendererBase
     {

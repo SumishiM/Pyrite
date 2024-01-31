@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Pyrite.Core.Graphics
+namespace Pyrite.Graphics
 {
     public sealed class Icon
     {
