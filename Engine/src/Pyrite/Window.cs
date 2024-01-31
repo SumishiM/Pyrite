@@ -104,6 +104,7 @@ namespace Pyrite
                 if ( Game.Instance.PercistentWorld.IsPaused )
                 {
                     Game.Instance.PercistentWorld.Resume();
+                    Game.Instance.CurrentScene?.Resume();
 #if DEBUG
                     Console.WriteLine("Resume");
 #endif
@@ -111,6 +112,7 @@ namespace Pyrite
                 else
                 {
                     Game.Instance.PercistentWorld.Pause();
+                    Game.Instance.CurrentScene?.Pause();
 #if DEBUG
                     Console.WriteLine("Pause");
 #endif

@@ -60,7 +60,7 @@ namespace Pyrite
         }
 
         private Scene? _currentScene = null;
-        public Scene? CurrentScene => _currentScene;
+        public Scene? CurrentScene { get => _currentScene; set => _currentScene = value; }
 
         protected virtual List<Type> Systems => [];
 
@@ -122,10 +122,9 @@ namespace Pyrite
 #if DEBUG
             Console.WriteLine("Start Initialization Game");
 #endif
-            PercistentWorld.AddNode("Main Camera", new CameraComponent());
-
             Initialize();
             PercistentWorld.Start();
+            CurrentScene?.Start();
 #if DEBUG
             Console.WriteLine("Finished Initialization Game");
 #endif

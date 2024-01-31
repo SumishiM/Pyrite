@@ -1,5 +1,6 @@
 ﻿using Ignite;
 using Pyrite;
+using Pyrite.Core;
 using Pyrite.Graphics;
 using Pyrite.Graphics.Rendering;
 
@@ -21,24 +22,31 @@ namespace Sandbox
 
     internal class SandboxGame : Game
     {
-        protected override WindowInfo WindowInfo => base.WindowInfo with 
-        { 
+        protected override WindowInfo WindowInfo => base.WindowInfo with
+        {
             Title = "Pyrite Sandbox YEPEE"
         };
 
         protected override List<Type> Systems => [
-            typeof(DefaultRendererSystem),
-            typeof(SpinSystem)
+
         ];
 
         protected override void Initialize()
         {
-            var Toothless =
-                Node.CreateBuilder(PercistentWorld, "Toothless")
-                    .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
-                    .AddComponent<SpinComponent>();
+            PercistentWorld.AddNode("Toothless");
 
-            PercistentWorld.AddNode(Toothless);
+            CurrentScene = new Scene(
+                typeof(DefaultRendererSystem),
+                typeof(SpinSystem));
+
+
+            Node.CreateBuilder(CurrentScene.World, "Toothless")
+                .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
+                .AddComponent<SpinComponent>()
+                .ToNode();
+
+            CurrentScene.World.AddNode("Main Camera", typeof(CameraComponent));
+
         }
     }
 }

@@ -22,17 +22,17 @@ namespace Pyrite.Core
                         else
                             throw new Exception("Trying to create a system that isn't one.");
                     }
-                    _world = new World(Array.Empty<ISystem>());
+                    _world = new World(systems);
                 }
                 return _world;
             }
         }
 
-        private List<Type> _systems = [];
+        private readonly List<Type> _systems = [];
 
-        internal Scene()
+        public Scene(params Type[] systems)
         {
-
+            _systems = [.. _systems, .. systems];
         }
 
         internal void Start()
@@ -58,6 +58,16 @@ namespace Pyrite.Core
         internal void Exit()
         {
             World.Exit();
+        }
+
+        internal void Pause()
+        {
+            World.Pause();
+        }
+
+        internal void Resume()
+        {
+            World.Resume();
         }
     }
 }
