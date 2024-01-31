@@ -6,8 +6,6 @@ namespace Pyrite.Graphics.Rendering
     public class OGLRenderer : RendererBase
     {
 #nullable disable
-        private readonly GL Gl;
-
         //Our new abstracted objects, here we specify what the types are.
         private BufferObject<float> _vbo; //! might move to renderer
         private BufferObject<uint> _ebo; //! might move to renderer
@@ -36,9 +34,9 @@ namespace Pyrite.Graphics.Rendering
         public unsafe override void Initialize ()
         {
             //Instantiating our new abstractions
-            _ebo = new BufferObject<uint>(Graphics.Gl, _indices, BufferTargetARB.ElementArrayBuffer);
-            _vbo = new BufferObject<float>(Graphics.Gl, _vertices, BufferTargetARB.ArrayBuffer);
-            _vao = new VertexArrayObject<float, uint>(Graphics.Gl, _vbo, _ebo);
+            _ebo = new BufferObject<uint>(_indices, BufferTargetARB.ElementArrayBuffer);
+            _vbo = new BufferObject<float>(_vertices, BufferTargetARB.ArrayBuffer);
+            _vao = new VertexArrayObject<float, uint>(_vbo, _ebo);
 
             //Telling the VAO object how to lay out the attribute pointers
             _vao.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, 5, 0);

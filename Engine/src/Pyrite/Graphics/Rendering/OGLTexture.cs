@@ -8,22 +8,18 @@ namespace Pyrite.Graphics.Rendering
     public class OGLTexture : IDisposable
     {
         private readonly uint _handle;
-        private readonly GL _gl;
         public Vector2 Size { get; private set; }
 
         public unsafe OGLTexture(string path)
         {
-            //Saving the gl instance.
-            _gl = Graphics.Gl;
-
             //Generating the opengl handle;
-            _handle = _gl.GenTexture();
+            _handle = Graphics.Gl.GenTexture();
             Bind();
 
             using (var img = Image.Load<Rgba32>(path))
             {
                 Size = new Vector2(img.Bounds.Width, img.Bounds.Height);
-                _gl.TexImage2D(
+                Graphics.Gl.TexImage2D(
                     TextureTarget.Texture2D, 
                     0, 
                     InternalFormat.Rgba8, 
@@ -40,7 +36,7 @@ namespace Pyrite.Graphics.Rendering
                     {
                         fixed (void* data = accessor.GetRowSpan(y))
                         {
-                            _gl.TexSubImage2D(
+                            Graphics.Gl.TexSubImage2D(
                                 TextureTarget.Texture2D, 
                                 0, 
                                 0, 

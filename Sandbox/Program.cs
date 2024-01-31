@@ -1,7 +1,5 @@
 ﻿using Ignite;
 using Pyrite;
-using Pyrite.Core;
-using Pyrite.Components;
 using Pyrite.Graphics;
 using Pyrite.Graphics.Rendering;
 
@@ -29,7 +27,7 @@ namespace Sandbox
         };
 
         protected override List<Type> Systems => [
-            typeof(SimpleRendererSystem),
+            typeof(DefaultRendererSystem),
             typeof(SpinSystem)
         ];
 

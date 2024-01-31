@@ -7,8 +7,6 @@ namespace Sandbox
     [RequireComponent(typeof(TransformComponent))]
     public class SpinComponent : Component
     {
-
         public float SpinSpeed = 360f;
-
     }
 }

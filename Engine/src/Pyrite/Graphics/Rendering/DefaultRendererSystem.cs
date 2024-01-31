@@ -6,7 +6,7 @@ using Pyrite.Components;
 namespace Pyrite.Graphics.Rendering
 {
     [FilterComponent(typeof(SpriteComponent))]
-    public class SimpleRendererSystem : 
+    public class DefaultRendererSystem : 
         OGLRenderer, IStartSystem, IRenderSystem
     {
         public void Start ( Context context )
