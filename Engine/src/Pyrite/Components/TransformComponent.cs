@@ -1,9 +1,8 @@
-﻿using Ignite.Components;
-using Pyrite.Core;
+﻿using Pyrite.Core;
 
 namespace Pyrite.Components
 {
-    public class TransformComponent : IComponent
+    public class TransformComponent : Component
     {
         public Transform Transform { get; set; }
 

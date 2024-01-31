@@ -1,10 +1,11 @@
-﻿using Ignite.Components;
-using Silk.NET.Vulkan;
+﻿using Ignite.Attributes;
+using Pyrite.Components;
 using System.Numerics;
 
 namespace Pyrite.Graphics
 {
-    public class CameraComponent : IComponent
+    [RequireComponent(typeof(TransformComponent))]
+    public class CameraComponent : Component
     {
         private readonly Window _window;
 

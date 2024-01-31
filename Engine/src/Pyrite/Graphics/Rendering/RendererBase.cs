@@ -1,13 +1,12 @@
-﻿namespace Pyrite.Graphics.Rendering
+﻿using Pyrite.Components;
+
+namespace Pyrite.Graphics.Rendering
 {
     public abstract class RendererBase : IDisposable
     {
-
-        protected readonly List<Sprite> _sprites = [];
-
         public abstract unsafe void Initialize();
         public abstract void ClearScreen ();
-        public abstract unsafe void Draw(Sprite sprite);
+        public abstract unsafe void Draw(SpriteComponent sprite);
         public abstract void Dispose();
     }
 }

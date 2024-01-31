@@ -25,7 +25,7 @@ namespace Sandbox
     {
         protected override WindowInfo WindowInfo => base.WindowInfo with 
         { 
-            Title = "Pyrite Sandbox YEPEE" 
+            Title = "Pyrite Sandbox YEPEE"
         };
 
         protected override List<Type> Systems => [
@@ -35,16 +35,9 @@ namespace Sandbox
 
         protected override void Initialize()
         {
-            Sprite sprite = new(
-                "Content\\toothless.png",
-                new Transform()
-                {
-                    Rotation = 45f
-                });
-
             var Toothless =
                 Node.CreateBuilder(PercistentWorld, "Toothless")
-                    .AddComponent<SpriteComponent>(sprite)
+                    .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
                     .AddComponent<SpinComponent>();
 
             PercistentWorld.AddNode(Toothless);

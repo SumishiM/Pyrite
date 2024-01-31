@@ -1,4 +1,5 @@
-﻿using Silk.NET.OpenGL;
+﻿using Pyrite.Components;
+using Silk.NET.OpenGL;
 
 namespace Pyrite.Graphics.Rendering
 {
@@ -54,7 +55,7 @@ namespace Pyrite.Graphics.Rendering
         /// <summary>
         /// Draw every sprites registered, note that this function do 1 draw call per sprite.
         /// </summary>
-        public unsafe override void Draw ( Sprite sprite )
+        public unsafe override void Draw ( SpriteComponent sprite )
         {
 
             // Set default shader and bind vao

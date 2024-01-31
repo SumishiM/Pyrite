@@ -1,5 +1,6 @@
 ﻿using Ignite;
 using Ignite.Systems;
+using Pyrite.Core;
 using Pyrite.Graphics;
 using Pyrite.Utils;
 using System.Drawing;
@@ -57,6 +58,10 @@ namespace Pyrite
                 return _percistentWorld;
             }
         }
+
+        private Scene? _currentScene = null;
+        public Scene? CurrentScene => _currentScene;
+
         protected virtual List<Type> Systems => [];
 
         protected virtual WindowInfo WindowInfo => new()
@@ -90,7 +95,6 @@ namespace Pyrite
             _instance = this;
 
             _window = new Window(WindowInfo);
-            _ = new CameraComponent();
 
             _window.OnLoad += OnLoad;
             _window.OnUpdate += OnUpdate;
@@ -98,6 +102,10 @@ namespace Pyrite
             _window.OnClose += OnClose;
         }
 
+        /// <summary>
+        /// Start the game
+        /// </summary>
+        /// <exception cref="NullReferenceException">When the window was not created in constructor</exception>
         public void Run ()
         {
 #if DEBUG
@@ -114,6 +122,8 @@ namespace Pyrite
 #if DEBUG
             Console.WriteLine("Start Initialization Game");
 #endif
+            PercistentWorld.AddNode("Main Camera", new CameraComponent());
+
             Initialize();
             PercistentWorld.Start();
 #if DEBUG
@@ -127,11 +137,15 @@ namespace Pyrite
 
             PercistentWorld.Update();
             //PercistentWorld.FixedUpdate();
+
+            _currentScene?.Update();
+            _currentScene?.FixedUpdate();
         }
 
         private void OnRender ()
         {
             _percistentWorld?.Render();
+            _currentScene?.Render();
         }
 
         private void OnClose ()
@@ -140,6 +154,7 @@ namespace Pyrite
             Console.WriteLine("Close Game");
 #endif
             PercistentWorld.Exit();
+            _currentScene?.Exit();
         }
 
 

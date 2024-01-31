@@ -102,9 +102,19 @@ namespace Pyrite
             if ( key == Key.P )
             {
                 if ( Game.Instance.PercistentWorld.IsPaused )
+                {
                     Game.Instance.PercistentWorld.Resume();
+#if DEBUG
+                    Console.WriteLine("Resume");
+#endif
+                }
                 else
+                {
                     Game.Instance.PercistentWorld.Pause();
+#if DEBUG
+                    Console.WriteLine("Pause");
+#endif
+                }
             }
         }
 

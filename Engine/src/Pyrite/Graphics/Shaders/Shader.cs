@@ -10,7 +10,7 @@ namespace Pyrite.Graphics.Shaders
         private readonly uint _handle;
         private readonly GL _gl;
 
-        private readonly static Shader _default = new("Content\\Shaders\\shader.vert", "Content\\Shaders\\shader.frag");
+        private readonly static Shader _default = new("Content\\Shaders\\default.vert", "Content\\Shaders\\default.frag");
         public static Shader Default => _default;
 
         public Shader(string vertexPath, string fragmentPath)

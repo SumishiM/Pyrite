@@ -45,6 +45,11 @@ namespace Pyrite.Core
             World.Update();
         }
 
+        internal void FixedUpdate()
+        {
+            //World.FixedUpdate();
+        }
+
         internal void Render()
         {
             World.Render();
