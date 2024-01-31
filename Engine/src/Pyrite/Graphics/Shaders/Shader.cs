@@ -74,12 +74,14 @@ namespace Pyrite.Graphics.Shaders
             }
             _gl.Uniform1(location, value);
         }
+
         public void Dispose()
         {
             //Remember to delete the program when we are done.
             _gl.DeleteProgram(_handle);
             GC.SuppressFinalize(this);
         }
+
         private uint LoadShader(ShaderType type, string path)
         {
             //To load a single shader we need to:

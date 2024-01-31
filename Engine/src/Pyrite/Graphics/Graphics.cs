@@ -2,7 +2,7 @@
 
 namespace Pyrite.Graphics
 {
-    public class Graphics
+    public static class Graphics
     {
         private static GL? _gl = null;
         internal static GL Gl
