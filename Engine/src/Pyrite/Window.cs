@@ -30,8 +30,8 @@ namespace Pyrite
         public event Action? OnRender;
         public event Action? OnClose;
 
-        public int Width;
-        public int Height;
+        public int Width => _native.FramebufferSize.X;
+        public int Height => _native.FramebufferSize.Y;
 
         private readonly Icon _icon;
         public static Color BackgroundColor { get; private set; } = Color.Black;
@@ -39,19 +39,16 @@ namespace Pyrite
 
         public Window ( WindowInfo info )
         {
-            Width = info.Width;
-            Height = info.Height;
-
-#if DEBUG
-            Console.WriteLine($"Create window [{Width}, {Height}]");
-#endif
 
             var options = WindowOptions.Default;
-            options.Size = new Vector2D<int>(Width, Height);
+            options.Size = new Vector2D<int>(info.Width, info.Height);
             options.Title = info.Title;
             options.WindowBorder = info.Resizable ? WindowBorder.Resizable : WindowBorder.Fixed;
             options.WindowState = info.Maximized ? WindowState.Maximized : WindowState.Normal;
 
+#if DEBUG
+            Console.WriteLine($"Create window {options.Size}");
+#endif
             BackgroundColor = info.BackgroundColor;
             _icon = string.IsNullOrEmpty(info.IconPath) ? Icon.Default : new(info.IconPath);
 
@@ -84,6 +81,14 @@ namespace Pyrite
             _native.Update += ( dt ) => OnUpdate?.Invoke(dt);
             _native.Render += _ => OnRender?.Invoke();
             _native.Closing += () => OnClose?.Invoke();
+
+
+            // Handle resizes
+            _native.FramebufferResize += s =>
+            {
+                // Adjust the viewport to the new window size
+                Graphics.Graphics.Gl?.Viewport(s);
+            };
         }
 
         private void KeyDown ( IKeyboard keyboard, Key key, int arg3 )
