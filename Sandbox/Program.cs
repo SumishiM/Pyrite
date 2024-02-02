@@ -27,10 +27,6 @@ namespace Sandbox
             Title = "Pyrite Sandbox YEPEE"
         };
 
-        protected override List<Type> Systems => [
-
-        ];
-
         protected override void Initialize()
         {
             PercistentWorld.AddNode("Toothless");
@@ -39,14 +35,10 @@ namespace Sandbox
                 typeof(DefaultRendererSystem),
                 typeof(SpinSystem));
 
-
             Node.CreateBuilder(CurrentScene.World, "Toothless")
                 .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
                 .AddComponent<SpinComponent>()
                 .ToNode();
-
-            CurrentScene.World.AddNode("Main Camera", typeof(CameraComponent));
-
         }
     }
 }

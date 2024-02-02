@@ -135,7 +135,7 @@ namespace Pyrite
             Time.Update(deltaTime);
 
             PercistentWorld.Update();
-            //PercistentWorld.FixedUpdate();
+            PercistentWorld.FixedUpdate();
 
             _currentScene?.Update();
             _currentScene?.FixedUpdate();

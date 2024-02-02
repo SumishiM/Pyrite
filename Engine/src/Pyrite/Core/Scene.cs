@@ -1,5 +1,6 @@
 ﻿using Ignite;
 using Ignite.Systems;
+using Pyrite.Graphics;
 
 namespace Pyrite.Core
 {
@@ -7,22 +8,20 @@ namespace Pyrite.Core
     {
         public string Name { get; set; } = "Unnamed Scene";
 
+        private readonly World.Builder DefaultBuilder = World
+            .CreateBuilder()
+            .AddNode("Main Camera", new CameraComponent());
+
+
         private World? _world = null;
         public World World
         {
             get
             {
-                if(_world == null)
+                if (_world == null)
                 {
-                    List<ISystem> systems = [];
-                    foreach (Type type in _systems)
-                    {
-                        if (Activator.CreateInstance(type) is ISystem system)
-                            systems.Add(system);
-                        else
-                            throw new Exception("Trying to create a system that isn't one.");
-                    }
-                    _world = new World(systems);
+                    DefaultBuilder.AddSystems([.. _systems]);
+                    _world = DefaultBuilder.Build();
                 }
                 return _world;
             }
@@ -47,7 +46,7 @@ namespace Pyrite.Core
 
         internal void FixedUpdate()
         {
-            //World.FixedUpdate();
+            World.FixedUpdate();
         }
 
         internal void Render()
