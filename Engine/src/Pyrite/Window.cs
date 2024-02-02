@@ -6,6 +6,7 @@ using System.Drawing;
 
 using SilkWindow = Silk.NET.Windowing.Window;
 using Icon = Pyrite.Graphics.Icon;
+using Pyrite.Core;
 
 namespace Pyrite
 {
@@ -104,7 +105,7 @@ namespace Pyrite
                 if ( Game.Instance.PercistentWorld.IsPaused )
                 {
                     Game.Instance.PercistentWorld.Resume();
-                    Game.Instance.CurrentScene?.Resume();
+                    SceneManager.CurrentScene?.Resume();
 #if DEBUG
                     Console.WriteLine("Resume");
 #endif
@@ -112,7 +113,7 @@ namespace Pyrite
                 else
                 {
                     Game.Instance.PercistentWorld.Pause();
-                    Game.Instance.CurrentScene?.Pause();
+                    SceneManager.CurrentScene?.Pause();
 #if DEBUG
                     Console.WriteLine("Pause");
 #endif

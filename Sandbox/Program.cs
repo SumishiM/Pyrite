@@ -31,11 +31,12 @@ namespace Sandbox
         {
             PercistentWorld.AddNode("Toothless");
 
-            CurrentScene = new Scene(
-                typeof(DefaultRendererSystem),
-                typeof(SpinSystem));
+            SceneManager.LoadScene(
+                new Scene("Toothless scene",
+                    typeof(DefaultRendererSystem),
+                    typeof(SpinSystem)));
 
-            Node.CreateBuilder(CurrentScene.World, "Toothless")
+            Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")
                 .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
                 .AddComponent<SpinComponent>()
                 .ToNode();

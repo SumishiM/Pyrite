@@ -8,10 +8,10 @@ namespace Pyrite.Core
     {
         public string Name { get; set; } = "Unnamed Scene";
 
-        private readonly World.Builder DefaultBuilder = World
+        private readonly World.Builder _defaultWorldBuilder = World
             .CreateBuilder()
-            .AddNode("Main Camera", new CameraComponent());
-
+            .AddNode("Main Camera", new CameraComponent())
+            .AddNode("Global Light");
 
         private World? _world = null;
         public World World
@@ -20,8 +20,8 @@ namespace Pyrite.Core
             {
                 if (_world == null)
                 {
-                    DefaultBuilder.AddSystems([.. _systems]);
-                    _world = DefaultBuilder.Build();
+                    _defaultWorldBuilder.AddSystems([.. _systems]);
+                    _world = _defaultWorldBuilder.Build();
                 }
                 return _world;
             }
@@ -29,8 +29,9 @@ namespace Pyrite.Core
 
         private readonly List<Type> _systems = [];
 
-        public Scene(params Type[] systems)
+        public Scene(string name = "Unnamed Scene", params Type[] systems)
         {
+            Name = name;
             _systems = [.. _systems, .. systems];
         }
 

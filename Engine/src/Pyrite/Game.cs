@@ -17,7 +17,7 @@ namespace Pyrite
         {
             get
             {
-                if ( _window == null )
+                if (_window == null)
                     throw new NullReferenceException("The game window isn't created yet.");
                 return _window;
             }
@@ -36,7 +36,11 @@ namespace Pyrite
             }
         }
 
+        private readonly World.Builder _defaultWorldBuilder = World
+            .CreateBuilder();
+
         private World? _percistentWorld = null;
+
         /// <summary>
         /// <see cref="Ignite.World"/> that is running for the entire life cycle of the game.
         /// It will be destroyed when the game stops
@@ -45,22 +49,14 @@ namespace Pyrite
         {
             get
             {
-                List<ISystem> systems = new List<ISystem>();
-                foreach ( var type in Systems )
+                if (_percistentWorld == null)
                 {
-                    if ( Activator.CreateInstance(type) is ISystem system )
-                        systems.Add(system);
-                    else
-                        throw new Exception("Trying to create a system that isn't one.");
+                    _defaultWorldBuilder.AddSystems([.. Systems]);
+                    _percistentWorld = _defaultWorldBuilder.Build();
                 }
-
-                _percistentWorld ??= new World(systems);
                 return _percistentWorld;
             }
         }
-
-        private Scene? _currentScene = null;
-        public Scene? CurrentScene { get => _currentScene; set => _currentScene = value; }
 
         protected virtual List<Type> Systems => [];
 
@@ -87,7 +83,7 @@ namespace Pyrite
 #endif
         };
 
-        public Game ()
+        public Game()
         {
 #if DEBUG
             Console.WriteLine($"Initializing {WindowInfo.Title}");
@@ -106,54 +102,54 @@ namespace Pyrite
         /// Start the game
         /// </summary>
         /// <exception cref="NullReferenceException">When the window was not created in constructor</exception>
-        public void Run ()
+        public void Run()
         {
 #if DEBUG
             Console.WriteLine("Run Game");
 #endif
-            if ( _window == null )
+            if (_window == null)
                 throw new NullReferenceException();
 
             _window.Run();
         }
 
-        private void OnLoad ()
+        private void OnLoad()
         {
 #if DEBUG
             Console.WriteLine("Start Initialization Game");
 #endif
             Initialize();
             PercistentWorld.Start();
-            CurrentScene?.Start();
+            SceneManager.CurrentScene?.Start();
 #if DEBUG
             Console.WriteLine("Finished Initialization Game");
 #endif
         }
 
-        private void OnUpdate ( double deltaTime )
+        private void OnUpdate(double deltaTime)
         {
             Time.Update(deltaTime);
 
             PercistentWorld.Update();
             PercistentWorld.FixedUpdate();
 
-            _currentScene?.Update();
-            _currentScene?.FixedUpdate();
+            SceneManager.CurrentScene?.Update();
+            SceneManager.CurrentScene?.FixedUpdate();
         }
 
-        private void OnRender ()
+        private void OnRender()
         {
             _percistentWorld?.Render();
-            _currentScene?.Render();
+            SceneManager.CurrentScene?.Render();
         }
 
-        private void OnClose ()
+        private void OnClose()
         {
 #if DEBUG
             Console.WriteLine("Close Game");
 #endif
             PercistentWorld.Exit();
-            _currentScene?.Exit();
+            SceneManager.CurrentScene?.Exit();
         }
 
 
@@ -161,10 +157,10 @@ namespace Pyrite
         /// Called once on game initialisation. 
         /// Used to initialize game data.
         /// </summary>
-        protected virtual void Initialize () { }
+        protected virtual void Initialize() { }
 
 
-        public void Dispose ()
+        public void Dispose()
         {
             PercistentWorld.Dispose();
             _instance = null;
