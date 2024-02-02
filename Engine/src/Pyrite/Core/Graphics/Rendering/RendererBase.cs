@@ -1,6 +1,4 @@
-﻿using Pyrite.Components;
-
-namespace Pyrite.Graphics.Rendering
+﻿namespace Pyrite.Core.Graphics.Rendering
 {
     public abstract class RendererBase : IDisposable
     {

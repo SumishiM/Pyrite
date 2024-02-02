@@ -3,7 +3,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Numerics;
 
-namespace Pyrite.Graphics.Rendering
+namespace Pyrite.Core.Graphics.Rendering
 {
     public class OGLTexture : IDisposable
     {

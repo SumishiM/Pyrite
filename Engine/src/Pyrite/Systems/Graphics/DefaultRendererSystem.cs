@@ -1,9 +1,11 @@
-﻿using Ignite;
-using Ignite.Attributes;
+﻿using Ignite.Attributes;
 using Ignite.Systems;
 using Pyrite.Components;
+using Pyrite.Components.Graphics;
+using Pyrite.Core.Graphics;
+using Pyrite.Core.Graphics.Rendering;
 
-namespace Pyrite.Graphics.Rendering
+namespace Pyrite.Systems.Graphics
 {
     [FilterComponent(typeof(SpriteComponent))]
     public class DefaultRendererSystem : 

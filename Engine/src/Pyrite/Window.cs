@@ -5,7 +5,7 @@ using Silk.NET.Input;
 using System.Drawing;
 
 using SilkWindow = Silk.NET.Windowing.Window;
-using Icon = Pyrite.Graphics.Icon;
+using Icon = Pyrite.Core.Graphics.Icon;
 using Pyrite.Core;
 
 namespace Pyrite
@@ -86,8 +86,8 @@ namespace Pyrite
             // Handle resizes
             _native.FramebufferResize += s =>
             {
-                // Adjust the viewport to the new window size
-                Graphics.Graphics.Gl?.Viewport(s);
+                // add if OpenGL
+                Core.Graphics.Graphics.Gl.Viewport(s);
             };
         }
 

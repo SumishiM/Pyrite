@@ -1,7 +1,7 @@
 ﻿using Silk.NET.OpenGL;
 using System.Numerics;
 
-namespace Pyrite.Graphics.Shaders
+namespace Pyrite.Core.Graphics.Shaders
 {
     public class Shader : IDisposable
     {
@@ -27,6 +27,7 @@ namespace Pyrite.Graphics.Shaders
             _gl.LinkProgram(_handle);
 
             _gl.GetProgram(_handle, GLEnum.LinkStatus, out var status);
+
             if( status == 0)
             {
                 throw new Exception($"Program failed to link with error: {_gl.GetProgramInfoLog(_handle)}");

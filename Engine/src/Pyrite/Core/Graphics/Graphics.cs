@@ -1,6 +1,6 @@
 ﻿using Silk.NET.OpenGL;
 
-namespace Pyrite.Graphics
+namespace Pyrite.Core.Graphics
 {
     public static class Graphics
     {

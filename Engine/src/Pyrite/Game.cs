@@ -1,7 +1,5 @@
 ﻿using Ignite;
-using Ignite.Systems;
 using Pyrite.Core;
-using Pyrite.Graphics;
 using Pyrite.Utils;
 using System.Drawing;
 

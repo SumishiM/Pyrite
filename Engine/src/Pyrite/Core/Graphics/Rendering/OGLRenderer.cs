@@ -1,7 +1,8 @@
 ﻿using Pyrite.Components;
+using Pyrite.Components.Graphics;
 using Silk.NET.OpenGL;
 
-namespace Pyrite.Graphics.Rendering
+namespace Pyrite.Core.Graphics.Rendering
 {
     public class OGLRenderer : RendererBase
     {

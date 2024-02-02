@@ -1,6 +1,6 @@
-﻿using Pyrite.Graphics.Rendering;
+﻿using Pyrite.Core.Graphics.Rendering;
 
-namespace Pyrite.Graphics
+namespace Pyrite.Core.Graphics
 {
     public class Texture : OGLTexture
     {

@@ -1,11 +1,10 @@
 ﻿using Ignite.Attributes;
 using Pyrite.Components;
-using Pyrite.Core;
-using Pyrite.Graphics.Shaders;
+using Pyrite.Core.Graphics.Shaders;
 using Pyrite.Utils;
 using System.Numerics;
 
-namespace Pyrite.Graphics
+namespace Pyrite.Core.Graphics
 {
     [RequireComponent(typeof(TransformComponent))]
     public class SpriteComponent : Component

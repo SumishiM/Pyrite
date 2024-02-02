@@ -1,8 +1,6 @@
-﻿using Pyrite.Core;
-using Pyrite.Graphics.Shaders;
-using Silk.NET.Vulkan;
+﻿using Pyrite.Core.Graphics.Shaders;
 
-namespace Pyrite.Graphics.Rendering
+namespace Pyrite.Core.Graphics.Rendering
 {
     // WIP
     public class Batch2D
