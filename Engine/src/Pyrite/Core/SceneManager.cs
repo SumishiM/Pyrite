@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ignite.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,16 @@ namespace Pyrite.Core
 #endif
             CurrentScene.Start();
             return true;
+        }
+
+        public static void Pause()
+        {
+            CurrentScene?.Pause();
+        }
+
+        public static void Resume()
+        {
+            CurrentScene?.Resume();
         }
     }
 }

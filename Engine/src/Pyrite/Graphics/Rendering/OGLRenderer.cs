@@ -55,6 +55,8 @@ namespace Pyrite.Graphics.Rendering
         /// </summary>
         public unsafe override void Draw ( SpriteComponent sprite )
         {
+            if (sprite.Texture == null)
+                return;
 
             // Set default shader and bind vao
             Shaders.Shader shader = Shaders.Shader.Default;

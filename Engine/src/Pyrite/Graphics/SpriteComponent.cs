@@ -11,7 +11,7 @@ namespace Pyrite.Graphics
     public class SpriteComponent : Component
     {
         public readonly Shader? Shader = null;
-        public readonly Texture Texture;
+        public readonly Texture? Texture;
 
         public int SortingOrder { get; set; }
 
@@ -19,6 +19,9 @@ namespace Pyrite.Graphics
         {
             get
             {
+                if (Texture == null)
+                    return Matrix4x4.Identity;
+
                 Transform transform = Parent.GetComponent<TransformComponent>();
                 return
                     Matrix4x4.CreateScale(Texture.Size.X * transform.Scale.X, Texture.Size.Y * transform.Scale.Y, 1f) *
@@ -27,6 +30,7 @@ namespace Pyrite.Graphics
             }
         }
 
+        public SpriteComponent() { }
         public SpriteComponent(string path)
         {
             Texture = new(path);
@@ -35,7 +39,7 @@ namespace Pyrite.Graphics
         public void Dispose()
         {
             Shader?.Dispose();
-            Texture.Dispose();
+            Texture?.Dispose();
 
             GC.SuppressFinalize(this);
         }

@@ -9,14 +9,14 @@ namespace Sandbox
     [FilterComponent(Context.AccessFilter.AllOf, 
         typeof(SpinComponent), 
         typeof(TransformComponent))]
-    public class SpinSystem : IUpdateSystem
+    public class SpinSystem : IFixedUpdateSystem
     {
-        public void Update ( Context context )
+        public void FixedUpdate( Context context )
         {
             foreach ( var node in context.Nodes )
             {
                 Transform transform = node.GetComponent<TransformComponent>();
-                transform.Rotation += node.GetComponent<SpinComponent>().SpinSpeed * Time.DeltaTime;
+                transform.Rotation += node.GetComponent<SpinComponent>().SpinSpeed * Time.FixedDeltaTime;
             }
         }
 

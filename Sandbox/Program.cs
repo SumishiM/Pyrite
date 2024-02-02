@@ -29,8 +29,6 @@ namespace Sandbox
 
         protected override void Initialize()
         {
-            PercistentWorld.AddNode("Toothless");
-
             SceneManager.LoadScene(
                 new Scene("Toothless scene",
                     typeof(DefaultRendererSystem),
