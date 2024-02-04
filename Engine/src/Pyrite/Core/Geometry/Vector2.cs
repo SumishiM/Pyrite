@@ -1,4 +1,4 @@
-﻿namespace Pyrite.Geometry
+﻿namespace Pyrite.Core.Geometry
 {
     public struct Vector2
     {

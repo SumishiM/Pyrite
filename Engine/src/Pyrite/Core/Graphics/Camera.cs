@@ -1,4 +1,4 @@
-﻿using Pyrite.Geometry;
+﻿using Pyrite.Core.Geometry;
 
 namespace Pyrite.Core.Graphics
 {
