@@ -27,7 +27,7 @@
         public readonly Vector2 CenterLeft => new(X, Y + (Height / 2f));
         public readonly Vector2 Center => new(X + (Width / 2f), Y + (Height / 2f));
 
-        public Rectangle ( Vector2 position, Vector2 size )
+        public Rectangle(Vector2 position, Vector2 size)
         {
             X = position.X;
             Y = position.Y;
@@ -35,14 +35,14 @@
             Height = size.Y;
         }
 
-        public Rectangle ( Point position, Point size )
+        public Rectangle(Point position, Point size)
         {
             X = position.X;
             Y = position.Y;
             Width = size.X;
             Height = size.Y;
         }
-        public Rectangle ( float x, float y, float width, float height )
+        public Rectangle(float x, float y, float width, float height)
         {
             X = x;
             Y = y;
@@ -50,7 +50,7 @@
             Height = height;
         }
 
-        public Rectangle ( int x, int y, int width, int height )
+        public Rectangle(int x, int y, int width, int height)
         {
             X = x;
             Y = y;
@@ -58,7 +58,7 @@
             Height = height;
         }
 
-        public static Rectangle FromCoordinates ( float top, float bottom, float left, float right )
+        public static Rectangle FromCoordinates(float top, float bottom, float left, float right)
         {
             return new Rectangle(
                 left,
@@ -67,41 +67,41 @@
                 bottom - top);
         }
 
-        public static Rectangle FromCoordinates ( Vector2 topLeft, Vector2 bottomRight ) =>
+        public static Rectangle FromCoordinates(Vector2 topLeft, Vector2 bottomRight) =>
             FromCoordinates(top: topLeft.Y, bottom: bottomRight.Y, left: topLeft.X, right: bottomRight.X);
 
-        public readonly Rectangle AddPosition ( Vector2 position )
+        public readonly Rectangle AddPosition(Vector2 position)
             => new(X + position.X, Y + position.Y, Width, Height);
-        public readonly Rectangle AddPosition ( Point position )
+        public readonly Rectangle AddPosition(Point position)
             => new(X + position.X, Y + position.Y, Width, Height);
-        public readonly Rectangle SetPosition ( Vector2 position )
+        public readonly Rectangle SetPosition(Vector2 position)
             => new(position.X, position.Y, Width, Height);
-        public readonly Rectangle Expand ( int value )
+        public readonly Rectangle Expand(int value)
             => new(X - value, Y - value, Width + value * 2f, Height + value * 2f);
-        public readonly Rectangle Expand ( float value ) 
+        public readonly Rectangle Expand(float value)
             => new(X - value, Y - value, Width + value * 2f, Height + value * 2f);
 
 
 
-        public static bool operator == ( Rectangle a, Rectangle b )
+        public static bool operator ==(Rectangle a, Rectangle b)
             => a.X == b.X
             && a.Y == b.Y
             && a.Width == b.Width
             && a.Height == b.Height;
 
-        public static bool operator != ( Rectangle a, Rectangle b )
+        public static bool operator !=(Rectangle a, Rectangle b)
             => !(a == b);
 
-        public static Rectangle operator * ( Rectangle r, float v )
+        public static Rectangle operator *(Rectangle r, float v)
             => new(r.X * v, r.Y * v, r.Width * v, r.Height * v);
-        public static Rectangle operator + ( Rectangle r, Vector2 u )
+        public static Rectangle operator +(Rectangle r, Vector2 u)
             => new(r.X + u.X, r.Y + u.Y, r.Width, r.Height);
-        public static Rectangle operator - ( Rectangle r, Vector2 u )
+        public static Rectangle operator -(Rectangle r, Vector2 u)
             => new(r.X - u.X, r.Y - u.Y, r.Width, r.Height);
 
-        public override readonly bool Equals ( object? obj )
+        public override readonly bool Equals(object? obj)
         {
-            if ( obj is Rectangle rect )
+            if (obj is Rectangle rect)
                 return this == rect;
             return false;
         }

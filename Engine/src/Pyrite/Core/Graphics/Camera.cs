@@ -17,16 +17,16 @@ namespace Pyrite.Core.Graphics
         private float _rotation = 0f;
         private float _zoom = 1f;
 
-        private Matrix4x4? _cachedWorldViewProjection;
+        //private Matrix4x4? _cachedWorldViewProjection;
 
-        public Matrix4x4 WorldViewProjection
-        {
-            get
-            {
-                _cachedWorldViewProjection ??= GetWorldView();
-                return _cachedWorldViewProjection.Value;
-            }
-        }
+        //public Matrix4x4 WorldViewProjection
+        //{
+        //    get
+        //    {
+        //        _cachedWorldViewProjection ??= GetWorldView();
+        //        return _cachedWorldViewProjection.Value;
+        //    }
+        //}
 
         public Camera(Transform transform)
         {
@@ -38,9 +38,9 @@ namespace Pyrite.Core.Graphics
             return Point.Zero;
         }
 
-        public Matrix4x4 GetWorldView() {
-            Point position = Transform.Position;
-            Point center = _origin * new Vector2(Width, Height).;
-        }
+        //public Matrix4x4 GetWorldView() {
+        //    Point position = Transform.Position;
+        //    Point center = _origin * new Vector2(Width, Height).;
+        //}
     }
 }
