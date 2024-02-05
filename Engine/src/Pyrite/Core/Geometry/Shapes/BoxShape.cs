@@ -1,13 +1,7 @@
 ﻿using Pyrite.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Pyrite.Core.Geometry.Shapes
 {
-    public struct BoxShape : IShape
+    public readonly struct BoxShape : IShape
     {
         public readonly int Width = 16;
         public readonly int Height = 16;
@@ -19,7 +13,11 @@ namespace Pyrite.Core.Geometry.Shapes
         /// <summary>
         /// Simple shape getter
         /// </summary>
-        public readonly Rectangle Rectangle => new Rectangle(-Calculator.RoundToInt(Width * Origin.X) + Offset.X, -Calculator.RoundToInt(Height * Origin.Y) + Offset.Y, Width, Height);
+        public readonly Rectangle Rectangle => new(
+            -Calculator.RoundToInt(Width * Origin.X) + Offset.X, 
+            -Calculator.RoundToInt(Height * Origin.Y) + Offset.Y, 
+            Width, 
+            Height);
 
         public BoxShape() { }
 

@@ -26,6 +26,8 @@ namespace Pyrite.Core.Geometry
         public readonly float Width => Right - Left;
         public readonly float Height => Top - Bottom;
 
+        public readonly Vector2 Center => new(Left + Width / 2f, Top + Height / 2f);
+
 
         public Line(float x1, float y1, float x2, float y2)
         {
