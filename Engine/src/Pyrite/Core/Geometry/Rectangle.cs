@@ -58,6 +58,8 @@
             Height = height;
         }
 
+        public static Rectangle Pixel => new(0, 0, 1, 1);
+
         public static Rectangle FromCoordinates(float top, float bottom, float left, float right)
         {
             return new Rectangle(
@@ -81,6 +83,45 @@
         public readonly Rectangle Expand(float value)
             => new(X - value, Y - value, Width + value * 2f, Height + value * 2f);
 
+        public readonly Rectangle AddPadding(float left, float top, float right, float bottom) 
+            => new(X - left, Y - top, Width + left + right, Height + top + bottom);
+        public static Rectangle FromIntersection(Rectangle a, Rectangle b)
+        {
+            return FromAbsolute(
+                Math.Max(a.Left, b.Left),
+                Math.Min(a.Right, b.Right),
+                Math.Max(a.Top, b.Top),
+                Math.Min(a.Bottom, b.Bottom));
+        }
+
+        private static Rectangle FromAbsolute(float left, float right, float top, float bottom)
+        {
+            return new(left, top, right - left, bottom - top);
+        }
+
+        public bool Touches(Rectangle other)
+        {
+            return other.Left <= Right &&
+                   Left <= other.Right &&
+                   other.Top <= Bottom &&
+                   Top <= other.Bottom;
+        }
+
+        public bool TouchesInside(Rectangle other)
+        {
+            return other.Left < Right &&
+                   Left < other.Right &&
+                   other.Top < Bottom &&
+                   Top < other.Bottom;
+        }
+        public bool Contains(Vector2 vector) => Contains(vector.X, vector.Y);
+        public bool Contains(int X, int Y) => Contains((float)X, (float)Y);
+
+        public bool Contains(Point point) => Contains(point.X, point.Y);
+        public bool Contains(float X, float Y)
+        {
+            return X > Left && X < Right && Y > Top && Y < Bottom;
+        }
 
 
         public static bool operator ==(Rectangle a, Rectangle b)
@@ -99,6 +140,12 @@
         public static Rectangle operator -(Rectangle r, Vector2 u)
             => new(r.X - u.X, r.Y - u.Y, r.Width, r.Height);
 
+        public readonly bool Equals(Rectangle other)
+            => X == other.X 
+            && Y == other.Y 
+            && Width == other.Width 
+            && Height == other.Height;
+
         public override readonly bool Equals(object? obj)
         {
             if (obj is Rectangle rect)
@@ -106,6 +153,8 @@
             return false;
         }
 
-        // cast to IntRectangle
+        public override readonly int GetHashCode() 
+            => HashCode.Combine(X, Y, Width, Height);
+
     }
 }

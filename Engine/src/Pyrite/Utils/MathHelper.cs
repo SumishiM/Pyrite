@@ -1,13 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using Pyrite.Core.Geometry;
 
 namespace Pyrite.Utils
 {
     public static class MathHelper
     {
-        public static float ToRadians ( this float degrees ) => MathF.PI / 180f * degrees;
+        #region Single
+
+        #endregion
+
+        #region Line
+        public static float Length(this Line line)
+            => (line.Start - line.End).Length();
+
+        public static float SquaredLength(this Line line)
+            => (line.Start - line.End).SquaredLength();
+        #endregion
     }
 }
