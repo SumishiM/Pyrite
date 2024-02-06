@@ -34,6 +34,7 @@
 		<Folder Include="Attributes\" />
 		<Folder Include="Core\Graphics\Rendering\Vulkan\" />
 		<Folder Include="Core\Graphics\Shaders\" />
+		<Folder Include="Core\Inputs\" />
 		<Folder Include="Extentions\" />
 	</ItemGroup>
 	
