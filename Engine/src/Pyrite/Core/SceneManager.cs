@@ -9,7 +9,7 @@ namespace Pyrite.Core
 {
     public static class SceneManager
     {
-        private static Scene _defaultScene => new Scene("Sample Scene");
+        private static Scene _defaultScene => new("Sample Scene");
         internal static Scene ConfiguratedDefaultScene = _defaultScene;
         public static Scene CurrentScene { get; private set; } = ConfiguratedDefaultScene; 
 

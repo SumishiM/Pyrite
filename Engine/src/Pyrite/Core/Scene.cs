@@ -1,5 +1,6 @@
 ﻿using Ignite;
 using Pyrite.Components.Graphics;
+using Pyrite.Core.Graphics;
 
 namespace Pyrite.Core
 {
@@ -9,7 +10,7 @@ namespace Pyrite.Core
 
         private readonly World.Builder _defaultWorldBuilder = World
             .CreateBuilder()
-            .AddNode("Main Camera", new CameraComponent())
+            .AddNode("Main Camera", typeof(CameraComponent))
             .AddNode("Global Light");
 
         private World? _world = null;
@@ -36,6 +37,7 @@ namespace Pyrite.Core
 
         internal void Start()
         {
+            Camera.Main.Zoom = 1f;
             World.Start();
         }
 

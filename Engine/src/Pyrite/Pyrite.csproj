@@ -32,6 +32,8 @@
 
 	<ItemGroup>
 		<Folder Include="Attributes\" />
+		<Folder Include="Core\Graphics\Rendering\Vulkan\" />
+		<Folder Include="Core\Graphics\Rendering\OpenGL\" />
 		<Folder Include="Extentions\" />
 	</ItemGroup>
 	

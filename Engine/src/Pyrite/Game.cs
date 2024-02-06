@@ -97,9 +97,9 @@ namespace Pyrite
         }
 
         /// <summary>
-        /// Start the game
+        /// Execute the game
         /// </summary>
-        /// <exception cref="NullReferenceException">When the window was not created in constructor</exception>
+        /// <exception cref="NullReferenceException"/>
         public void Run()
         {
 #if DEBUG

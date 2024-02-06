@@ -1,7 +1,11 @@
-﻿using Pyrite.Core.Geometry;
+﻿using Ignite;
+using Pyrite.Components;
+using Pyrite.Components.Graphics;
+using Pyrite.Core.Geometry;
 using Pyrite.Utils;
 using Silk.NET.Vulkan;
 using SixLabors.ImageSharp.Processing;
+using System.Collections.Immutable;
 
 namespace Pyrite.Core.Graphics
 {
@@ -14,7 +18,7 @@ namespace Pyrite.Core.Graphics
         public Rectangle SafeBounds { get; private set; }
 
         private readonly Vector2 _origin = Vector2.Zero;
-        private readonly Transform _transform;
+        private Transform? _transform;
         private float _zoom = 1;
 
         private bool _locked;
@@ -47,7 +51,7 @@ namespace Pyrite.Core.Graphics
             get => _zoom;
             set
             {
-                float zoom = Math.Clamp(value, 0.1f, 500f);
+                float zoom = Math.Clamp(value, 0.1f, 512f);
 
                 if (zoom != _zoom)
                 {
@@ -59,22 +63,47 @@ namespace Pyrite.Core.Graphics
 
         public int HalfWidth => Calculator.RoundToInt(Width / 2f);
 
-        public Point Size => new Point(Width, Height);
+        public Point Size => new(Width, Height);
 
-        public float Aspect => (float)Width / Height;
+        public float Aspect => Width / (float)Height;
 
         public Camera(int width, int height)
         {
-            (Width, Height) = (width, height);
+            Width = width; 
+            Height = height;
+
+            _main ??= this;
 
             // Origin will be the center of the camera.
             _origin = new Vector2(0.5f, 0.5f);
         }
 
+        private static Camera? _main;
+        public static Camera Main
+        {
+            get
+            {
+                if (SceneManager.CurrentScene == null)
+                    throw new Exception("Trying to get the main camera when there is no scene loaded !");
+
+                if (_main is null || _main?._transform is null)
+                {
+                    CameraComponent component = SceneManager.CurrentScene.World
+                        .GetNodesWith(typeof(CameraComponent))[0] // should never be null while the scene is running
+                        .GetComponent<CameraComponent>();
+
+                    _main = component;
+                    _main._transform = component.Parent.GetComponent<TransformComponent>();
+                }
+
+                return _main;
+            }
+            internal set => _main = value; 
+        }
+
         public Vector2 ScreenToWorldPosition(Vector2 screenPosition)
         {
-            System.Numerics.Matrix4x4.Invert(WorldViewProjection, out System.Numerics.Matrix4x4 result);
-            return Vector2.Transform(screenPosition, result);
+            return Vector2.Transform(screenPosition, Matrix.Invert(WorldViewProjection));
         }
 
         public Vector2 WorldToScreenPosition(Vector2 screenPosition)
