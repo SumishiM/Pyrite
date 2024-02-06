@@ -63,11 +63,7 @@ namespace Pyrite
 #endif
                 // todo : Create input system instance and set appropriate callbacks
                 //Set-up input context.
-                IInputContext input = _native.CreateInput();
-                for ( int i = 0; i < input.Keyboards.Count; i++ )
-                {
-                    input.Keyboards[i].KeyDown += KeyDown;
-                }
+                Game.Instance.Inputs = new(_native.CreateInput());
 
                 _native.Center();
                 if ( _icon is not null )

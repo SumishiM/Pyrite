@@ -1,5 +1,6 @@
 ﻿using Ignite;
 using Pyrite.Core;
+using Pyrite.Core.Inputs;
 using Pyrite.Utils;
 using System.Drawing;
 
@@ -57,6 +58,8 @@ namespace Pyrite
         }
 
         protected virtual List<Type> Systems => [];
+
+        public InputContextMapping Inputs;
 
         protected virtual WindowInfo WindowInfo => new()
         {
