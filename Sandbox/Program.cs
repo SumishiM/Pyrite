@@ -1,6 +1,8 @@
 ﻿using Ignite;
 using Pyrite;
+using Pyrite.Components;
 using Pyrite.Core;
+using Pyrite.Core.Geometry;
 using Pyrite.Core.Graphics;
 using Pyrite.Systems.Graphics;
 
@@ -34,10 +36,12 @@ namespace Sandbox
                     typeof(DefaultRendererSystem),
                     typeof(SpinSystem)));
 
-            Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")
-                .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
-                .AddComponent<SpinComponent>()
-                .ToNode();
+            Node toothless = 
+                Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")
+                    .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
+                    .AddComponent<SpinComponent>(new(){ SpinSpeed = 36f});
+
+            toothless.GetComponent<TransformComponent>().Position = new Vector2(300, 300);
         }
     }
 }

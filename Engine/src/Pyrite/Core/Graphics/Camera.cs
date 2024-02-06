@@ -152,13 +152,15 @@ namespace Pyrite.Core.Graphics
 
             var inverseMatrix = Matrix.Invert(view);
             var topLeftCorner = Vector2.Transform(new Vector2(0, 0), inverseMatrix);
-            // var topRightCorner = Vector2.Transform(new Vector2(Width, 0), inverseMatrix);
-            // var bottomLeftCorner = Vector2.Transform(new Vector2(0, Height), inverseMatrix);
             var bottomRightCorner = Vector2.Transform(new Vector2(Width, Height), inverseMatrix);
+
+            Matrix orthographicMatrix = System.Numerics.Matrix4x4.CreateOrthographicOffCenter(
+                topLeftCorner.X, bottomRightCorner.X, bottomRightCorner.Y, topLeftCorner.Y, 0.01f, 100f);
+            Matrix.CreateScale(Zoom, out Matrix zoomMatrix);
 
             Bounds = new Rectangle(topLeftCorner, (bottomRightCorner - topLeftCorner));
             //SafeBounds = Bounds.Expand(Grid.CellSize * 2);
-            return view;
+            return orthographicMatrix * zoomMatrix;
         }
 
         public void Lock()

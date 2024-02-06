@@ -7,6 +7,7 @@ using System.Drawing;
 using SilkWindow = Silk.NET.Windowing.Window;
 using Icon = Pyrite.Core.Graphics.Icon;
 using Pyrite.Core;
+using Pyrite.Core.Graphics;
 
 namespace Pyrite
 {
@@ -88,6 +89,7 @@ namespace Pyrite
             {
                 // add if OpenGL
                 Core.Graphics.Graphics.Gl.Viewport(s);
+                Camera.Main.UpdateSize(s.X, s.Y);
             };
         }
 
