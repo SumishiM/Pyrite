@@ -1,9 +1,7 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
-using Pyrite.Components;
-using Pyrite.Components.Graphics;
 using Pyrite.Core.Graphics;
-using Pyrite.Core.Graphics.Rendering;
+using Pyrite.Core.Graphics.Rendering.OpenGL;
 
 namespace Pyrite.Systems.Graphics
 {

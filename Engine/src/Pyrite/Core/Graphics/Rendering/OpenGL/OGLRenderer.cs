@@ -1,8 +1,7 @@
-﻿using Pyrite.Components;
-using Pyrite.Components.Graphics;
-using Silk.NET.OpenGL;
+﻿using Silk.NET.OpenGL;
+using Shader = Pyrite.Core.Graphics.Rendering.OpenGL.Shader;
 
-namespace Pyrite.Core.Graphics.Rendering
+namespace Pyrite.Core.Graphics.Rendering.OpenGL
 {
     public class OGLRenderer : RendererBase
     {
@@ -60,11 +59,11 @@ namespace Pyrite.Core.Graphics.Rendering
                 return;
 
             // Set default shader and bind vao
-            Shaders.Shader shader = Shaders.Shader.Default;
+            Shader shader = Shader.Default;
             _vao.Bind();
 
             // send data to shader
-            shader = sprite.Shader ?? Shaders.Shader.Default;
+            shader = sprite.Shader ?? Shader.Default;
             shader.Use();
             sprite.Texture.Bind();
             shader.SetUniform("uTexture0", 0);

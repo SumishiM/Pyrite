@@ -1,7 +1,7 @@
 ﻿using Silk.NET.OpenGL;
 using System.Numerics;
 
-namespace Pyrite.Core.Graphics.Shaders
+namespace Pyrite.Core.Graphics.Rendering.OpenGL
 {
     public class Shader : IDisposable
     {

@@ -6,9 +6,7 @@ using Pyrite.Utils;
 
 namespace Sandbox
 {
-    [FilterComponent(Context.AccessFilter.AllOf, 
-        typeof(SpinComponent), 
-        typeof(TransformComponent))]
+    [FilterComponent(typeof(SpinComponent))]
     public class SpinSystem : IFixedUpdateSystem
     {
         public void FixedUpdate( Context context )

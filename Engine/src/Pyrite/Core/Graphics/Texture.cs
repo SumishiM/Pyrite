@@ -1,4 +1,4 @@
-﻿using Pyrite.Core.Graphics.Rendering;
+﻿using Pyrite.Core.Graphics.Rendering.OpenGL;
 
 namespace Pyrite.Core.Graphics
 {

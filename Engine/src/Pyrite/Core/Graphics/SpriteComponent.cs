@@ -1,8 +1,8 @@
 ﻿using Ignite.Attributes;
 using Pyrite.Components;
-using Pyrite.Core.Graphics.Shaders;
+using Pyrite.Core.Geometry;
+using Pyrite.Core.Graphics.Rendering.OpenGL;
 using Pyrite.Utils;
-using System.Numerics;
 
 namespace Pyrite.Core.Graphics
 {
@@ -14,18 +14,18 @@ namespace Pyrite.Core.Graphics
 
         public int SortingOrder { get; set; }
 
-        public Matrix4x4 ModelMatrix
+        public Matrix ModelMatrix
         {
             get
             {
                 if (Texture == null)
-                    return Matrix4x4.Identity;
+                    return Matrix.Identity;
 
                 Transform transform = Parent.GetComponent<TransformComponent>();
                 return
-                    Matrix4x4.CreateScale(Texture.Size.X * transform.Scale.X, Texture.Size.Y * transform.Scale.Y, 1f) *
-                    Matrix4x4.CreateRotationZ(transform.Rotation.ToRadians()) *
-                    Matrix4x4.CreateTranslation(transform.Position.X, transform.Position.Y, 0f);
+                    Matrix.CreateScale(Texture.Size.X * transform.Scale.X, Texture.Size.Y * transform.Scale.Y, 1f) *
+                    Matrix.CreateRotationZ(transform.Rotation.ToRadians()) *
+                    Matrix.CreateTranslation(transform.Position.X, transform.Position.Y, 0f);
             }
         }
 
