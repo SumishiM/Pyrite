@@ -18,7 +18,7 @@ namespace Pyrite.Core.Graphics
         public Rectangle SafeBounds { get; private set; }
 
         private readonly Vector2 _origin = Vector2.Zero;
-        private Transform? _transform;
+        private Transform _transform;
         private float _zoom = 1;
 
         private bool _locked;
@@ -73,6 +73,7 @@ namespace Pyrite.Core.Graphics
             Height = height;
 
             _main ??= this;
+            _transform = Transform.Empty;
 
             // Origin will be the center of the camera.
             _origin = new Vector2(0.5f, 0.5f);
@@ -156,11 +157,10 @@ namespace Pyrite.Core.Graphics
 
             Matrix orthographicMatrix = System.Numerics.Matrix4x4.CreateOrthographicOffCenter(
                 topLeftCorner.X, bottomRightCorner.X, bottomRightCorner.Y, topLeftCorner.Y, 0.01f, 100f);
-            Matrix.CreateScale(Zoom, out Matrix zoomMatrix);
 
             Bounds = new Rectangle(topLeftCorner, (bottomRightCorner - topLeftCorner));
             //SafeBounds = Bounds.Expand(Grid.CellSize * 2);
-            return orthographicMatrix * zoomMatrix;
+            return orthographicMatrix;
         }
 
         public void Lock()
