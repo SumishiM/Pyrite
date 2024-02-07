@@ -6,7 +6,6 @@ using System.Drawing;
 
 using SilkWindow = Silk.NET.Windowing.Window;
 using Icon = Pyrite.Core.Graphics.Icon;
-using Pyrite.Core;
 using Pyrite.Core.Graphics;
 
 namespace Pyrite
@@ -87,34 +86,6 @@ namespace Pyrite
                 Core.Graphics.Graphics.Gl.Viewport(s);
                 Camera.Main.UpdateSize(s.X, s.Y);
             };
-        }
-
-        private void KeyDown ( IKeyboard keyboard, Key key, int arg3 )
-        {
-            //Check to close the window on escape.
-            if ( key == Key.Escape )
-            {
-                _native.Close();
-            }
-            if ( key == Key.P )
-            {
-                if ( Game.Instance.PercistentWorld.IsPaused )
-                {
-                    Game.Instance.PercistentWorld.Resume();
-                    SceneManager.Resume();
-#if DEBUG
-                    Console.WriteLine("Resume");
-#endif
-                }
-                else
-                {
-                    Game.Instance.PercistentWorld.Pause();
-                    SceneManager.Pause();
-#if DEBUG
-                    Console.WriteLine("Pause");
-#endif
-                }
-            }
         }
 
         internal IWindow Native () => _native;
