@@ -1,6 +1,8 @@
 ﻿using Silk.NET.Input;
 using Pyrite.Core.Geometry;
 using Pyrite.Core.Graphics;
+using System.Drawing;
+using System.Reflection;
 
 namespace Pyrite.Core.Inputs
 {
@@ -15,8 +17,8 @@ namespace Pyrite.Core.Inputs
 
     public enum GamepadAxis
     {
-        LeftThumb,
-        RightThumb,
+        LeftThumbstick,
+        RightThumbstick,
         Dpad
     }
 
@@ -113,7 +115,6 @@ namespace Pyrite.Core.Inputs
         public readonly bool IsButtonUp(MouseButton button) => !_mouse.IsButtonPressed(button);
     }
 
-
     public readonly struct InputState(KeyboardState keyboard, MouseState mouse, GamepadState gamepad)
     {
         public readonly KeyboardState Keyboard = keyboard;
@@ -121,12 +122,11 @@ namespace Pyrite.Core.Inputs
         public readonly GamepadState Gamepad = gamepad;
     }
 
+
     public class InputContextMapping
     {
         public event Action? OnConnectionChanged;
         public static float ThumbsticksThreshold = 0.1f;
-
-        public List<IInputDevice> Devices { get; private set; }
 
         private KeyboardState _keyboard;
         private MouseState _mouse;
@@ -134,24 +134,20 @@ namespace Pyrite.Core.Inputs
 
         public InputContextMapping(IInputContext context)
         {
-            Devices = [];
 
 
             foreach (var keyboard in context.Keyboards)
             {
-                _keyboard = new KeyboardState(keyboard);
                 StartListeningToKeyboard(keyboard);
             }
 
             foreach (var mouse in context.Mice)
             {
-                _mouse = new MouseState(mouse);
                 StartListeningToMouse(mouse);
             }
 
             foreach (var gamepad in context.Gamepads)
             {
-                _gamepad = new GamepadState(gamepad);
                 StartListeningToGamepad(gamepad);
             }
 
@@ -202,7 +198,10 @@ namespace Pyrite.Core.Inputs
             gamepad.ButtonUp += GamepadButtonUp;
             gamepad.ThumbstickMoved += GamepadThumbstickMoved;
             gamepad.TriggerMoved += GamepadTriggerMoved;
-            Devices.Add(gamepad);
+
+            var id = Guid.NewGuid();
+            Console.WriteLine(gamepad.Index + " -> " + id);
+            Input.Devices.Add(id, gamepad);
         }
         private void StopListeningToGamepad(IGamepad gamepad)
         {
@@ -210,19 +209,24 @@ namespace Pyrite.Core.Inputs
             gamepad.ButtonUp -= GamepadButtonUp;
             gamepad.ThumbstickMoved -= GamepadThumbstickMoved;
             gamepad.TriggerMoved -= GamepadTriggerMoved;
-            Devices.Remove(gamepad);
+
+            Input.Devices.Remove(Input.Devices.First(kvp => kvp.Value == gamepad).Key);
         }
         private void StartListeningToKeyboard(IKeyboard keyboard)
         {
             keyboard.KeyDown += KeyDown;
             keyboard.KeyUp += KeyUp;
-            Devices.Add(keyboard);
+
+            var id = Guid.NewGuid();
+            Console.WriteLine(keyboard.Index + " -> " + id);
+            Input.Devices.Add(id, keyboard);
         }
         private void StopListeningToKeyboard(IKeyboard keyboard)
         {
             keyboard.KeyDown -= KeyDown;
             keyboard.KeyUp -= KeyUp;
-            Devices.Remove(keyboard);
+
+            Input.Devices.Remove(Input.Devices.First(kvp => kvp.Value == keyboard).Key);
         }
         private void StartListeningToMouse(IMouse mouse)
         {
@@ -232,7 +236,10 @@ namespace Pyrite.Core.Inputs
             mouse.DoubleClick += MouseDoubleClick;
             mouse.MouseDown += MouseButtonDown;
             mouse.MouseUp += MouseButtonUp;
-            Devices.Add(mouse);
+
+            var id = Guid.NewGuid();
+            Console.WriteLine(mouse.Index + " -> " + id);
+            Input.Devices.Add(id, mouse);
         }
         private void StopListeningToMouse(IMouse mouse)
         {
@@ -242,7 +249,8 @@ namespace Pyrite.Core.Inputs
             mouse.DoubleClick -= MouseDoubleClick;
             mouse.MouseDown -= MouseButtonDown;
             mouse.MouseUp -= MouseButtonUp;
-            Devices.Remove(mouse);
+
+            Input.Devices.Remove(Input.Devices.First(kvp => kvp.Value == mouse).Key);
         }
         #endregion
 
@@ -288,8 +296,8 @@ namespace Pyrite.Core.Inputs
         private void GamepadTriggerMoved(IGamepad gamepad, Trigger trigger)
         {
             Console.WriteLine(trigger.Position + ", " + trigger.Index);
-            Console.WriteLine((GamepadButtons)trigger.Index + ", " + _gamepad.IsButtonDown(trigger.Index == 1 ? GamepadButtons.LeftTrigger : GamepadButtons.RightTrigger));
-            ;
+            //Console.WriteLine((GamepadButtons)trigger.Index + ", " + _gamepad.IsButtonDown(trigger.Index == 1 ? GamepadButtons.LeftTrigger : GamepadButtons.RightTrigger));
+            
         }
 
         private void GamepadThumbstickMoved(IGamepad gamepad, Thumbstick thumbstick)
@@ -304,7 +312,7 @@ namespace Pyrite.Core.Inputs
 
         private void GamepadButtonDown(IGamepad gamepad, Button button)
         {
-            Console.WriteLine((GamepadButtons)button.Index + ", " + _gamepad.IsButtonDown((GamepadButtons)button.Index));
+            //Console.WriteLine((GamepadButtons)button.Index + ", " + _gamepad.IsButtonDown((GamepadButtons)button.Index));
         }
         #endregion
     }
