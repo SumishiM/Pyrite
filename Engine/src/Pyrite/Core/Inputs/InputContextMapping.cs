@@ -1,7 +1,6 @@
 ﻿using Silk.NET.Input;
 using Pyrite.Core.Geometry;
 using Pyrite.Core.Graphics;
-using System.Runtime.CompilerServices;
 
 namespace Pyrite.Core.Inputs
 {
@@ -17,7 +16,7 @@ namespace Pyrite.Core.Inputs
     public enum GamepadAxis
     {
         LeftThumb,
-        RightThumb, 
+        RightThumb,
         Dpad
     }
 
@@ -42,46 +41,76 @@ namespace Pyrite.Core.Inputs
         RightTrigger = 16,
     }
 
-    public struct RawInputCallback
+    public struct KeyboardState(IKeyboard keyboard)
     {
-        public InputSource Source;
-
-        private Key? _keyboard;
-        private MouseButton? _mouse;
-        private GamepadButtons? _gamepad;
-        private GamepadAxis? _axis;
-
-        private Vector2 _axisValue;
-        private bool _pressed;
-    }
-
-    public struct KeyboardState
-    {
+        private readonly IKeyboard _keyboard = keyboard;
         private readonly HashSet<Key> KeyPressed;
         public readonly bool IsKeyDown(Key key) => KeyPressed.Contains(key);
         public readonly bool IsKeyUp(Key key) => !KeyPressed.Contains(key);
     }
 
-    public struct GamepadState
+    public struct GamepadState(IGamepad gamepad)
     {
-        private readonly HashSet<GamepadButtons> ButtonPressed;
+        private readonly IGamepad _gamepad = gamepad;
 
-        public Vector2 LeftThumbstrick { get; internal set; }
-        public Vector2 RightThumbstrick { get; internal set; }
-        public Vector2 Dpad { get; internal set; }
+        /// <summary>
+        /// Left thumbstick direction value
+        /// </summary>
+        public readonly Vector2 LeftThumbstrick => new(_gamepad.LeftThumbstick().X, _gamepad.LeftThumbstick().Y);
 
-        public readonly bool IsButtonDown(GamepadButtons button) => ButtonPressed.Contains(button);
-        public readonly bool IsButtonUp(GamepadButtons button) => !ButtonPressed.Contains(button);
+        /// <summary>
+        /// Right thumbstick direction value
+        /// </summary>
+        public readonly Vector2 RightThumbstrick => new(_gamepad.RightThumbstick().X, _gamepad.RightThumbstick().Y);
+
+        /// <summary>
+        /// Dpad direction value
+        /// </summary>
+        public readonly Vector2 Dpad => FromDPad(
+            _gamepad.DPadLeft().Pressed,
+            _gamepad.DPadRight().Pressed,
+            _gamepad.DPadUp().Pressed,
+            _gamepad.DPadDown().Pressed);
+
+        /// <summary>
+        /// Create a vector2 from dpad
+        /// </summary>
+        private static Vector2 FromDPad(bool left, bool right, bool up, bool down)
+        {
+            int x = right ? 1 : 0;
+            int y = down ? 1 : 0;
+            x -= left ? 1 : 0;
+            y -= up ? 1 : 0;
+
+            return Vector2.Normalized(new(x, y));
+        }
+
+        public readonly bool IsButtonDown(GamepadButtons button)
+        {
+            if (button == GamepadButtons.LeftTrigger)
+            {
+                return _gamepad.Triggers[1].Position > 0f;
+            }
+
+            if (button == GamepadButtons.RightTrigger)
+            {
+                return _gamepad.Triggers[0].Position > 0f;
+            }
+
+            return _gamepad.Buttons[(int)button].Pressed;
+        }
+
+        public readonly bool IsButtonUp(GamepadButtons button) => !IsButtonDown(button);
     }
 
-    public struct MouseState
+    public struct MouseState(IMouse mouse)
     {
-        private readonly HashSet<MouseButton> ButtonPressed;
+        private readonly IMouse _mouse = mouse;
 
         public Vector2 Wheel { get; internal set; }
         public Vector2 DeltaPosition { get; internal set; }
-        public readonly bool IsButtonDown(MouseButton button) => ButtonPressed.Contains(button);
-        public readonly bool IsButtonUp(MouseButton button) => !ButtonPressed.Contains(button);
+        public readonly bool IsButtonDown(MouseButton button) => _mouse.IsButtonPressed(button);
+        public readonly bool IsButtonUp(MouseButton button) => !_mouse.IsButtonPressed(button);
     }
 
 
@@ -99,23 +128,30 @@ namespace Pyrite.Core.Inputs
 
         public List<IInputDevice> Devices { get; private set; }
 
-         
+        private KeyboardState _keyboard;
+        private MouseState _mouse;
+        private GamepadState _gamepad;
 
         public InputContextMapping(IInputContext context)
         {
             Devices = [];
+
+
             foreach (var keyboard in context.Keyboards)
             {
+                _keyboard = new KeyboardState(keyboard);
                 StartListeningToKeyboard(keyboard);
             }
 
             foreach (var mouse in context.Mice)
             {
+                _mouse = new MouseState(mouse);
                 StartListeningToMouse(mouse);
             }
 
             foreach (var gamepad in context.Gamepads)
             {
+                _gamepad = new GamepadState(gamepad);
                 StartListeningToGamepad(gamepad);
             }
 
@@ -233,7 +269,7 @@ namespace Pyrite.Core.Inputs
 
         private void MouseMoved(IMouse mouse, System.Numerics.Vector2 vector)
         {
-            Input.ScreenMousePosition = new(vector.X, vector.Y);
+            Input.ScreenMousePosition = mouse.Position;
             Input.WorldMousePosition = Camera.Main.ScreenToWorldPosition(Input.ScreenMousePosition);
         }
         #endregion
@@ -247,11 +283,13 @@ namespace Pyrite.Core.Inputs
         {
         }
         #endregion
-        
+
         #region Gamepads
         private void GamepadTriggerMoved(IGamepad gamepad, Trigger trigger)
         {
             Console.WriteLine(trigger.Position + ", " + trigger.Index);
+            Console.WriteLine((GamepadButtons)trigger.Index + ", " + _gamepad.IsButtonDown(trigger.Index == 1 ? GamepadButtons.LeftTrigger : GamepadButtons.RightTrigger));
+            ;
         }
 
         private void GamepadThumbstickMoved(IGamepad gamepad, Thumbstick thumbstick)
@@ -266,7 +304,7 @@ namespace Pyrite.Core.Inputs
 
         private void GamepadButtonDown(IGamepad gamepad, Button button)
         {
-            Console.WriteLine(button.Name + ", " + button.Index);
+            Console.WriteLine((GamepadButtons)button.Index + ", " + _gamepad.IsButtonDown((GamepadButtons)button.Index));
         }
         #endregion
     }

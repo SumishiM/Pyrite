@@ -30,6 +30,8 @@ namespace Pyrite.Core.Geometry
 
         #region Operators
         public static implicit operator Vector2(Point p) => new(p.X, p.Y);
+        public static implicit operator Point(System.Numerics.Vector2 v) => new((int)v.X, (int)v.Y);
+        public static implicit operator System.Numerics.Vector2(Point p) => new(p.X, p.Y);
 
         public static Point operator +(Point a, Point b)
             => new(a.X + b.X, a.Y + b.Y);

@@ -3,7 +3,7 @@ using Silk.NET.Input;
 
 namespace Pyrite.Core.Inputs
 {   
-    public struct InputButton
+    public readonly struct InputButton
     {
         public readonly InputSource Source = InputSource.None;
 
