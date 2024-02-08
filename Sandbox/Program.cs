@@ -36,10 +36,10 @@ namespace Sandbox
                     typeof(DefaultRendererSystem),
                     typeof(SpinSystem)));
 
-            Node toothless = 
+            Node toothless =
                 Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")
                     .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
-                    .AddComponent<SpinComponent>(new(){ SpinSpeed = 36f});
+                    .AddComponent<SpinComponent>(new() { SpinSpeed = 36f });
 
             toothless.GetComponent<TransformComponent>().Position = new Vector2(300, 300);
         }

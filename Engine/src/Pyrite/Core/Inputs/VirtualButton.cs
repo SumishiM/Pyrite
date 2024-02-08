@@ -1,6 +1,7 @@
 ﻿using Silk.NET.Input;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Pyrite.Core.Inputs
         public event Action? OnPressed;
         public event Action? OnReleased;
 
-        public void Update()
+        public void Update(ICollection<IInputDevice> devices)
         {
             throw new NotImplementedException();
         }

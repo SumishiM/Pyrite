@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Silk.NET.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,8 +10,46 @@ namespace Pyrite.Core.Inputs
 {
     public class PlayerInput
     {
+        private IKeyboard? _keyboard;
+        public IKeyboard? Keyboard
+        {
+            get => _keyboard;
+            set => _keyboard = value;
+        }
 
+        private IGamepad? _gamepad;
+        public IGamepad? Gamepad
+        {
+            get => _gamepad;
+            set => _gamepad = value;
+        }
 
+        private IMouse? _mouse;
+        public IMouse? Mouse
+        {
+            get => _mouse;
+            set => _mouse = value;
+        }
 
+        private List<IInputDevice> _devices = [];
+
+        private InputMap map; // InputMap
+
+        
+
+        public void UpdateDevices()
+        {
+            _devices = [];
+
+            if (_keyboard is not null) _devices.Add(_keyboard);
+            if (_gamepad is not null) _devices.Add(_gamepad);
+            if (_mouse is not null) _devices.Add(_mouse);
+        }
+
+        public void Update()
+        {
+            map.Update(_devices);
+
+        }
     }
 }
