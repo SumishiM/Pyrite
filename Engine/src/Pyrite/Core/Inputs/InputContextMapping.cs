@@ -135,23 +135,6 @@ namespace Pyrite.Core.Inputs
         public InputContextMapping(IInputContext context)
         {
 
-
-            foreach (var keyboard in context.Keyboards)
-            {
-                StartListeningToKeyboard(keyboard);
-            }
-
-            foreach (var mouse in context.Mice)
-            {
-                StartListeningToMouse(mouse);
-            }
-
-            foreach (var gamepad in context.Gamepads)
-            {
-                StartListeningToGamepad(gamepad);
-            }
-
-            context.ConnectionChanged += HandleConnectionChanged;
         }
 
 

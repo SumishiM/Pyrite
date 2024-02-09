@@ -7,6 +7,7 @@ using System.Drawing;
 using SilkWindow = Silk.NET.Windowing.Window;
 using Icon = Pyrite.Core.Graphics.Icon;
 using Pyrite.Core.Graphics;
+using Pyrite.Core.Inputs;
 
 namespace Pyrite
 {
@@ -62,7 +63,7 @@ namespace Pyrite
 #endif
                 // todo : Create input system instance and set appropriate callbacks
                 //Set-up input context.
-                Game.Instance.Inputs = new(_native.CreateInput());
+                Input.Initialize(_native.CreateInput());
 
                 _native.Center();
                 if ( _icon is not null )
