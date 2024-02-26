@@ -14,9 +14,9 @@ namespace Pyrite.Utils
         {
             TypeNameHandling = TypeNameHandling.All,
             Formatting = Formatting.Indented,
-            ContractResolver = new WritablePropertiesOnlyResolver(),
+            //ContractResolver = new WritablePropertiesOnlyResolver(),
             MissingMemberHandling = MissingMemberHandling.Error,
-            Error = SerializationHelper.HandleSerializationError,
+            //Error = SerializationHelper.HandleSerializationError,
             NullValueHandling = NullValueHandling.Ignore
         };
 

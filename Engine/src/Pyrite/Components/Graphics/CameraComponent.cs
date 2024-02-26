@@ -1,12 +1,11 @@
 ﻿using Ignite.Attributes;
+using Ignite.Components;
 using Pyrite.Core.Graphics;
-using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace Pyrite.Components.Graphics
 {
     [RequireComponent(typeof(TransformComponent))]
-    public class CameraComponent : Component
+    public readonly struct CameraComponent : IComponent
     {
         private readonly Camera _camera;
 

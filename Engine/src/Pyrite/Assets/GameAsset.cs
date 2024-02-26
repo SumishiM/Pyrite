@@ -95,15 +95,15 @@ namespace Pyrite.Assets
         /// <summary>
         /// Create a duplicate of the current asset.
         /// </summary>
-        public GameAsset Duplicate(string name)
-        {
-            GameAsset asset = SerializationHelper.DeepCopy(this);
+        //public GameAsset Duplicate(string name)
+        //{
+        //    GameAsset asset = SerializationHelper.DeepCopy(this);
 
-            asset.Name = name;
-            asset.MakeGuid();
+        //    asset.Name = name;
+        //    asset.MakeGuid();
 
-            return asset;
-        }
+        //    return asset;
+        //}
 
         /// <summary>
         /// Implemented by assets that may cache data.
