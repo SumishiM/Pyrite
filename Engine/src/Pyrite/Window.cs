@@ -2,23 +2,23 @@
 using Silk.NET.Windowing;
 using Silk.NET.Input;
 
-using System.Drawing;
-
 using SilkWindow = Silk.NET.Windowing.Window;
 using Icon = Pyrite.Core.Graphics.Icon;
+
 using Pyrite.Core.Graphics;
 using Pyrite.Core.Inputs;
+using Pyrite.Core.Geometry;
 
 namespace Pyrite
 {
     public struct WindowInfo
     {
         public string Title;
-        public int Width;
-        public int Height;
+        public Point Size;
+        public Point MinimalSize;
         public bool Resizable;
         public bool Maximized;
-        public Color BackgroundColor;
+        public System.Drawing.Color BackgroundColor;
         public string? IconPath;
     }
 
@@ -35,17 +35,19 @@ namespace Pyrite
         public int Height => _native.FramebufferSize.Y;
 
         private readonly Icon _icon;
-        public static Color BackgroundColor { get; private set; } = Color.Black;
+        public static System.Drawing.Color BackgroundColor { get; private set; } = System.Drawing.Color.Black;
 
 
         public Window ( WindowInfo info )
         {
 
             var options = WindowOptions.Default;
-            options.Size = new Vector2D<int>(info.Width, info.Height);
+            options.Size = new Vector2D<int>(info.Size.X, info.Size.Y);
             options.Title = info.Title;
             options.WindowBorder = info.Resizable ? WindowBorder.Resizable : WindowBorder.Fixed;
             options.WindowState = info.Maximized ? WindowState.Maximized : WindowState.Normal;
+            options.ShouldSwapAutomatically = true;
+            options.TopMost = true;
 
 #if DEBUG
             Console.WriteLine($"Create window {options.Size}");
@@ -75,17 +77,35 @@ namespace Pyrite
                 OnLoad?.Invoke();
             };
 
-            _native.Update += ( dt ) => OnUpdate?.Invoke(dt);
+            _native.Update += deltaTime => OnUpdate?.Invoke(deltaTime);
             _native.Render += _ => OnRender?.Invoke();
             _native.Closing += () => OnClose?.Invoke();
 
+            _native.Resize += s =>
+            {
+                var position = _native.Position;
+                if (s.X < info.MinimalSize.X)
+                {
+                    _native.Size = new Vector2D<int>(info.MinimalSize.X, s.Y);
+                }
+                if (s.Y < info.MinimalSize.Y)
+                {
+                    _native.Size = new Vector2D<int>(s.X, info.MinimalSize.Y);
+                }
+                _native.Position = position;
+            };
 
             // Handle resizes
             _native.FramebufferResize += s =>
             {
-                // add if OpenGL
-                Core.Graphics.Graphics.Gl.Viewport(s);
-                Camera.Main.UpdateSize(s.X, s.Y);
+                var position = _native.Position;
+                if (_native.Size.X > info.MinimalSize.X && _native.Size.Y > info.MinimalSize.Y)
+                {
+                    // add if OpenGL
+                    Core.Graphics.Graphics.Gl.Viewport(s);
+                    Camera.Main.UpdateSize(s.X, s.Y);
+                }
+                _native.Position = position;
             };
         }
 

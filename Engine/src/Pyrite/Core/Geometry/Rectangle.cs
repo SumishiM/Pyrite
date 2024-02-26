@@ -7,10 +7,10 @@
         public float Width;
         public float Height;
 
-        public float Left { get => X; set => X = value; }
-        public float Right { get => X + Width; set => Width = X - value; }
-        public float Top { get => Y; set => Y = value; }
-        public float Bottom { get => Y + Height; set => Height = Y - value; }
+        public float Left { readonly get => X; set => X = value; }
+        public float Right { readonly get => X + Width; set => Width = X - value; }
+        public float Top { readonly get => Y; set => Y = value; }
+        public float Bottom { readonly get => Y + Height; set => Height = Y - value; }
 
         public Vector2 Size
         {
@@ -99,7 +99,7 @@
             return new(left, top, right - left, bottom - top);
         }
 
-        public bool Touches(Rectangle other)
+        public readonly bool Touches(Rectangle other)
         {
             return other.Left <= Right &&
                    Left <= other.Right &&
@@ -107,18 +107,18 @@
                    Top <= other.Bottom;
         }
 
-        public bool TouchesInside(Rectangle other)
+        public readonly bool TouchesInside(Rectangle other)
         {
             return other.Left < Right &&
                    Left < other.Right &&
                    other.Top < Bottom &&
                    Top < other.Bottom;
         }
-        public bool Contains(Vector2 vector) => Contains(vector.X, vector.Y);
-        public bool Contains(int X, int Y) => Contains((float)X, (float)Y);
+        public readonly bool Contains(Vector2 vector) => Contains(vector.X, vector.Y);
+        public readonly bool Contains(int X, int Y) => Contains((float)X, (float)Y);
 
-        public bool Contains(Point point) => Contains(point.X, point.Y);
-        public bool Contains(float X, float Y)
+        public readonly bool Contains(Point point) => Contains(point.X, point.Y);
+        public readonly bool Contains(float X, float Y)
         {
             return X > Left && X < Right && Y > Top && Y < Bottom;
         }

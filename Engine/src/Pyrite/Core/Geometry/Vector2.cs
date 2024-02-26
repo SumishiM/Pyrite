@@ -7,32 +7,29 @@ namespace Pyrite.Core.Geometry
         public float X;
         public float Y;
 
-        public Vector2(float x, float y)
+        public Vector2(float x = 0f, float y = 0f)
         {
             X = x;
             Y = y;
         }
 
         #region Constants
-        public static Vector2 Zero
-        {
-            get => new(0f, 0f);
-        }
-
-        public static Vector2 One
-        {
-            get => new(1f, 1f);
-        }
-
-        public static Vector2 UnitX
-        {
-            get => new(1f, 0f);
-        }
-
-        public static Vector2 UnitY
-        {
-            get => new(0f, 1f);
-        }
+        /// <summary>
+        /// An empty vector [0, 0]
+        /// </summary>
+        public static Vector2 Zero => new(0f, 0f);
+        /// <summary>
+        /// A vector [1, 1]
+        /// </summary>
+        public static Vector2 One => new(1f, 1f);
+        /// <summary>
+        /// A vector [1, 0]
+        /// </summary>
+        public static Vector2 UnitX => new(1f, 0f);
+        /// <summary>
+        /// A vector [0, 1]
+        /// </summary>
+        public static Vector2 UnitY => new(0f, 1f);
         #endregion
 
         public readonly float Length()

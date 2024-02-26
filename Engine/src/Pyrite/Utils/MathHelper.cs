@@ -11,11 +11,6 @@ namespace Pyrite.Utils
         #endregion
 
         #region Line
-        public static float Length(this Line line)
-            => (line.Start - line.End).Length();
-
-        public static float SquaredLength(this Line line)
-            => (line.Start - line.End).SquaredLength();
         #endregion
     }
 }

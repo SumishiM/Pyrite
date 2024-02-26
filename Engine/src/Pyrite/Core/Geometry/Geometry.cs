@@ -8,33 +8,33 @@ namespace Pyrite.Core.Geometry
 {
     public static class Geometry
     {
-        private static Dictionary<String, Vector2[]> _circleCache = [];
+        //private static Dictionary<String, Vector2[]> _circleCache = [];
 
-        public static Vector2[] CreateCircle(double radius, int sides)
-        {
-            // Look for a cached version of this circle
-            String circleKey = $"{radius}x{sides}";
-            if (_circleCache.TryGetValue(circleKey, out Vector2[]? value))
-            {
-                return value;
-            }
+        //public static Vector2[] CreateCircle(double radius, int sides)
+        //{
+        //    // Look for a cached version of this circle
+        //    String circleKey = $"{radius}x{sides}";
+        //    if (_circleCache.TryGetValue(circleKey, out Vector2[]? value))
+        //    {
+        //        return value;
+        //    }
 
-            List<Vector2> vectors = [];
+        //    List<Vector2> vectors = [];
 
-            const double max = 2.0 * Math.PI;
-            double step = max / sides;
+        //    const double max = 2.0 * Math.PI;
+        //    double step = max / sides;
 
-            for (double theta = 0.0; theta < max; theta += step)
-            {
-                vectors.Add(new Vector2((float)(radius * Math.Cos(theta)), (float)(radius * Math.Sin(theta))));
-            }
+        //    for (double theta = 0.0; theta < max; theta += step)
+        //    {
+        //        vectors.Add(new Vector2((float)(radius * Math.Cos(theta)), (float)(radius * Math.Sin(theta))));
+        //    }
 
-            // Cache this circle so that it can be quickly drawn next time
-            var result = vectors.ToArray();
-            _circleCache.Add(circleKey, result);
+        //    // Cache this circle so that it can be quickly drawn next time
+        //    var result = vectors.ToArray();
+        //    _circleCache.Add(circleKey, result);
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public static bool InRectangle(Vector2 u, Rectangle r)
             => r.Contains(u);

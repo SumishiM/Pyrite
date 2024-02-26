@@ -49,11 +49,17 @@ namespace Pyrite.Core.Geometry
         {
             float d1 = (point - Start).Length();
             float d2 = (point - End).Length();
-            float len = this.Length();
+            float len = Length();
             float sum = d1 + d2;
 
             return sum >= len - precision && sum <= len + precision;
         }
+
+        public readonly float Length()
+            => (Start - End).Length();
+
+        public readonly float SquaredLength()
+            => (Start - End).SquaredLength();
 
         /// <summary>
         /// Intersection test on another line. (http://ideone.com/PnPJgb)

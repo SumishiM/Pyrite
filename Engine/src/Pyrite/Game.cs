@@ -39,9 +39,8 @@ namespace Pyrite
             .CreateBuilder();
 
         private World? _percistentWorld = null;
-
         /// <summary>
-        /// <see cref="Ignite.World"/> that is running for the entire life cycle of the game.
+        /// <see cref="Ignite.World"/> which run for the entire life cycle of the game.
         /// It will be destroyed when the game stops
         /// </summary>
         public World PercistentWorld
@@ -57,8 +56,14 @@ namespace Pyrite
             }
         }
 
+        /// <summary>
+        /// List of systems to register in <see cref="PercistentWorld"/> on game start
+        /// </summary>
         protected virtual List<Type> Systems => [];
 
+        /// <summary>
+        /// Input system instance
+        /// </summary>
         public InputContextMapping Inputs;
 
         protected virtual WindowInfo WindowInfo => new()
@@ -67,22 +72,22 @@ namespace Pyrite
             BackgroundColor = Color.Black,
 
 #if PS4 || XBOXONE
-            Width = 1920,
-            Height = 1080,
+            Size = new(1920, 1080),
             Maximized = true,
             Resizable = false,
 #elif NSWITCH
-            Width = 1280,
-            Height = 720,
+            Size = new(1080, 720),
             Maximized = true,
             Resizable = false,
 #else
-            Width = 1080,
-            Height = 720,
+            Size = new(1080, 720),
+            MinimalSize = new(720, 480),
             Maximized = false,
             Resizable = true,
 #endif
         };
+
+        private float _timeUntilFixedUpdate = 0f;
 
         public Game()
         {
@@ -97,6 +102,8 @@ namespace Pyrite
             _window.OnUpdate += OnUpdate;
             _window.OnRender += OnRender;
             _window.OnClose += OnClose;
+
+            _timeUntilFixedUpdate = Time.FixedDeltaTime;
         }
 
         /// <summary>
@@ -114,6 +121,9 @@ namespace Pyrite
             _window.Run();
         }
 
+        /// <summary>
+        /// Called on game window load
+        /// </summary>
         private void OnLoad()
         {
 #if DEBUG
@@ -127,17 +137,30 @@ namespace Pyrite
 #endif
         }
 
+        /// <summary>
+        /// Called every game window update.
+        /// Manage a fixed update time.
+        /// </summary>
         private void OnUpdate(double deltaTime)
         {
             Time.Update(deltaTime);
 
             PercistentWorld.Update();
-            PercistentWorld.FixedUpdate();
-
             SceneManager.CurrentScene?.Update();
-            SceneManager.CurrentScene?.FixedUpdate();
+
+            // manage fixed update 
+            _timeUntilFixedUpdate -= Time.DeltaTime;
+            if (_timeUntilFixedUpdate <= 0f) // todo : check if there can be a frame skip ? does it matter ? 
+            {
+                _timeUntilFixedUpdate += Time.FixedDeltaTime; // += to ensure a consistant fixed update time 
+                PercistentWorld.FixedUpdate();
+                SceneManager.CurrentScene?.FixedUpdate();
+            }
         }
 
+        /// <summary>
+        /// Called every game window render 
+        /// </summary>
         private void OnRender()
         {
             _percistentWorld?.Render();

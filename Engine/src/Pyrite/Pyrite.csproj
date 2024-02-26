@@ -32,8 +32,11 @@
 
 	<ItemGroup>
 		<Folder Include="Attributes\" />
+		<Folder Include="Components\Physics\" />
 		<Folder Include="Core\Graphics\Rendering\Vulkan\" />
 		<Folder Include="Core\Graphics\Shaders\" />
+		<Folder Include="Core\Colliders\" />
+		<Folder Include="Core\Physics\" />
 		<Folder Include="Extentions\" />
 	</ItemGroup>
 	

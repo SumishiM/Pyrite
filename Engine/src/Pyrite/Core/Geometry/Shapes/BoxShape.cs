@@ -10,6 +10,7 @@ namespace Pyrite.Core.Geometry.Shapes
         public readonly Point Offset = Point.One * 16;
 
         public readonly Point Size => new(Width, Height);
+
         /// <summary>
         /// Simple shape getter
         /// </summary>
