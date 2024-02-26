@@ -1,12 +1,13 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
+using Pyrite.Attributes;
 using Pyrite.Core.Graphics;
 using Pyrite.Core.Graphics.Rendering.OpenGL;
 
 namespace Pyrite.Systems.Graphics
 {
-    [FilterComponent(typeof(SpriteComponent))]
-    public class DefaultRendererSystem :
+    [SceneSystem, FilterComponent(typeof(SpriteComponent))]
+    public partial class DefaultRendererSystem :
         OGLRenderer, IStartSystem, IRenderSystem
     {
         public void Start(Context context)
