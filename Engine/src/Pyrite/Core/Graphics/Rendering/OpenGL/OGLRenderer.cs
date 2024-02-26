@@ -1,4 +1,6 @@
-﻿using Silk.NET.OpenGL;
+﻿using Ignite;
+using Pyrite.Components;
+using Silk.NET.OpenGL;
 using Shader = Pyrite.Core.Graphics.Rendering.OpenGL.Shader;
 
 namespace Pyrite.Core.Graphics.Rendering.OpenGL
@@ -17,21 +19,41 @@ namespace Pyrite.Core.Graphics.Rendering.OpenGL
         private static readonly float[] _vertices = //! might move to renderer
         [
             //X    Y      Z     S    T
-            0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-            0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
-            -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-            -0.5f, 0.5f, 0.0f, 0.0f, 0.0f
+            0.5f,
+            0.5f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            1.0f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            0.0f,
+            1.0f,
+            -0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            0.0f
         ];
 
         //Index data, uploaded to the EBO.
         private static readonly uint[] _indices = //! might move to renderer
         [
-            0, 1, 3,
-            1, 2, 3
+            0,
+            1,
+            3,
+            1,
+            2,
+            3
         ];
 
         /// <inheritdoc/>
-        public unsafe override void Initialize ()
+        public unsafe override void Initialize()
         {
             //Instantiating our new abstractions
             _ebo = new BufferObject<uint>(_indices, BufferTargetARB.ElementArrayBuffer);
@@ -43,7 +65,7 @@ namespace Pyrite.Core.Graphics.Rendering.OpenGL
             _vao.VertexAttributePointer(1, 2, VertexAttribPointerType.Float, 5, 3);
         }
 
-        public override void ClearScreen ()
+        public override void ClearScreen()
         {
             // Clear screen
             Graphics.Gl.Clear((uint)ClearBufferMask.ColorBufferBit);
@@ -53,8 +75,10 @@ namespace Pyrite.Core.Graphics.Rendering.OpenGL
         /// <summary>
         /// Draw every sprites registered, note that this function do 1 draw call per sprite.
         /// </summary>
-        public unsafe override void Draw ( SpriteComponent sprite )
+        public unsafe override void Draw(Node node)
         {
+            SpriteComponent sprite = node.GetComponent<SpriteComponent>();
+            
             if (sprite.Texture == null)
                 return;
 
@@ -67,7 +91,7 @@ namespace Pyrite.Core.Graphics.Rendering.OpenGL
             shader.Use();
             sprite.Texture.Bind();
             shader.SetUniform("uTexture0", 0);
-            shader.SetUniform("uModel", sprite.ModelMatrix);
+            shader.SetUniform("uModel", sprite.GetModelMatrix(node.GetComponent<TransformComponent>()));
             shader.SetUniform("uProjection", Camera.Main.WorldViewProjection);
 
             // draw sprite
@@ -78,7 +102,7 @@ namespace Pyrite.Core.Graphics.Rendering.OpenGL
                 null);
         }
 
-        public override void Dispose ()
+        public override void Dispose()
         {
             //Remember to dispose all the instances.
             _vbo.Dispose();

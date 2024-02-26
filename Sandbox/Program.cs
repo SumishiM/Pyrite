@@ -31,10 +31,11 @@ namespace Sandbox
 
         protected override void Initialize()
         {
-            SceneManager.LoadScene(
-                new Scene("Toothless scene",
+            Scene toothlessScene = new("Toothless scene",
                     typeof(DefaultRendererSystem),
-                    typeof(SpinSystem)));
+                    typeof(SpinSystem));
+
+            SceneManager.LoadScene(ref toothlessScene);
 
             Node toothless =
                 Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")

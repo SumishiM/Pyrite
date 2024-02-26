@@ -1,8 +1,10 @@
-﻿using Ignite.Components;
+﻿using Ignite.Attributes;
+using Ignite.Components;
 using Pyrite.Core.Geometry;
 
-namespace Pyrite.Components
+namespace Pyrite.Components.Physics
 {
+    [RequireComponent(typeof(TransformComponent))]
     public struct VelocityComponent : IComponent
     {
         /// <summary>

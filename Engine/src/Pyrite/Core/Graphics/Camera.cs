@@ -1,4 +1,5 @@
 ﻿using Ignite;
+using Ignite.Extentions;
 using Pyrite.Components;
 using Pyrite.Components.Graphics;
 using Pyrite.Core.Geometry;
@@ -84,17 +85,13 @@ namespace Pyrite.Core.Graphics
         {
             get
             {
-                if (SceneManager.CurrentScene == null)
-                    throw new Exception("Trying to get the main camera when there is no scene loaded !");
-
                 if (_main is null || _main?._transform is null)
                 {
-                    CameraComponent component = SceneManager.CurrentScene.World
-                        .GetNodesWith(typeof(CameraComponent))[0] // should never be null while the scene is running
-                        .GetComponent<CameraComponent>();
+                    var camera = SceneManager.CurrentScene.World
+                        .GetNodesWith(typeof(CameraComponent))[0]; // should never be null while the scene is running
 
-                    _main = component;
-                    _main._transform = component.Parent.GetComponent<TransformComponent>();
+                    _main = camera.GetComponent<CameraComponent>();
+                    _main._transform = camera.GetComponent<TransformComponent>();
                 }
 
                 return _main;

@@ -127,13 +127,13 @@ namespace Pyrite
         private void OnLoad()
         {
 #if DEBUG
-            Console.WriteLine("Start Initialization Game");
+            Console.WriteLine("Start Game Initialization");
 #endif
             Initialize();
             PercistentWorld.Start();
-            SceneManager.CurrentScene?.Start();
+            SceneManager.CurrentScene.Start();
 #if DEBUG
-            Console.WriteLine("Finished Initialization Game");
+            Console.WriteLine("Finished Game Initialization");
 #endif
         }
 
@@ -146,7 +146,7 @@ namespace Pyrite
             Time.Update(deltaTime);
 
             PercistentWorld.Update();
-            SceneManager.CurrentScene?.Update();
+            SceneManager.CurrentScene.Update();
 
             // manage fixed update 
             _timeUntilFixedUpdate -= Time.DeltaTime;
@@ -154,7 +154,7 @@ namespace Pyrite
             {
                 _timeUntilFixedUpdate += Time.FixedDeltaTime; // += to ensure a consistant fixed update time 
                 PercistentWorld.FixedUpdate();
-                SceneManager.CurrentScene?.FixedUpdate();
+                SceneManager.CurrentScene.FixedUpdate();
             }
         }
 
@@ -164,7 +164,7 @@ namespace Pyrite
         private void OnRender()
         {
             _percistentWorld?.Render();
-            SceneManager.CurrentScene?.Render();
+            SceneManager.CurrentScene.Render();
         }
 
         private void OnClose()
@@ -173,7 +173,7 @@ namespace Pyrite
             Console.WriteLine("Close Game");
 #endif
             PercistentWorld.Exit();
-            SceneManager.CurrentScene?.Exit();
+            SceneManager.CurrentScene.Exit();
         }
 
 

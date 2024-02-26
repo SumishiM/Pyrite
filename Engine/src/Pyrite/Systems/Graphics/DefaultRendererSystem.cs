@@ -1,9 +1,7 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
-using Pyrite.Components;
 using Pyrite.Core.Graphics;
 using Pyrite.Core.Graphics.Rendering.OpenGL;
-using Silk.NET.Vulkan;
 
 namespace Pyrite.Systems.Graphics
 {
@@ -25,7 +23,7 @@ namespace Pyrite.Systems.Graphics
 
             foreach (var node in context.Nodes)
             {
-                Draw(node.GetComponent<SpriteComponent>());
+                Draw(node);
             }
         }
     }

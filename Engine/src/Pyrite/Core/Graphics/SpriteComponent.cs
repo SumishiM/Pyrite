@@ -13,32 +13,18 @@ namespace Pyrite.Core.Graphics
     {
         public readonly Shader? Shader = null;
         public readonly Texture? Texture;
-        private Transform? _transform;
-        internal Transform? Transform
-        {
-            get
-            {
-                _transform ??= this.GetFromRequirement<TransformComponent>();
-                return _transform;
-            }
-            set => _transform = value;
-        }
 
         public int SortingOrder { get; set; }
 
-        public Matrix ModelMatrix
+        public readonly Matrix GetModelMatrix(Transform transform)
         {
-            get
-            {
-                if (Texture == null || Transform == null)
-                    return Matrix.Identity;
-#nullable disable
-                return
-                    Matrix.CreateScale(Texture.Size.X * _transform.Scale.X, Texture.Size.Y * _transform.Scale.Y, 1f) *
-                    Matrix.CreateRotationZ(_transform.Rotation.ToRadians()) *
-                    Matrix.CreateTranslation(_transform.Position.X, _transform.Position.Y, 0f);
-#nullable enable
-            }
+            if (Texture == null)
+                return Matrix.Identity;
+
+            return
+                Matrix.CreateScale(Texture.Size.X * transform.Scale.X, Texture.Size.Y * transform.Scale.Y, 1f) *
+                Matrix.CreateRotationZ(transform.Rotation.ToRadians()) *
+                Matrix.CreateTranslation(transform.Position.X, transform.Position.Y, 0f);
         }
 
         public SpriteComponent() { }

@@ -47,7 +47,6 @@ namespace Pyrite
             options.WindowBorder = info.Resizable ? WindowBorder.Resizable : WindowBorder.Fixed;
             options.WindowState = info.Maximized ? WindowState.Maximized : WindowState.Normal;
             options.ShouldSwapAutomatically = true;
-            options.TopMost = true;
 
 #if DEBUG
             Console.WriteLine($"Create window {options.Size}");

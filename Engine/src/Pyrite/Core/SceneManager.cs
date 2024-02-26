@@ -11,17 +11,14 @@ namespace Pyrite.Core
     {
         private static Scene _defaultScene => new("Sample Scene");
         internal static Scene ConfiguratedDefaultScene = _defaultScene;
-        public static Scene CurrentScene { get; private set; } = ConfiguratedDefaultScene; 
+        public static Scene CurrentScene = ConfiguratedDefaultScene;
 
-        public static bool LoadScene(Scene scene)
+        public static bool LoadScene(ref Scene scene)
         {
-            if (CurrentScene != null)
-            {
 #if DEBUG
-                Console.WriteLine($"Unload scene : {CurrentScene.Name}");
+            Console.WriteLine($"Unload scene : {CurrentScene.Name}");
 #endif
-                CurrentScene.Exit();
-            }
+            CurrentScene.Exit();
             CurrentScene = scene;
 #if DEBUG
             Console.WriteLine($"Load scene : {CurrentScene.Name}");
@@ -32,12 +29,12 @@ namespace Pyrite.Core
 
         public static void Pause()
         {
-            CurrentScene?.Pause();
+            CurrentScene.Pause();
         }
 
         public static void Resume()
         {
-            CurrentScene?.Resume();
+            CurrentScene.Resume();
         }
     }
 }
