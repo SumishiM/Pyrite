@@ -49,10 +49,10 @@ namespace Pyrite
             {
                 if (_percistentWorld == null)
                 {
-                    _defaultWorldBuilder.AddSystems([.. PercistantSystems]);
+                    _defaultWorldBuilder.AddSystems([.. PercistentSystems]);
                     _percistentWorld = _defaultWorldBuilder.Build();
 #if DEBUG
-                    Console.WriteLine($"Percistent world built with {PercistantSystems.Count} systems.");
+                    Console.WriteLine($"Percistent world built with {PercistentSystems.Count} systems.");
 #endif
                 }
                 return _percistentWorld;
@@ -62,7 +62,7 @@ namespace Pyrite
         /// <summary>
         /// List of systems to register in <see cref="PercistentWorld"/> on game start
         /// </summary>
-        protected virtual List<Type> PercistantSystems => [];
+        protected virtual List<Type> PercistentSystems => [];
 
         /// <summary>
         /// Input system instance
