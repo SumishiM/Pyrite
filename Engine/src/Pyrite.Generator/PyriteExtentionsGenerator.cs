@@ -54,7 +54,7 @@ namespace Pyrite.Generator
 
             // create files as raw strings for now
             var templates = ImmutableArray.Create(
-                FileTemplate.PercistantSystemsImplementation(projectName)
+                FileTemplate.PercistantSystemsRegistration(projectName)
             );
 
             // replace project tokens in files

@@ -24,8 +24,8 @@ namespace Pyrite.Generator.Templating
         /// <summary>
         /// Component lookup table generated file
         /// </summary>
-        public static FileTemplate PercistantSystemsImplementation(string projectName)
-            => new($"{projectName}PercistantSystems.g.cs",
+        public static FileTemplate PercistantSystemsRegistration(string projectName)
+            => new($"{projectName}PercistantSystemsRegistration.g.cs",
                 Templates.PercistantSystemsRegisteringRaw,
                 ImmutableArray.Create<TemplateSubstitution>(
                     new ProjectNameSubstitution(),
