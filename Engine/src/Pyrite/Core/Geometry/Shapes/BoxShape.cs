@@ -1,4 +1,5 @@
 ﻿using Pyrite.Utils;
+
 namespace Pyrite.Core.Geometry.Shapes
 {
     public readonly struct BoxShape : IShape
