@@ -54,7 +54,7 @@ namespace Pyrite.Generator
 
             // create files as raw strings for now
             var templates = ImmutableArray.Create(
-                FileTemplate.PercistantSystemsRegistration(projectName)
+                FileTemplate.PercistentSystemsRegistration(projectName)
             );
 
             // replace project tokens in files
@@ -80,8 +80,5 @@ namespace Pyrite.Generator
                 context.AddSource(template.FileName, template.GetDocumentWithReplacements());
             }
         }
-
-        private static int NumberOfParentClasses(INamedTypeSymbol type)
-            => type.BaseType is null ? 0 : 1 + NumberOfParentClasses(type.BaseType);
     }
 }

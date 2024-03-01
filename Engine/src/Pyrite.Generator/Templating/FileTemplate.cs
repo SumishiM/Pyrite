@@ -24,13 +24,13 @@ namespace Pyrite.Generator.Templating
         /// <summary>
         /// Component lookup table generated file
         /// </summary>
-        public static FileTemplate PercistantSystemsRegistration(string projectName)
-            => new($"{projectName}PercistantSystemsRegistration.g.cs",
-                Templates.PercistantSystemsRegisteringRaw,
+        public static FileTemplate PercistentSystemsRegistration(string projectName)
+            => new($"{projectName}PercistentSystemsRegistration.g.cs",
+                Templates.PercistentSystemsRegisteringRaw,
                 ImmutableArray.Create<TemplateSubstitution>(
                     new ProjectNameSubstitution(),
                     new ProjectGameClassAsPartialSubstitution(),
-                    new PercistantSystemsListSubstitution()));
+                    new PercistentSystemsListSubstitution()));
     
         public void Process(TypeMetadata metadata)
         {

@@ -35,10 +35,6 @@ namespace Pyrite.Generator.Metadata
             }
         }
 
-
-        /// <summary>
-        /// Fetch components data and create the metadata for it
-        /// </summary>
         private IEnumerable<TypeMetadata.System> FetchSystems(
             PyriteTypesSymbols pyriteTypesSymbols,
             ImmutableArray<INamedTypeSymbol> allValueTypes)
@@ -46,7 +42,7 @@ namespace Pyrite.Generator.Metadata
                 .Where(t =>
                     (!t.IsGenericType || !t.IsAbstract)
                     && t.ImplementInterface(pyriteTypesSymbols.SystemTypeSymbol)
-                    && t.HasAttribute(pyriteTypesSymbols.PercistantSystemAttribute))
+                    && t.HasAttribute(pyriteTypesSymbols.PercistentSystemAttribute))
                 .OrderBy(c => c.Name)
                 .Select((system, index) => new TypeMetadata.System(
                     Name: system.Name.ToCleanAttributeName(),
@@ -62,16 +58,16 @@ namespace Pyrite.Generator.Metadata
             TypeDeclarationSyntax typeDeclarationSyntax)
         {
             var sementic = _compilation.GetSemanticModel(typeDeclarationSyntax.SyntaxTree);
-            if (sementic.GetDeclaredSymbol(typeDeclarationSyntax) is not INamedTypeSymbol potentialPercistantSystemSymbol)
+            if (sementic.GetDeclaredSymbol(typeDeclarationSyntax) is not INamedTypeSymbol potentialPercistentSystemSymbol)
                 return Enumerable.Empty<INamedTypeSymbol>();
 
-            if (potentialPercistantSystemSymbol.GetAttributes().Count() == 0)
+            if (potentialPercistentSystemSymbol.GetAttributes().Count() == 0)
                 return Enumerable.Empty<INamedTypeSymbol>();
 
-            if (typeDeclarationSyntax is RecordDeclarationSyntax && !potentialPercistantSystemSymbol.IsValueType)
+            if (typeDeclarationSyntax is RecordDeclarationSyntax && !potentialPercistentSystemSymbol.IsValueType)
                 return Enumerable.Empty<INamedTypeSymbol>();
 
-            return potentialPercistantSystemSymbol.Yield();
+            return potentialPercistentSystemSymbol.Yield();
         }
     }
 }

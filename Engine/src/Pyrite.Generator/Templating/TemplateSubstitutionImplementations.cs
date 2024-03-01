@@ -26,9 +26,9 @@ namespace Pyrite.Generator.Templating
             }
         }
 
-        internal sealed class PercistantSystemsListSubstitution : TemplateSubstitution
+        internal sealed class PercistentSystemsListSubstitution : TemplateSubstitution
         {
-            public PercistantSystemsListSubstitution() : base(Templates.PercistantSystemsListToken) { }
+            public PercistentSystemsListSubstitution() : base(Templates.PercistentSystemsListToken) { }
 
 
             protected override string? ProcessSystem(TypeMetadata.System system)

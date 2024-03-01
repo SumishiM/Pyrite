@@ -51,6 +51,9 @@ namespace Pyrite
                 {
                     _defaultWorldBuilder.AddSystems([.. PercistantSystems]);
                     _percistentWorld = _defaultWorldBuilder.Build();
+#if DEBUG
+                    Console.WriteLine($"Percistent world built with {PercistantSystems.Count} systems.");
+#endif
                 }
                 return _percistentWorld;
             }

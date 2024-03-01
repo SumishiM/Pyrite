@@ -24,7 +24,7 @@ namespace Sandbox
         }
     }
 
-    [PercistantSystem]
+    [PercistentSystem]
     public struct PermaSystem : IStartSystem
     {
         public void Dispose()

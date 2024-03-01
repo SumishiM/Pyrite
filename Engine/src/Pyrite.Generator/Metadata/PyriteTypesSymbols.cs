@@ -6,11 +6,11 @@ namespace Pyrite.Generator.Metadata
     {
         private const string GameSymbolName = "Pyrite.Game";
         private const string SystemTypeSymbolName = "Ignite.Systems.ISystem";
-        private const string PercistantSystemAttributeTypeSymbolName = "Pyrite.Attributes.PercistantSystemAttribute";
+        private const string PercistentSystemAttributeTypeSymbolName = "Pyrite.Attributes.PercistentSystemAttribute";
 
         public INamedTypeSymbol GameTypeSymbol;
         public INamedTypeSymbol SystemTypeSymbol;
-        public INamedTypeSymbol PercistantSystemAttribute;
+        public INamedTypeSymbol PercistentSystemAttribute;
 
         private PyriteTypesSymbols(
             INamedTypeSymbol gameTypeSymbol,
@@ -19,7 +19,7 @@ namespace Pyrite.Generator.Metadata
         {
             GameTypeSymbol = gameTypeSymbol;
             SystemTypeSymbol = systemTypeSymbol;
-            PercistantSystemAttribute = percistantSystemAttribute;
+            PercistentSystemAttribute = percistantSystemAttribute;
         }
 
         public static PyriteTypesSymbols? FromCompilation(Compilation compilation)
@@ -32,14 +32,14 @@ namespace Pyrite.Generator.Metadata
             if (systemInterface is null)
                 return null;
 
-            var percistantSystemAttribute = compilation.GetTypeByMetadataName(PercistantSystemAttributeTypeSymbolName);
-            if (percistantSystemAttribute is null)
+            var percistentSystemAttribute = compilation.GetTypeByMetadataName(PercistentSystemAttributeTypeSymbolName);
+            if (percistentSystemAttribute is null)
                 return null;
 
             return new(
                 gameClass,
                 systemInterface,
-                percistantSystemAttribute);
+                percistentSystemAttribute);
         }
     }
 }
