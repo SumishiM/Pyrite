@@ -22,7 +22,7 @@ namespace Sandbox
         }
     }
 
-    internal class SandboxGame : Game
+    public partial class SandboxGame : Game
     {
         protected override WindowInfo WindowInfo => base.WindowInfo with
         {

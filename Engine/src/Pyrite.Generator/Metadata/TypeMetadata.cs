@@ -9,7 +9,8 @@ namespace Pyrite.Generator.Metadata
     public abstract record TypeMetadata
     {
         public sealed record Project(
-            string ProjectName
+            string ProjectName,
+            string ProjectGameClassName
             ) : TypeMetadata;
 
         public sealed record System(

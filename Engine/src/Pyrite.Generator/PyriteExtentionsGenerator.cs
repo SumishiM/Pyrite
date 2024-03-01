@@ -26,17 +26,28 @@ namespace Pyrite.Generator
             ImmutableArray<TypeDeclarationSyntax> potentialPercistantSystems)
         {
 
+#if DEBUG
+            // Uncomment this if you need to use a debugger.
+            //if (!System.Diagnostics.Debugger.IsAttached)
+            //{
+            //    System.Diagnostics.Debugger.Launch();
+            //}
+#endif
+
             var pyriteTypesSymbols = PyriteTypesSymbols.FromCompilation(compilation);
             if (pyriteTypesSymbols is null)
                 return;
 
             //var assemblyTypeFetcher = new AssemblyTypeFetcher(compilation);
             var metadataFetcher = new MetadataFetcher(compilation);
+            var assemblyTypeFetcher = new AssemblyTypeFetcher(compilation);
 
             var projectName = compilation.AssemblyName?.Replace(".", "") ?? "My";
 
+
             var projectMetadata = new TypeMetadata.Project(
-                projectName
+                projectName,
+                projectName + "Game"
             );
 
 
@@ -69,5 +80,8 @@ namespace Pyrite.Generator
                 context.AddSource(template.FileName, template.GetDocumentWithReplacements());
             }
         }
+
+        private static int NumberOfParentClasses(INamedTypeSymbol type)
+            => type.BaseType is null ? 0 : 1 + NumberOfParentClasses(type.BaseType);
     }
 }

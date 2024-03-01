@@ -26,12 +26,11 @@ namespace Pyrite.Generator.Templating
         /// </summary>
         public static FileTemplate PercistantSystemsImplementation(string projectName)
             => new($"{projectName}PercistantSystems.g.cs",
-                Templates.PercistantSystemsImplementationRaw,
+                Templates.PercistantSystemsRegisteringRaw,
                 ImmutableArray.Create<TemplateSubstitution>(
                     new ProjectNameSubstitution(),
-                    new ParentProjectLookupTableSubstitution(),
-                    new ComponentTypeToIndexSubstitution(),
-                    new IdCountSubstitution()));
+                    new ProjectGameClassAsPartialSubstitution(),
+                    new PercistantSystemsListSubstitution()));
     
         public void Process(TypeMetadata metadata)
         {

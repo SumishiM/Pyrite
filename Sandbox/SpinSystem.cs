@@ -1,5 +1,6 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
+using Pyrite.Attributes;
 using Pyrite.Components;
 using Pyrite.Core;
 using Pyrite.Utils;
@@ -7,7 +8,7 @@ using Pyrite.Utils;
 namespace Sandbox
 {
     [FilterComponent(typeof(SpinComponent))]
-    public partial struct SpinSystem : IFixedUpdateSystem
+    public struct SpinSystem : IFixedUpdateSystem
     {
         public void FixedUpdate( Context context )
         {
@@ -22,11 +23,16 @@ namespace Sandbox
         {
         }
     }
-}
 
-namespace Sandbox
-{
-    public partial struct SpinSystem 
+    [PercistantSystem]
+    public struct PermaSystem : IStartSystem
     {
+        public void Dispose()
+        {
+        }
+
+        public void Start(Context context)
+        {
+        }
     }
 }
