@@ -34,7 +34,6 @@ namespace Pyrite.Core.Inputs
 
         public void Update(ICollection<IInputDevice> devices)
         {
-            throw new NotImplementedException();
         }
 
         internal void Register(Key[] keys)
