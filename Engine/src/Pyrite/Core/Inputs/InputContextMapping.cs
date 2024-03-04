@@ -6,42 +6,6 @@ using System.Reflection;
 
 namespace Pyrite.Core.Inputs
 {
-    public enum InputSource
-    {
-        None = -1,
-        Keyboard = 0,
-        Mouse = 1,
-        Gamepad = 2,
-        GamepadAxis = 3,
-    }
-
-    public enum GamepadAxis
-    {
-        LeftThumbstick,
-        RightThumbstick,
-        Dpad
-    }
-
-    public enum GamepadButtons
-    {
-        A = 0,
-        B = 1,
-        X = 2,
-        Y = 3,
-        LeftBumper = 4,
-        RightBumper = 5,
-        Back = 6,
-        Start = 7,
-        Home = 8,
-        LeftThumbstick = 9,
-        RightThumbstick = 10,
-        DpadUp = 11,
-        DpadRight = 12,
-        DpadDown = 13,
-        DpadLeft = 14,
-        LeftTrigger = 15,
-        RightTrigger = 16,
-    }
 
     public struct KeyboardState(IKeyboard keyboard)
     {
@@ -111,8 +75,8 @@ namespace Pyrite.Core.Inputs
 
         public Vector2 Wheel { get; internal set; }
         public Vector2 DeltaPosition { get; internal set; }
-        public readonly bool IsButtonDown(MouseButton button) => _mouse.IsButtonPressed(button);
-        public readonly bool IsButtonUp(MouseButton button) => !_mouse.IsButtonPressed(button);
+        public readonly bool IsButtonDown(MouseButton button) => _mouse.IsButtonPressed((Silk.NET.Input.MouseButton)button);
+        public readonly bool IsButtonUp(MouseButton button) => !_mouse.IsButtonPressed((Silk.NET.Input.MouseButton)button);
     }
 
     public readonly struct InputState(KeyboardState keyboard, MouseState mouse, GamepadState gamepad)

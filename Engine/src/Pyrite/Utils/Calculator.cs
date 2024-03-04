@@ -1,4 +1,6 @@
-﻿namespace Pyrite.Utils
+﻿using System.Numerics;
+
+namespace Pyrite.Utils
 {
 	public static class Calculator
     {
@@ -62,6 +64,9 @@
 
         public static bool IsAlmostZero(this float value)
             => value < float.Epsilon && value > -float.Epsilon;
+        public static bool IsAlmostZero(this Vector2 value)
+            => value.X < float.Epsilon && value.X > -float.Epsilon
+            && value.Y < float.Epsilon && value.Y > -float.Epsilon;
 
         public static float ClampNearZero(this float value, float minimum)
         {

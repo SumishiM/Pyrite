@@ -3,35 +3,17 @@ using Silk.NET.Input;
 
 namespace Pyrite.Core.Inputs
 {
-    public struct ButtonBinding
+    public readonly struct ButtonBinding
     {
         public readonly InputSource Source = InputSource.None;
 
         private readonly GamepadButtons? _gamepad;
-        private readonly Key? _keyboard;
+        private readonly Keys? _keyboard;
         private readonly GamepadAxis? _axis;
-        private readonly MouseButton? _mouse;
-
-        private Guid _deviceID = Guid.Empty;
-        public Guid DeviceID
-        {
-            readonly get => _deviceID;
-            internal set
-            {
-                if (Input.Devices.TryGetValue(value, out var device))
-                {
-                    if (Source == InputSource.Keyboard && device is not IKeyboard
-                        || Source == InputSource.Mouse && device is not IMouse
-                        || Source == InputSource.Gamepad && device is not IGamepad)
-                        throw new InvalidDataException($"Device ID refereced is a {device.GetType().Name} but we expected a I{Source}.");
-                    _deviceID = value;
-                }
-                throw new InvalidDataException($"No device registered at the given ID.");
-            }
-        }
+        private readonly MouseButtons? _mouse;
 
         public ButtonBinding() { }
-        public ButtonBinding(Key key)
+        public ButtonBinding(Keys key)
         {
             Source = InputSource.Keyboard;
             _keyboard = key;
@@ -43,7 +25,7 @@ namespace Pyrite.Core.Inputs
             _gamepad = button;
         }
 
-        public ButtonBinding(MouseButton button)
+        public ButtonBinding(MouseButtons button)
         {
             Source = InputSource.Mouse;
             _mouse = button;
@@ -55,14 +37,40 @@ namespace Pyrite.Core.Inputs
             _axis = axis;
         }
 
-        public readonly bool IsPressed()
-        {
-            var device = Input.Devices[DeviceID];
+        /// <summary>
+        /// Whether the binding is listening to a given input.
+        /// </summary>
+        /// <param name="key">Key to check.</param>
+        /// <returns>Whether the binding listen to the key.</returns>
+        internal readonly bool ListenToInput(Keys key) => Source == InputSource.Keyboard && _keyboard == key;
 
+        /// <summary>
+        /// Whether the binding is listening to a given input.
+        /// </summary>
+        /// <param name="button">button to check.</param>
+        /// <returns>Whether the binding listen to the button.</returns>
+        internal readonly bool ListenToInput(GamepadButtons button) => Source == InputSource.Gamepad && _gamepad == button;
+
+        /// <summary>
+        /// Whether the binding is listening to a given input.
+        /// </summary>
+        /// <param name="axis">axis to check.</param>
+        /// <returns>Whether the binding listen to the axis.</returns>
+        internal readonly bool ListenToInput(GamepadAxis axis) => Source == InputSource.GamepadAxis && _axis == axis;
+
+        /// <summary>
+        /// Whether the binding is listening to a given input.
+        /// </summary>
+        /// <param name="button">button to check.</param>
+        /// <returns>Whether the binding listen to the button.</returns>
+        internal readonly bool ListenToInput(MouseButtons button) => Source == InputSource.Mouse && _mouse == button;
+
+        public readonly bool IsPressed(IInputDevice device)
+        {
             return Source switch
             {
-                InputSource.Keyboard => ((IKeyboard)device).IsKeyPressed(_keyboard!.Value),
-                InputSource.Mouse => ((IMouse)device).IsButtonPressed(_mouse!.Value),
+                InputSource.Keyboard => ((IKeyboard)device).IsKeyPressed((Key)_keyboard!.Value),
+                InputSource.Mouse => ((IMouse)device).IsButtonPressed((MouseButton)_mouse!.Value),
                 InputSource.Gamepad => _gamepad!.Value switch
                 {
                     GamepadButtons.RightTrigger => ((IGamepad)device).Triggers[0].Position > 0f,
@@ -73,12 +81,12 @@ namespace Pyrite.Core.Inputs
             };
         }
 
-        public readonly Vector2 GetAxis()
+        public readonly Vector2 GetAxis(IInputDevice device)
         {
             if (Source != InputSource.GamepadAxis)
                 return Vector2.Zero;
 
-            if (Input.Devices[DeviceID] is IGamepad gamepad)
+            if (device is IGamepad gamepad)
             {
                 return _axis switch
                 {

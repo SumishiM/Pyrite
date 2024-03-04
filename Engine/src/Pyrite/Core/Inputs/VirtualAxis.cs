@@ -1,4 +1,5 @@
 ﻿using Pyrite.Core.Geometry;
+using Pyrite.Utils;
 using Silk.NET.Input;
 
 namespace Pyrite.Core.Inputs
@@ -12,33 +13,40 @@ namespace Pyrite.Core.Inputs
         public Vector2 Value { get; private set; }
         public Point IntValue { get; private set; }
 
-        internal void Update(ICollection<IInputDevice> devices)
+        public event Action<Vector2>? OnValueChanged;
+
+        public bool IsAlmostZero => Calculator.IsAlmostZero(Value);
+
+        public void Update(IInputDevice device)
         {
             PreviousValue = Value;
             IntPreviousValue = IntValue;
 
-            Value = Binding.GetAxis();
+            Value = Binding.GetAxis(device);
             IntValue = Value;
+
+            if (Value != PreviousValue)
+                OnValueChanged?.Invoke(Value);
         }
 
         internal void Register(ButtonBinding up, ButtonBinding down, ButtonBinding left, ButtonBinding right)
         {
-            Binding = new AxisBinding(up, down, left, right);
+            Binding = new(up, down, left, right);
         }
 
-        internal void Register(Key up, Key down, Key left, Key right)
+        internal void Register(Keys up, Keys down, Keys left, Keys right)
         {
-            Binding = new AxisBinding(up, down, left, right);
+            Binding = new(up, down, left, right);
         }
 
         internal void Register(GamepadButtons up, GamepadButtons down, GamepadButtons left, GamepadButtons right)
         {
-            Binding = new AxisBinding(up, down, left, right);
+            Binding = new(up, down, left, right);
         }
-
+            
         internal void Register(GamepadAxis axis)
         {
-            Binding = new AxisBinding(axis);
+            Binding = new(axis);
         }
     }
 }
