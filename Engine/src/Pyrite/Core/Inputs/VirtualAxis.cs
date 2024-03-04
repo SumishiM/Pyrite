@@ -43,10 +43,15 @@ namespace Pyrite.Core.Inputs
         {
             Binding = new(up, down, left, right);
         }
-            
+
         internal void Register(GamepadAxis axis)
         {
             Binding = new(axis);
+        }
+
+        internal void Register(AxisBinding axis)
+        {
+            Binding = axis;
         }
     }
 }

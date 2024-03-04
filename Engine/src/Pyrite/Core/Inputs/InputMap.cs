@@ -6,13 +6,18 @@ namespace Pyrite.Core.Inputs
     {
         public List<InputAction> Actions;
 
-        public List<IVirtualInput> VirtualInputs { get; set; }
-
+        public Dictionary<string, List<IVirtualInput>> VirtualInputs { get; set; }
         public void Update(ICollection<IInputDevice> devices)
         {
-            foreach (var input in VirtualInputs)
+            foreach (var device in devices)
             {
-                input.Update(devices);
+                foreach (var (name, inputs) in VirtualInputs)
+                {
+                    foreach(var input in inputs)
+                    {
+                        input.Update(device);
+                    }
+                }
             }
         }
     }

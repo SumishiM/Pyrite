@@ -1,8 +1,8 @@
 ﻿using Silk.NET.Input;
+using Silk.NET.Vulkan;
 
 namespace Pyrite.Core.Inputs
 {
-
     public class PlayerInput
     {
         private IKeyboard? _keyboard;
@@ -44,6 +44,11 @@ namespace Pyrite.Core.Inputs
         {
             map.Update(_devices);
 
+        }
+
+        void BindKeyUp(Keys key, Action callback)
+        {
+            
         }
     }
 }
