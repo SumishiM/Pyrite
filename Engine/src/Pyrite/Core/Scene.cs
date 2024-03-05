@@ -1,6 +1,5 @@
 ﻿using Ignite;
 using Pyrite.Components.Graphics;
-using Pyrite.Core.Graphics;
 
 namespace Pyrite.Core
 {
