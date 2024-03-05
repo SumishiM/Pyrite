@@ -9,6 +9,9 @@ namespace Pyrite.Core.Tilemap
         public static byte ChunkSize = 16;
         public byte TileSize = 16;
 
+        /// <summary>
+        /// A segmented part of a <see cref="Tilemap"/> containing <see cref="Tile"/>s on the map.
+        /// </summary>
         public struct Chunk
         {
             /// <summary>
@@ -54,21 +57,29 @@ namespace Pyrite.Core.Tilemap
             {
                 get
                 {
-                    if (x < 0 || x >= ChunkSize || y < 0 || y >= ChunkSize)
-                        throw new IndexOutOfRangeException();
+#if DEBUG
+                    if (x < 0 || x >= ChunkSize)
+                        throw new IndexOutOfRangeException($"X value must be between a [0, {ChunkSize - 1}] interval : X is {x}");
+                    if (y < 0 || y >= ChunkSize)
+                        throw new IndexOutOfRangeException($"Y value must be between a [0, {ChunkSize - 1}] interval :Y is {x}");
+#endif
                     return ref _tiles[x, y];
                 }
             }
-
         }
 
-        internal List<Chunk>? BuildingChunks;
+        // one layer thing
+        internal Dictionary<Point, Chunk>? BuildingChunks;
+        // cached chunks
         private ImmutableArray<Chunk> _cachedChunks;
 
-
-        public Tilemap Build()
+        /// <summary>
+        /// Build the <see cref="Tilemap"/>, making it size immutable.
+        /// </summary>
+        /// <returns>The built <see cref="Tilemap"/> or null if there is no <see cref="Tile"/> placed</returns>
+        public Tilemap? Build()
         {
-            _cachedChunks = [.. BuildingChunks];
+            _cachedChunks = [.. BuildingChunks?.Values];
             BuildingChunks?.Clear();
 
             return this;
