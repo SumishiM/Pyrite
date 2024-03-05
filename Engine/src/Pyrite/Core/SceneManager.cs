@@ -1,4 +1,5 @@
 ﻿using Ignite.Attributes;
+using Pyrite.Core.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,28 +14,31 @@ namespace Pyrite.Core
         internal static Scene ConfiguratedDefaultScene = _defaultScene;
         public static Scene CurrentScene = ConfiguratedDefaultScene;
 
+        public static Action<Scene>? OnSceneChanged;
+        public static Action<Scene>? OnScenePaused;
+        public static Action<Scene>? OnSceneResumed;
+
         public static bool LoadScene(ref Scene scene)
         {
-#if DEBUG
-            Console.WriteLine($"Unload scene : {CurrentScene.Name}");
-#endif
             CurrentScene.Exit();
+            Camera._main = null;
+            
             CurrentScene = scene;
-#if DEBUG
-            Console.WriteLine($"Load scene : {CurrentScene.Name}");
-#endif
             CurrentScene.Start();
+            OnSceneChanged?.Invoke(CurrentScene);
             return true;
         }
 
         public static void Pause()
         {
             CurrentScene.Pause();
+            OnScenePaused?.Invoke(CurrentScene);
         }
 
         public static void Resume()
         {
             CurrentScene.Resume();
+            OnSceneResumed?.Invoke(CurrentScene);
         }
     }
 }

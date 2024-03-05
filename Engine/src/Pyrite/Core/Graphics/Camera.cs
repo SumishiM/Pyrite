@@ -80,23 +80,28 @@ namespace Pyrite.Core.Graphics
             _origin = new Vector2(0.5f, 0.5f);
         }
 
-        private static Camera? _main;
+        internal static Camera? _main;
         public static Camera Main
         {
             get
             {
                 if (_main is null || _main?._transform is null)
                 {
-                    var camera = SceneManager.CurrentScene.World
-                        .GetNodesWith(typeof(CameraComponent))[0]; // should never be null while the scene is running
+                    // should never be null while the scene is running
+                    var node = SceneManager.CurrentScene.World
+                        .GetNodesWith(typeof(CameraComponent))
+                        .FirstOrDefault(n => n.Name == "Main Camera" /*Todo : compare with tag*/) 
+                        ?? 
+                        throw new NullReferenceException(
+                            "Camera.Main is null, is the simulation world loaded ? " +
+                            "or is there no CameraComponent in the world ?");
 
-                    _main = camera.GetComponent<CameraComponent>();
-                    _main._transform = camera.GetComponent<TransformComponent>();
+                    _main = node.GetComponent<CameraComponent>();
+                    _main._transform = node.GetComponent<TransformComponent>();
                 }
 
                 return _main;
             }
-            internal set => _main = value; 
         }
 
         public Vector2 ScreenToWorldPosition(Vector2 screenPosition)

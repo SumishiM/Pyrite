@@ -14,12 +14,17 @@ namespace Pyrite.Core
                 .AddNode("Global Light");
 
         private World? _world = null;
+
+        /// <summary>
+        /// Simulation world of the Scene. See Ignite.
+        /// </summary>
         public World World
         {
             get
             {
                 if (_world == null)
                 {
+                    // Build a world if it's the first time
                     _defaultWorldBuilder.AddSystems([.. _systems]);
                     _world = _defaultWorldBuilder.Build();
                 }
@@ -38,7 +43,6 @@ namespace Pyrite.Core
 
         internal void Start()
         {
-            Camera.Main.Zoom = 1f;
             World.Start();
             _isStarted = true;
         }
