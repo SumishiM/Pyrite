@@ -11,10 +11,9 @@ namespace Sandbox
     {
         public readonly void FixedUpdate(Context context)
         {
-            foreach (var node in context.Nodes)
+            foreach (var (spin, transform) in context.Get<SpinComponent, TransformComponent>())
             {
-                Transform transform = node.GetComponent<TransformComponent>();
-                transform.Rotation += node.GetComponent<SpinComponent>().SpinSpeed * Time.FixedDeltaTime;
+                transform.Rotation += spin.SpinSpeed * Time.FixedDeltaTime;
             }
         }
     }
