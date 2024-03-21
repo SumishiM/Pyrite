@@ -7,7 +7,7 @@
         public bool HasValue => Guid != Guid.Empty;
         public readonly Guid Guid = guid;
 
-        //public T Asset => AssetDatabase.GetAsset<T>(Guid);
-        //public T? TryAsset => AssetDatabase.TryGetAsset<T>(Guid);
+        public T Asset => Game.Data.GetAsset<T>(Guid);
+        public T? TryAsset => Game.Data.TryGetAsset<T>(Guid);
     }
 }

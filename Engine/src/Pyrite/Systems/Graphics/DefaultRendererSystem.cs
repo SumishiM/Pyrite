@@ -27,11 +27,6 @@ namespace Pyrite.Systems.Graphics
             foreach (var (sprite, transform) in context.Get<SpriteComponent, TransformComponent>())
             {
                 Draw(transform, sprite.Texture, sprite.Shader);
-
-            }
-
-            foreach (var node in context.Nodes)
-            {
             }
         }
     }

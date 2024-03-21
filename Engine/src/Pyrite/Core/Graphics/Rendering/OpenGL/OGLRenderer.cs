@@ -78,6 +78,8 @@ namespace Pyrite.Core.Graphics.Rendering.OpenGL
         /// </summary>
         public unsafe override void Draw([DisallowNull] Transform transform, [DisallowNull]Texture texture, Shader? shader)
         {
+
+
             // Set default shader and bind vao
             shader ??= Shader.Default;
             _vao.Bind(); // vertex array object

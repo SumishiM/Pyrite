@@ -1,5 +1,6 @@
 ﻿using Ignite;
 using Pyrite;
+using Pyrite.Assets;
 using Pyrite.Components;
 using Pyrite.Core;
 using Pyrite.Core.Geometry;
@@ -31,7 +32,8 @@ namespace Sandbox
 
         protected override void Initialize()
         {
-            Scene toothlessScene = new("Toothless scene",
+            Scene toothlessScene = 
+                new("Toothless scene",
                     typeof(DefaultRendererSystem),
                     typeof(SpinSystem));
 
@@ -44,6 +46,9 @@ namespace Sandbox
 
             toothless.GetComponent<TransformComponent>().Position = new Vector2(300, 300);
 
+
+            GameAsset asset = new("Content\\toothless.png");
+            Console.WriteLine(asset.Path + " + " + asset.Name);
         }
     }
 }
