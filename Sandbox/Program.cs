@@ -43,6 +43,7 @@ namespace Sandbox
                     .AddComponent<SpinComponent>(new() { SpinSpeed = 36f });
 
             toothless.GetComponent<TransformComponent>().Position = new Vector2(300, 300);
+
         }
     }
 }

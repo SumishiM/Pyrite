@@ -1,45 +1,40 @@
-﻿namespace Pyrite.Assets
+﻿using Pyrite.Core.Graphics;
+using Pyrite.Core.Inputs;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Pyrite.Assets
 {
     public class AssetDatabase
     {
-        private static AssetDatabase _db;
 
-        static AssetDatabase()
+        internal Dictionary<Guid, Texture> UniqueTextures = [];
+
+        internal bool TryGetTexture(string path, [NotNullWhen(true)] out Texture? texture)
         {
-            _db = new AssetDatabase();
-            _allAssets = [];
-            _database = [];
-        }
-
-        public AssetDatabase () 
-        {
-            _db = this;
-        }
-
-        private static readonly Dictionary<Guid, GameAsset> _allAssets;
-        private static readonly Dictionary<Type, HashSet<Guid>> _database;
-
-        public static bool HasAsset<T>(Guid guid) where T : GameAsset =>
-            _database.TryGetValue(typeof(T), out HashSet<Guid>? ids) && ids.Contains(guid);
-
-        public static T GetAsset<T>(Guid key) where T : GameAsset
-        {
-            if (TryGetAsset<T>(key) is T asset)
+            texture = null;
+            if (UniqueTextures.TryGetValue(HashTexturePath(path), out Texture? value))
             {
-                return asset;
+                texture = value;
+                return true;
             }
-
-            throw new ArgumentException($"Unable to find the asset of type {typeof(T).Name} with id: {key} in database.");
+            return false;
         }
 
-        public static T? TryGetAsset<T>(Guid key) where T : GameAsset
+        internal void AddTexture(string path, Texture texture)
         {
-            if (_allAssets.TryGetValue(key, out GameAsset? asset))
-            {
-                return asset as T;
-            }
+            UniqueTextures.TryAdd(HashTexturePath(path), texture);
+        }
 
-            return default;
+
+        private static Guid HashTexturePath(string path)
+        {
+            return new(MD5.HashData(Encoding.UTF8.GetBytes(path)));
         }
     }
 }

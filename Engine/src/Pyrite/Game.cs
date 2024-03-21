@@ -1,4 +1,5 @@
 ﻿using Ignite;
+using Pyrite.Assets;
 using Pyrite.Core;
 using Pyrite.Core.Inputs;
 using Pyrite.Utils;
@@ -68,6 +69,13 @@ namespace Pyrite
         /// Input system instance
         /// </summary>
         public InputContextMapping Inputs;
+
+        /// <summary>
+        /// Game asset database instance
+        /// </summary>
+        public static AssetDatabase Data { get; } = new();
+
+
 
         protected virtual WindowInfo WindowInfo => new()
         {

@@ -1,4 +1,5 @@
 ﻿using Ignite;
+using Pyrite.Core.Graphics.Rendering.OpenGL;
 
 namespace Pyrite.Core.Graphics.Rendering
 {
@@ -6,7 +7,7 @@ namespace Pyrite.Core.Graphics.Rendering
     {
         public abstract unsafe void Initialize();
         public abstract void ClearScreen ();
-        public abstract unsafe void Draw(Node node);
+        public abstract unsafe void Draw(Transform transform, Texture texture, Shader? shader);
         public abstract void Dispose();
     }
 }
