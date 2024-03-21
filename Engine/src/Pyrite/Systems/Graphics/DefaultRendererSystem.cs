@@ -1,6 +1,8 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
 using Pyrite.Attributes;
+using Pyrite.Components;
+using Pyrite.Core;
 using Pyrite.Core.Graphics;
 using Pyrite.Core.Graphics.Rendering.OpenGL;
 
@@ -22,9 +24,14 @@ namespace Pyrite.Systems.Graphics
 
             ClearScreen();
 
+            foreach (var (sprite, transform) in context.Get<SpriteComponent, TransformComponent>())
+            {
+                Draw(transform, sprite.Texture, sprite.Shader);
+
+            }
+
             foreach (var node in context.Nodes)
             {
-                Draw(node);
             }
         }
     }

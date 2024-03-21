@@ -1,6 +1,7 @@
 ﻿using Ignite;
 using Pyrite.Components;
 using Silk.NET.OpenGL;
+using System.Diagnostics.CodeAnalysis;
 using Shader = Pyrite.Core.Graphics.Rendering.OpenGL.Shader;
 
 namespace Pyrite.Core.Graphics.Rendering.OpenGL
@@ -75,23 +76,17 @@ namespace Pyrite.Core.Graphics.Rendering.OpenGL
         /// <summary>
         /// Draw every sprites registered, note that this function do 1 draw call per sprite.
         /// </summary>
-        public unsafe override void Draw(Node node)
+        public unsafe override void Draw([DisallowNull] Transform transform, [DisallowNull]Texture texture, Shader? shader)
         {
-            SpriteComponent sprite = node.GetComponent<SpriteComponent>();
-            
-            if (sprite.Texture == null)
-                return;
-
             // Set default shader and bind vao
-            Shader shader = Shader.Default;
-            _vao.Bind();
+            shader ??= Shader.Default;
+            _vao.Bind(); // vertex array object
+            shader.Use();
 
             // send data to shader
-            shader = sprite.Shader ?? Shader.Default;
-            shader.Use();
-            sprite.Texture.Bind();
+            texture.Bind();
             shader.SetUniform("uTexture0", 0);
-            shader.SetUniform("uModel", sprite.GetModelMatrix(node.GetComponent<TransformComponent>()));
+            shader.SetUniform("uModel", texture.GetModelMatrix(transform));
             shader.SetUniform("uProjection", Camera.Main.WorldViewProjection);
 
             // draw sprite
