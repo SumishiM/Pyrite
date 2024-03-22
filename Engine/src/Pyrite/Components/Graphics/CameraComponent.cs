@@ -5,7 +5,7 @@ using Pyrite.Core.Graphics;
 namespace Pyrite.Components.Graphics
 {
     [RequireComponent(typeof(TransformComponent))]
-    public readonly struct CameraComponent : IComponent
+    public class CameraComponent : IComponent
     {
         private readonly Camera _camera;
 

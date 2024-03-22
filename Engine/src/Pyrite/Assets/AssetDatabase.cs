@@ -24,12 +24,15 @@ namespace Pyrite.Assets
 
         public AssetDatabase()
         {
-            Texture.Create("Content\\Empty.png");
+        }
 
+        internal void Initialize()
+        {
+            Texture.Create("Content\\Empty.png");
             MissingTextureGuid = HashTexturePath("Content\\Empty.png");
         }
 
-        internal bool TryGetTexture(string path, [NotNullWhen(true)] out Texture? texture)
+        public bool TryGetTexture(string path, [NotNullWhen(true)] out Texture? texture)
         {
             texture = null;
             if (UniqueTextures.TryGetValue(HashTexturePath(path), out Texture? value))

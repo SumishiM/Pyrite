@@ -4,24 +4,24 @@ using Pyrite.Core.Geometry;
 
 namespace Pyrite.Components
 {
-    public readonly struct TransformComponent : IComponent
+    public class TransformComponent : IComponent
     {
         public Transform Transform { get; init; }
 
         /// <summary>
         /// Transform position
         /// </summary>
-        public readonly Vector2 Position { get => Transform.Position; set => Transform.Position = value; }
+        public Vector2 Position { get => Transform.Position; set => Transform.Position = value; }
 
         /// <summary>
         /// Transfrom rotation as a degres angle
         /// </summary>
-        public readonly float Rotation { get => Transform.Rotation; set => Transform.Rotation = value; }
+        public float Rotation { get => Transform.Rotation; set => Transform.Rotation = value; }
 
         /// <summary>
         /// Transform scale
         /// </summary>
-        public readonly Vector2 Scale { get => Transform.Scale; set => Transform.Scale = value; }
+        public Vector2 Scale { get => Transform.Scale; set => Transform.Scale = value; }
 
         public TransformComponent()
         {

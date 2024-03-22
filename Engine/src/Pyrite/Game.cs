@@ -73,8 +73,8 @@ namespace Pyrite
         /// <summary>
         /// Game asset database instance
         /// </summary>
-        public static AssetDatabase Data { get; } = new();
-
+        public static AssetDatabase Data => _assetDatabase;
+        private static readonly AssetDatabase _assetDatabase = new();
 
 
         protected virtual WindowInfo WindowInfo => new()
@@ -140,6 +140,7 @@ namespace Pyrite
 #if DEBUG
             Console.WriteLine("Start Game Initialization");
 #endif
+            Data.Initialize();
             Initialize();
             PercistentWorld.Start();
             SceneManager.CurrentScene.Start();
