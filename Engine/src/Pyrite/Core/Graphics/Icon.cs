@@ -1,47 +1,49 @@
 ﻿using Silk.NET.Core;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Pyrite.Core.Graphics
 {
     public sealed class Icon
     {
-        public int Width;
-        public int Height;
+        /// <summary>
+        /// Size of the icon
+        /// </summary>
+        public Geometry.Point Size;
 
+        /// <summary>
+        /// Raw icon data
+        /// </summary>
         public RawImage Raw;
 
-        private static string PyriteIconPath = "Content\\PyriteIcon128.png";
+        /// <summary>
+        /// Default Pyrite icon path
+        /// </summary>
+        private static string PyriteIconPath => "Content\\PyriteIcon128.png";
 
+        /// <summary>
+        /// Default Pyrite icon
+        /// </summary>
+        public static Icon Default => new(PyriteIconPath);
+
+        /// <summary>
+        /// Create an icon from an image file path
+        /// </summary>
         public Icon(string path)
         {
-            using var image = new Bitmap(path);
-            using var resized = (Bitmap)image.GetThumbnailImage(256, 256, () => false, IntPtr.Zero);
-            for (var y = 0; y < resized.Height; y++)
-            {
-                for (var x = 0; x < resized.Width; x++)
-                {
-                    var pixel = resized.GetPixel(x, y);
-                    var a = pixel.A;
-                    var r = pixel.R;
-                    var g = pixel.G;
-                    var b = pixel.B;
-                    resized.SetPixel(x, y, Color.FromArgb(a, b, g, r));
-                }
-            }
-            var rect = new Rectangle(0, 0, resized.Width, resized.Height);
-            var data = resized.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            var length = data.Stride * data.Height;
-            var bytes = new byte[length];
-            Marshal.Copy(data.Scan0, bytes, 0, length);
-            resized.UnlockBits(data);
+            // load image
+            using var img = Image.Load<Rgba32>(path);
+            
+            Size = new(img.Bounds.Width, img.Bounds.Height);
 
-            Width = resized.Width;
-            Height = resized.Height;
-            Raw = new(Width, Height, bytes);
+            // Copy image data
+            // 4 is the size of the Rbga32 struct as bytes
+            byte[] imageData = new byte[Size.X * Size.Y * 4];
+            img.CopyPixelDataTo(imageData);
+
+            // create Silk.NET raw image data
+            Raw = new(Size.X, Size.Y, imageData);
         }
 
-        public static Icon Default => new(PyriteIconPath);
     }
 }

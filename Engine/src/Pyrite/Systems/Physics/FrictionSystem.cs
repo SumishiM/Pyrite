@@ -1,6 +1,5 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
-using Pyrite.Components;
 using Pyrite.Components.Physics;
 using Pyrite.Utils;
 

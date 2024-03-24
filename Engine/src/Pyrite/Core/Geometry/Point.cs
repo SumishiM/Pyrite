@@ -59,6 +59,20 @@ namespace Pyrite.Core.Geometry
             => new(p.X / s, p.Y / s);
         public static Point operator /(Point p, float s)
             => new(Calculator.RoundToInt(p.X / s), Calculator.RoundToInt(p.Y / s));
+
+        public override readonly bool Equals(object? obj)
+            => obj is Point p && p.X == X && p.Y == Y;
+
+        public override readonly int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        
+        public override readonly string ToString()
+        {
+            return $"[{X}, {Y}]";
+        }
+
         #endregion
     }
 }

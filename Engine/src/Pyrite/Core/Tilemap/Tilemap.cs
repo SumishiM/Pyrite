@@ -1,5 +1,4 @@
-﻿
-using Pyrite.Core.Geometry;
+﻿using Pyrite.Core.Geometry;
 using System.Collections.Immutable;
 
 namespace Pyrite.Core.Tilemap
@@ -44,7 +43,6 @@ namespace Pyrite.Core.Tilemap
 
                 _tiles = tiles;
             }
-
 
             /// <summary>
             /// Get a <see cref="Tile"/> reference from it's local coordonates in the chunk

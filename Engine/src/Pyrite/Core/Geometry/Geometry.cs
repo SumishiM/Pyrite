@@ -36,9 +36,28 @@ namespace Pyrite.Core.Geometry
         //    return result;
         //}
 
-        public static bool InRectangle(Vector2 u, Rectangle r)
-            => r.Contains(u);
+        /// <summary>
+        /// Check whether a <see cref="Vector2"/> is in a <see cref="Rectangle"/>
+        /// </summary>
+        /// <param name="v"><see cref="Vector2"/> to check</param>
+        /// <param name="r"><see cref="Rectangle"/> to check</param>
+        /// <returns></returns>
+        public static bool InRectangle(Vector2 v, Rectangle r)
+            => r.Contains(v);
+            
+        /// <summary>
+        /// Check whether a <see cref="Point"/> is in a <see cref="Rectangle"/>
+        /// </summary>
+        /// <param name="v"><see cref="Point"/> to check</param>
+        /// <param name="r"><see cref="Rectangle"/> to check</param>
+        /// <returns></returns>
+        public static bool InRectangle(Point p, Rectangle r)
+            => r.Contains(p);
 
+        /// <summary>
+        /// Check whether a couple of coordonate are in a rectangle 
+        /// </summary>
+        /// <returns></returns>
         public static bool InRectangle(float x, float y, float rx, float ry, float rw, float rh)
         {
             if (x <= rx) return false;

@@ -34,7 +34,7 @@ namespace Sandbox
 
         protected override void Initialize()
         {
-            Scene toothlessScene = 
+            Scene toothlessScene =
                 new("Toothless scene",
                     typeof(DefaultRendererSystem),
                     typeof(SpinSystem),

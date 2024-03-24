@@ -3,12 +3,6 @@ using Ignite.Systems;
 using Pyrite.Components;
 using Pyrite.Components.Physics;
 using Pyrite.Utils;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pyrite.Systems.Physics
 {
@@ -20,7 +14,6 @@ namespace Pyrite.Systems.Physics
             foreach (var (transform, velocity) in context.Get<TransformComponent, VelocityComponent>())
             {
                 transform.Position += velocity.Velocity * Time.FixedDeltaTime;
-                Console.WriteLine(velocity.Velocity);
             }
         }
     }

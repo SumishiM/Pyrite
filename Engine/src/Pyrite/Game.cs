@@ -68,7 +68,9 @@ namespace Pyrite
         /// <summary>
         /// Input system instance
         /// </summary>
+#nullable disable
         public InputContextMapping Inputs;
+#nullable enable 
 
         /// <summary>
         /// Game asset database instance
@@ -93,6 +95,7 @@ namespace Pyrite
 #else
             Size = new(1080, 720),
             MinimalSize = new(720, 480),
+            MaximalSize = new(1920, 1080),
             Maximized = false,
             Resizable = true,
 #endif
@@ -155,16 +158,19 @@ namespace Pyrite
         /// </summary>
         private void OnUpdate(double deltaTime)
         {
+            // update time
             Time.Update(deltaTime);
 
+            // update ECS
             PercistentWorld.Update();
             SceneManager.CurrentScene.Update();
 
-            // manage fixed update 
+            // handle fixed update 
             _timeUntilFixedUpdate -= Time.DeltaTime;
             if (_timeUntilFixedUpdate <= 0f) // todo : check if there can be a frame skip ? does it matter ? 
             {
                 _timeUntilFixedUpdate += Time.FixedDeltaTime; // += to ensure a consistant fixed update time 
+                // fixed update ECS
                 PercistentWorld.FixedUpdate();
                 SceneManager.CurrentScene.FixedUpdate();
             }

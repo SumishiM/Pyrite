@@ -16,6 +16,7 @@ namespace Pyrite
         public string Title;
         public Point Size;
         public Point MinimalSize;
+        public Point MaximalSize;
         public bool Resizable;
         public bool Maximized;
         public System.Drawing.Color BackgroundColor;
@@ -98,7 +99,8 @@ namespace Pyrite
             _native.FramebufferResize += s =>
             {
                 var position = _native.Position;
-                if (_native.Size.X > info.MinimalSize.X && _native.Size.Y > info.MinimalSize.Y)
+                if ((_native.Size.X >= info.MinimalSize.X && _native.Size.Y >= info.MinimalSize.Y) 
+                    || (_native.Size.X <= info.MaximalSize.X && _native.Size.Y <= info.MaximalSize.Y))
                 {
                     // add if OpenGL
                     Core.Graphics.Graphics.Gl.Viewport(s);
