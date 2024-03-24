@@ -11,7 +11,12 @@ namespace Pyrite.Components.Physics
         /// </summary>
         public float Amount;
 
-        public FrictionComponent(float amount)
+        public FrictionComponent()
+        {
+            Amount = 0.5f;
+        }
+
+        public FrictionComponent(float amount = 0.5f)
         {
             Amount = amount;
         }
