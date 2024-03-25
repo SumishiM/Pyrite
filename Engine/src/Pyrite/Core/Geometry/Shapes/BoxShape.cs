@@ -39,6 +39,14 @@ namespace Pyrite.Core.Geometry.Shapes
             Height = height;
         }
 
+        public BoxShape(Point size, Point offset)
+        {
+            Origin = size / 2;
+            Offset = offset;
+            Width = size.X;
+            Height = size.Y;
+        }
+
         public BoxShape ResizeTopRight(Vector2 newTopRight)
         {
             Vector2 delta = Offset - newTopRight;
