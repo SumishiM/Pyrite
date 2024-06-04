@@ -11,6 +11,8 @@ namespace Pyrite.Core.Graphics
         {
         }
 
+        public static Texture Empty => Game.Data.MissingTexture;
+
         public static Texture Create(string path)
         {
             // try get asset from database

@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<BaseOutputPath>..\Binary\$(AssemblyName)</BaseOutputPath>
+		<BaseIntermediateOutputPath>..\Bin-Intermediate\$(AssemblyName)</BaseIntermediateOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Engine\src\Pyrite\Pyrite.csproj" />
+
+		<ProjectReference Include="..\Engine\src\Ignite\Analyzers\Ignite.Generator\Ignite.Generator.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<OutputItemType>Analyzer</OutputItemType>
+		</ProjectReference>
+		<ProjectReference Include="..\Engine\src\Pyrite.Generator\Pyrite.Generator.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<OutputItemType>Analyzer</OutputItemType>
+		</ProjectReference>
+
+		<None Update="Content\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

@@ -1,6 +1,8 @@
 ﻿using Ignite.Attributes;
 using Pyrite.Components;
 using Pyrite.Core.Graphics.Rendering.OpenGL;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace Pyrite.Core.Graphics
@@ -9,7 +11,7 @@ namespace Pyrite.Core.Graphics
     public struct SpriteComponent : IDrawable
     {
         public Shader? Shader { get; set; } = null;
-        public Texture Texture { get; init; }
+        public Texture Texture { get; init; } = Texture.Empty;
 
         public int SortingOrder { get; set; }
 
@@ -18,7 +20,7 @@ namespace Pyrite.Core.Graphics
         /// </summary>
         public SpriteComponent()
         {
-            Texture = Texture.Create("Content\\Empty.png");
+            Texture = Texture.Empty;
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace Pyrite.Core.Graphics
         /// Create sprite from texture
         /// </summary>
         /// <param name="texture"></param>
-        public SpriteComponent(Texture texture)
+        public SpriteComponent([NotNull] Texture texture)
         {
             Texture = texture;
         }

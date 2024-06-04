@@ -1,12 +1,7 @@
 ﻿using Pyrite.Core.Graphics;
-using Pyrite.Core.Inputs;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Pyrite.Assets
 {
@@ -14,13 +9,14 @@ namespace Pyrite.Assets
     {
         internal Dictionary<Type, HashSet<Guid>> Lookup = new()
         {
-            {typeof(Texture), []}
+            { typeof(Texture), [] }
         };
 
         internal Dictionary<Guid, GameAsset> AllAssets = [];
         internal Dictionary<Guid, Texture> UniqueTextures = [];
         internal Guid MissingTextureGuid;
 
+        public Texture MissingTexture => UniqueTextures[MissingTextureGuid];
 
         public AssetDatabase()
         {

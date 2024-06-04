@@ -160,6 +160,7 @@ namespace Pyrite
         {
             // update time
             Time.Update(deltaTime);
+            //Console.WriteLine(1f / Time.DeltaTime);
 
             // update ECS
             PercistentWorld.Update();
