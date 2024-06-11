@@ -13,6 +13,8 @@
 		
 		<BaseOutputPath>..\..\..\Binary\Engine\$(AssemblyName)</BaseOutputPath>
 		<BaseIntermediateOutputPath>..\..\..\Bin-Intermediate\Engine\$(AssemblyName)</BaseIntermediateOutputPath>
+		
+		<DefineConstants>$(DefineConstants);PYRITE</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>

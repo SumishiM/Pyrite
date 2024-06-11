@@ -8,7 +8,8 @@ using Pyrite.Core.Graphics.Rendering.OpenGL;
 
 namespace Pyrite.Systems.Graphics
 {
-    [SceneSystem, FilterComponent(typeof(SpriteComponent))]
+    [FilterComponent(Context.AccessFilter.AllOf, typeof(SpriteComponent))]
+    [FilterComponent(Context.AccessFilter.NoneOf, typeof(InvisibleComponent))]
     public partial class DefaultRendererSystem :
         OGLRenderer, IStartSystem, IRenderSystem
     {
