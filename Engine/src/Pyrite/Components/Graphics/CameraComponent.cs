@@ -11,7 +11,7 @@ namespace Pyrite.Components.Graphics
 
         public CameraComponent()
         {
-            _camera = new(Game.Window.Width, Game.Window.Height);
+            _camera = new(Game.Instance.Window.Width, Game.Instance.Window.Height);
         }
 
         public CameraComponent(int width, int height)

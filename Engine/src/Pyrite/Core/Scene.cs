@@ -1,5 +1,7 @@
 ﻿using Ignite;
+using Microsoft.Xna.Framework.Graphics;
 using Pyrite.Components.Graphics;
+using Pyrite.Core.Geometry;
 
 namespace Pyrite.Core
 {
@@ -54,6 +56,10 @@ namespace Pyrite.Core
         internal void FixedUpdate()
         {
             World.FixedUpdate();
+        }
+
+        public void RefreshWindow(Point viewportSize, GraphicsDevice graphics)
+        {
         }
 
         internal void Render()

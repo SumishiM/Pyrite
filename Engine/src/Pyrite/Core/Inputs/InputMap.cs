@@ -1,15 +1,13 @@
-﻿using Silk.NET.Input;
-
-namespace Pyrite.Core.Inputs
+﻿namespace Pyrite.Core.Inputs
 {
     public struct InputMap
     {
         public List<InputAction> Actions;
 
         public Dictionary<string, List<IVirtualInput>> VirtualInputs { get; set; }
-        public void Update(ICollection<IInputDevice> devices)
+        public void Update(/*ICollection<IInputDevice> devices*/)
         {
-            foreach (var device in devices)
+            /*foreach (var device in devices)
             {
                 foreach (var (name, inputs) in VirtualInputs)
                 {
@@ -18,7 +16,7 @@ namespace Pyrite.Core.Inputs
                         input.Update(device);
                     }
                 }
-            }
+            }*/
         }
     }
 }

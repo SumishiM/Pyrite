@@ -4,8 +4,6 @@ using Pyrite.Components;
 using Pyrite.Components.Graphics;
 using Pyrite.Core.Geometry;
 using Pyrite.Utils;
-using Silk.NET.Vulkan;
-using SixLabors.ImageSharp.Processing;
 using System.Collections.Immutable;
 
 namespace Pyrite.Core.Graphics

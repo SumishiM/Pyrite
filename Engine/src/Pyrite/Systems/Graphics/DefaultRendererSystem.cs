@@ -1,21 +1,18 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
-using Pyrite.Attributes;
 using Pyrite.Components;
-using Pyrite.Core;
+using Pyrite.Components.Graphics;
 using Pyrite.Core.Graphics;
-using Pyrite.Core.Graphics.Rendering.OpenGL;
 
 namespace Pyrite.Systems.Graphics
 {
     [FilterComponent(Context.AccessFilter.AllOf, typeof(SpriteComponent))]
     [FilterComponent(Context.AccessFilter.NoneOf, typeof(InvisibleComponent))]
-    public partial class DefaultRendererSystem :
-        OGLRenderer, IStartSystem, IRenderSystem
+    public partial class DefaultRendererSystem : IStartSystem, IRenderSystem
     {
         public void Start(Context context)
         {
-            Initialize();
+            //Initialize();
         }
 
         public void Render(Context context)
@@ -23,11 +20,11 @@ namespace Pyrite.Systems.Graphics
             if (Camera.Main == null)
                 throw new NullReferenceException("No main camera found for render.");
 
-            ClearScreen();
+            //ClearScreen();
 
             foreach (var (sprite, transform) in context.Get<SpriteComponent, TransformComponent>())
             {
-                Draw(transform, sprite.Texture, sprite.Shader);
+                //Draw(transform, sprite.Texture, sprite.Shader);
             }
         }
     }

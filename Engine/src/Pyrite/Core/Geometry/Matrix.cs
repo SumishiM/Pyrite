@@ -1,6 +1,4 @@
-﻿using Silk.NET.Core.Native;
-using Silk.NET.Input;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Pyrite.Core.Geometry
 {

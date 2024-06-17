@@ -1,6 +1,5 @@
 ﻿using Pyrite.Core.Geometry;
 using Pyrite.Utils;
-using Silk.NET.Input;
 
 namespace Pyrite.Core.Inputs
 {
@@ -17,12 +16,12 @@ namespace Pyrite.Core.Inputs
 
         public bool IsAlmostZero => Calculator.IsAlmostZero(Value);
 
-        public void Update(IInputDevice device)
+        public void Update(InputState state)
         {
             PreviousValue = Value;
             IntPreviousValue = IntValue;
 
-            Value = Binding.GetAxis(device);
+            Value = Binding.GetAxis(state);
             IntValue = Value;
 
             if (Value != PreviousValue)

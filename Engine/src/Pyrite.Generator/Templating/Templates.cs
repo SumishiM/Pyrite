@@ -17,7 +17,8 @@ namespace Pyrite.Generator.Templating
             {{ProjectGameClassAsPartialToken}}
             {
                 // Registering every systems type tagged with the PercistentSystemAttribute
-                protected override List<Type> PercistentSystems => [
+                public List<Type> PercistentSystems => 
+                [
                 {{PercistentSystemsListToken}}    ];
             }
             """;

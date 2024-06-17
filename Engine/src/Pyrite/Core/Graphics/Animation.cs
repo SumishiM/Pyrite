@@ -1,10 +1,9 @@
 ﻿using Pyrite.Core.Geometry;
-using Pyrite.Core.Graphics.Rendering.OpenGL;
 using System.Collections.Immutable;
 
 namespace Pyrite.Core.Graphics
 {
-    public struct AnimationComponent : IDrawable
+    public struct Animation : IDisposable
     {
         /// <summary>
         /// Define the animation play mode
@@ -64,7 +63,6 @@ namespace Pyrite.Core.Graphics
         /// </summary>
         /// <value></value>
         public PlayMode Mode { get; set; }
-        public Shader? Shader { get; set; }
         public Texture? Texture { get; init; }
         public int SortingOrder { get; set; }
 
@@ -87,16 +85,16 @@ namespace Pyrite.Core.Graphics
         }
 
         [Obsolete]
-        public AnimationComponent() { }
+        public Animation() { }
 
-        public AnimationComponent(string path, PlayMode playMode = PlayMode.Single, params FrameInfo[] frames)
+        public Animation(string path, PlayMode playMode = PlayMode.Single, params FrameInfo[] frames)
         {
             Texture = new(path);
             Mode = playMode;
             _frames = [.. frames];
         }
 
-        public AnimationComponent(Texture texture, PlayMode playMode = PlayMode.Single, params FrameInfo[] frames)
+        public Animation(Texture texture, PlayMode playMode = PlayMode.Single, params FrameInfo[] frames)
         {
             Texture = texture;
             Mode = playMode;
@@ -110,8 +108,8 @@ namespace Pyrite.Core.Graphics
 
         public void Dispose()
         {
-            Shader?.Dispose();
-            Texture?.Dispose();
+            //Shader?.Dispose();
+            //Texture?.Dispose();
 
             GC.SuppressFinalize(this);
         }

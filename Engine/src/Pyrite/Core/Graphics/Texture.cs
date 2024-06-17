@@ -1,13 +1,12 @@
 ﻿using Pyrite.Assets;
 using Pyrite.Core.Geometry;
-using Pyrite.Core.Graphics.Rendering.OpenGL;
 using Pyrite.Utils;
 
 namespace Pyrite.Core.Graphics
 {
-    public class Texture : OGLTexture
+    public class Texture
     {
-        internal Texture(string path) : base(path)
+        internal Texture(string path)
         {
         }
 
@@ -26,12 +25,6 @@ namespace Pyrite.Core.Graphics
             return texture;
         }
 
-        internal Matrix GetModelMatrix(Transform transform)
-        {
-            return
-                Matrix.CreateScale(Size.X * transform.Scale.X, Size.Y * transform.Scale.Y, 1f) *
-                Matrix.CreateRotationZ(transform.Rotation.ToRadians()) *
-                Matrix.CreateTranslation(transform.Position.X, transform.Position.Y, 0f);
-        }
+        
     }
 }

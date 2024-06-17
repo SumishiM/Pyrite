@@ -97,5 +97,60 @@ namespace Pyrite.Utils
             else
                 return 1;
         }
+        
+        public static float Lerp(float origin, float target, float factor)
+        {
+            return origin * (1 - factor) + target * factor;
+        }
+        public static int LerpInt(float origin, float target, float factor)
+        {
+            return RoundToInt(origin * (1 - factor) + target * factor);
+        }
+
+        public static double LerpSnap(float origin, float target, double factor, float threshold = 0.01f)
+        {
+            return Math.Abs(target - origin) < threshold ? target : origin * (1 - factor) + target * factor;
+        }
+
+        public static float LerpSnap(float origin, float target, float factor, float threshold = 0.01f)
+        {
+            return Math.Abs(target - origin) < threshold ? target : origin * (1 - factor) + target * factor;
+        }
+
+        public static float LerpSmoothAngle(float a, float b, float deltaTime, float halLife)
+        {
+            a = NormalizeAngle(a);
+            b = NormalizeAngle(b);
+            float delta = MathF.Abs(a - b);
+            if (delta > MathF.PI)
+            {
+                if (a > b)
+                    a -= MathF.PI * 2;
+                else
+                    b -= MathF.PI * 2;
+            }
+            return LerpSmooth(a, b, deltaTime, halLife);
+        }
+        
+        public static float LerpSmooth(float a, float b, float deltaTime, float halLife)
+        {
+            return Math.Abs(a- b) < 0.001f? b : b + (a - b) * float.Exp2(-deltaTime / halLife);
+        }
+
+        public static Vector2 LerpSmooth(Vector2 a, Vector2 b, float deltaTime, float halLife)
+        {
+            return new Vector2(LerpSmooth(a.X, b.X, deltaTime, halLife), LerpSmooth(a.Y, b.Y, deltaTime, halLife));
+        }
+
+        /// <summary>
+        /// Normalizes the given angle to be within the range of 0 to 2π radians.
+        /// </summary>
+        /// <param name="angle">The angle in radians.</param>
+        /// <returns>The normalized angle.</returns>
+        public static float NormalizeAngle(float angle)
+        {
+            // Normalize the angle to be within the range [0, 2π)
+            return (angle % (2 * MathF.PI) + 2 * MathF.PI) % (2 * MathF.PI);
+        }
     }
 }

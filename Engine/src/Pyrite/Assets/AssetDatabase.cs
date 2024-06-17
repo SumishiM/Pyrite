@@ -48,7 +48,7 @@ namespace Pyrite.Assets
         }
 
 
-        private static Guid HashTexturePath(string path)
+        public static Guid HashTexturePath(string path)
         {
             return new(MD5.HashData(Encoding.UTF8.GetBytes(path)));
         }

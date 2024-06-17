@@ -1,6 +1,5 @@
 ﻿using Ignite.Attributes;
 using Pyrite.Components;
-using Pyrite.Core.Graphics.Rendering.OpenGL;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -10,7 +9,6 @@ namespace Pyrite.Core.Graphics
     [RequireComponent(typeof(TransformComponent))]
     public struct SpriteComponent : IDrawable
     {
-        public Shader? Shader { get; set; } = null;
         public Texture Texture { get; init; } = Texture.Empty;
 
         public int SortingOrder { get; set; }
@@ -43,8 +41,6 @@ namespace Pyrite.Core.Graphics
 
         public void Dispose()
         {
-            Shader?.Dispose();
-            Texture?.Dispose();
 
             GC.SuppressFinalize(this);
         }

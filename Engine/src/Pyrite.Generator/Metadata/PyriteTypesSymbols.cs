@@ -4,7 +4,7 @@ namespace Pyrite.Generator.Metadata
 {
     public sealed class PyriteTypesSymbols
     {
-        private const string GameSymbolName = "Pyrite.Game";
+        private const string GameSymbolName = "Pyrite.IPyriteGame";
         private const string SystemTypeSymbolName = "Ignite.Systems.ISystem";
         private const string PercistentSystemAttributeTypeSymbolName = "Pyrite.Attributes.PercistentSystemAttribute";
 

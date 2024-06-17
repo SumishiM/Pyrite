@@ -18,11 +18,9 @@ namespace Pyrite.Assets
 
         public GameAsset(string path)
         {
-            
             Name = System.IO.Path.GetFileNameWithoutExtension(path.Split('\\', '/').Last());
             Extention = System.IO.Path.GetExtension(path.Split('\\', '/').Last());
             Path = path.Replace(Name + Extention, string.Empty);
-            
         }
     }
 }

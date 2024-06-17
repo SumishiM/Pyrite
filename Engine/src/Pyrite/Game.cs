@@ -3,26 +3,13 @@ using Pyrite.Assets;
 using Pyrite.Core;
 using Pyrite.Core.Inputs;
 using Pyrite.Utils;
-using System.Drawing;
+using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace Pyrite
 {
-    public class Game : IDisposable
+    public partial class Game : Microsoft.Xna.Framework.Game
     {
-        private static Window? _window = null;
-        /// <summary>
-        /// Main game window instance
-        /// </summary>
-        public static Window Window
-        {
-            get
-            {
-                if (_window == null)
-                    throw new NullReferenceException("The game window isn't created yet.");
-                return _window;
-            }
-        }
-
         private static Game? _instance = null;
         /// <summary>
         /// Game instance
@@ -31,10 +18,19 @@ namespace Pyrite
         {
             get
             {
-                _instance ??= new Game();
-                return _instance;
+                Debug.Assert(_instance is not null, $"Game.Instance is null! Try get the instance after the game is initialized.");
+                return _instance!;
             }
         }
+
+        private readonly IPyriteGame? _game;
+        private readonly GameSettings _settings = new();
+        public static GameSettings Settings => _instance!._settings;
+
+        protected readonly Microsoft.Xna.Framework.GraphicsDeviceManager _graphicsDeviceManager;
+
+        public static new GraphicsDevice GraphicsDevice => Instance._graphicsDeviceManager.GraphicsDevice;
+
 
         private readonly World.Builder _defaultWorldBuilder = World
             .CreateBuilder();
@@ -50,20 +46,15 @@ namespace Pyrite
             {
                 if (_percistentWorld == null)
                 {
-                    _defaultWorldBuilder.AddSystems([.. PercistentSystems]);
+                    _defaultWorldBuilder.AddSystems([.. _game?.PercistentSystems ?? []]);
                     _percistentWorld = _defaultWorldBuilder.Build();
 #if DEBUG
-                    Console.WriteLine($"Percistent world built with {PercistentSystems.Count} systems.");
+                    Console.WriteLine($"Percistent world built with {(_game?.PercistentSystems ?? []).Count} systems.");
 #endif
                 }
                 return _percistentWorld;
             }
         }
-
-        /// <summary>
-        /// List of systems to register in <see cref="PercistentWorld"/> on game start
-        /// </summary>
-        protected virtual List<Type> PercistentSystems => [];
 
         /// <summary>
         /// Input system instance
@@ -78,89 +69,76 @@ namespace Pyrite
         public static AssetDatabase Data => _assetDatabase;
         private static readonly AssetDatabase _assetDatabase = new();
 
-
-        protected virtual WindowInfo WindowInfo => new()
-        {
-            Title = "Pyrite",
-            BackgroundColor = Color.Black,
-
-#if PS4 || XBOXONE
-            Size = new(1920, 1080),
-            Maximized = true,
-            Resizable = false,
-#elif NSWITCH
-            Size = new(1080, 720),
-            Maximized = true,
-            Resizable = false,
-#else
-            Size = new(1080, 720),
-            MinimalSize = new(720, 480),
-            MaximalSize = new(1920, 1080),
-            Maximized = false,
-            Resizable = true,
-#endif
-        };
+        private readonly Window _window;
+        public new Window Window =>_window;
 
         private float _timeUntilFixedUpdate = 0f;
 
-        public Game()
+        public Game(IPyriteGame? game = null)
         {
 #if DEBUG
-            Console.WriteLine($"Initializing {WindowInfo.Title}");
+            var startTime = DateTime.Now;
+            Console.WriteLine($"Creating {_game?.Name ?? "Pyrite Application"}.");
 #endif
             _instance = this;
+            _game = game;
+            _graphicsDeviceManager = new(this);
 
-            _window = new Window(WindowInfo);
+            _window = new(
+                _game?.GameWindowInfo ?? WindowInfo.Default,
+                base.Window,
+                ref _graphicsDeviceManager
+            );
 
-            _window.OnLoad += OnLoad;
-            _window.OnUpdate += OnUpdate;
-            _window.OnRender += OnRender;
-            _window.OnClose += OnClose;
+            Content.RootDirectory = "Content";
 
+            IsMouseVisible = true;
+
+            Time.FixedDeltaTime = 1f / (_settings.TargetFPS / _settings.FixedUpdateFactor);
             _timeUntilFixedUpdate = Time.FixedDeltaTime;
+
+#if DEBUG
+            Console.WriteLine($"{_game?.Name ?? "Pyrite Application"} created in {(DateTime.Now - startTime).TotalMilliseconds}ms.");
+#endif
         }
 
-        /// <summary>
-        /// Execute the game
-        /// </summary>
-        /// <exception cref="NullReferenceException"/>
-        public void Run()
+        protected override void Initialize()
         {
 #if DEBUG
-            Console.WriteLine("Run Game");
+            var startTime = DateTime.Now;
+            Console.WriteLine($"Initializing...");
 #endif
-            if (_window == null)
-                throw new NullReferenceException();
-
-            _window.Run();
-        }
-
-        /// <summary>
-        /// Called on game window load
-        /// </summary>
-        private void OnLoad()
-        {
-#if DEBUG
-            Console.WriteLine("Start Game Initialization");
-#endif
+            base.Initialize();
             Data.Initialize();
-            Initialize();
+            _game?.Initialize();
+
+#if DEBUG
+            Console.WriteLine($"Starting IgniteECS Worlds.");
+#endif
+
+            // start ECS
             PercistentWorld.Start();
             SceneManager.CurrentScene.Start();
+
 #if DEBUG
-            Console.WriteLine("Finished Game Initialization");
+            Console.WriteLine($"Initialized in {(DateTime.Now - startTime).TotalMilliseconds}ms.");
 #endif
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
         }
 
         /// <summary>
         /// Called every game window update.
         /// Manage a fixed update time.
         /// </summary>
-        private void OnUpdate(double deltaTime)
+        protected override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             // update time
-            Time.Update(deltaTime);
-            //Console.WriteLine(1f / Time.DeltaTime);
+            Time.Update(gameTime.ElapsedGameTime.TotalSeconds);
 
             // update ECS
             PercistentWorld.Update();
@@ -177,38 +155,44 @@ namespace Pyrite
             }
         }
 
-        /// <summary>
-        /// Called every game window render 
-        /// </summary>
-        private void OnRender()
+        protected override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            _percistentWorld?.Render();
+            base.Draw(gameTime);
             SceneManager.CurrentScene.Render();
+            _game?.OnDraw();
         }
 
-        private void OnClose()
+        protected override void OnExiting(object sender, EventArgs args)
         {
-#if DEBUG
-            Console.WriteLine("Close Game");
-#endif
-            PercistentWorld.Exit();
-            SceneManager.CurrentScene.Exit();
+            Console.WriteLine("Exiting !");
         }
 
-
-        /// <summary>
-        /// Called once on game initialisation. 
-        /// Used to initialize game data.
-        /// </summary>
-        protected virtual void Initialize() { }
-
-
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
+            SceneManager.CurrentScene.Dispose();
             PercistentWorld.Dispose();
-            _instance = null;
 
-            GC.SuppressFinalize(this);
+            base.Dispose(disposing);
         }
+    }
+
+    public class GameSettings
+    {
+
+        public readonly int GameWidth = 320;
+        public readonly int GameHeight = 180;
+        public readonly int TargetFPS = 60;
+        public readonly float FixedUpdateFactor = 2f;
+
+        public readonly string AsepriteFolderPath = "aseprite\\";
+        public readonly string AssetsFolderPath = "assets\\";
+        public readonly string AtlasFolderPath = "atlas\\";
+        public readonly string ConfigFolderPath = "config\\";
+        public readonly string ECSFolderPath = "ecs\\";
+        public readonly string FontFolderPath = "fonts\\";
+        public readonly string ShaderFolderPath = "shaders\\";
+        public readonly string SoundsFolderPath = "sounds\\";
+
+        public readonly string GenericAssetsFolderPath = "data\\";
     }
 }

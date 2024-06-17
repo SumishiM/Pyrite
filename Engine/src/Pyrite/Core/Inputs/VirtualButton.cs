@@ -1,5 +1,4 @@
 ﻿using Pyrite.Utils;
-using Silk.NET.Input;
 
 namespace Pyrite.Core.Inputs
 {
@@ -33,7 +32,7 @@ namespace Pyrite.Core.Inputs
             Bindings.AddRange(bindings);
         }
 
-        public void Update(IInputDevice device)
+        public void Update(InputState state)
         {
             Consumed = false;
             Down = false;
@@ -42,7 +41,7 @@ namespace Pyrite.Core.Inputs
 
             foreach (var binding in Bindings)
             {
-                if (binding.IsPressed(device))
+                if (binding.IsPressed(state))
                 {
                     Down = true;
                     break;

@@ -1,6 +1,6 @@
 using Ignite.Components;
 
-namespace Pyrite.Core.Graphics
+namespace Pyrite.Components.Graphics
 {
     /// <summary>
     /// All <see cref="Ignite.Systems.IRenderSystem"/>s filter out this component

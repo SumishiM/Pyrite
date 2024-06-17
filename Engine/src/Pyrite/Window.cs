@@ -1,142 +1,136 @@
-﻿using Silk.NET.Maths;
-using Silk.NET.Windowing;
-using Silk.NET.Input;
 
-using SilkWindow = Silk.NET.Windowing.Window;
-using Icon = Pyrite.Core.Graphics.Icon;
 
-using Pyrite.Core.Graphics;
-using Pyrite.Core.Inputs;
+using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 using Pyrite.Core.Geometry;
 
 namespace Pyrite
 {
+
     public struct WindowInfo
     {
+        /// <summary>
+        /// Window title
+        /// </summary>
         public string Title;
-        public Point Size;
-        public Point MinimalSize;
-        public Point MaximalSize;
+
+        /// <summary>
+        /// Window size while windowed
+        /// </summary>
+        public Point WindowedSize;
+
+        /// <summary>
+        /// Minimal window size while windowed
+        /// </summary>
+        public Point MinimalWindowedSize;
+
+        /// <summary>
+        /// Whether the window is resizable or not
+        /// </summary>
         public bool Resizable;
-        public bool Maximized;
-        public System.Drawing.Color BackgroundColor;
-        public string? IconPath;
+
+        public static WindowInfo Default => new()
+        {
+            Title = "Pyrite Application",
+            WindowedSize = new(1080, 720),
+            MinimalWindowedSize = new(1080, 720),
+            Resizable = true
+        };
     }
 
-    public class Window : IDisposable
+    public class Window
     {
-        private readonly IWindow _native;
+        private static Window? _instance;
 
-        public event Action? OnLoad;
-        public event Action<double>? OnUpdate;
-        public event Action? OnRender;
-        public event Action? OnClose;
+        protected WindowInfo _info;
+        private readonly Microsoft.Xna.Framework.GameWindow _native;
+        private readonly Microsoft.Xna.Framework.GraphicsDeviceManager _graphics;
+        internal Microsoft.Xna.Framework.GameWindow Native => _native;
 
-        public int Width => _native.FramebufferSize.X;
-        public int Height => _native.FramebufferSize.Y;
-
-        private readonly Icon _icon;
-        public static System.Drawing.Color BackgroundColor { get; private set; } = System.Drawing.Color.Black;
-
-
-        public Window ( WindowInfo info )
+        protected bool _isFullscreen;
+        public static bool IsFullscreen
         {
-
-            var options = WindowOptions.Default;
-            options.Size = new Vector2D<int>(info.Size.X, info.Size.Y);
-            options.Title = info.Title;
-            options.WindowBorder = info.Resizable ? WindowBorder.Resizable : WindowBorder.Fixed;
-            options.WindowState = info.Maximized ? WindowState.Maximized : WindowState.Normal;
-            options.ShouldSwapAutomatically = true;
-
-#if DEBUG
-            Console.WriteLine($"Create window {options.Size}");
-#endif
-            BackgroundColor = info.BackgroundColor;
-            _icon = string.IsNullOrEmpty(info.IconPath) ? Icon.Default : new(info.IconPath);
-
-            _native = SilkWindow.Create(options);
-
-            // Set events
-            _native.Load += () =>
+            get => _instance?._isFullscreen ?? false;
+            set
             {
-#if DEBUG
-                Console.WriteLine($"OnLoad window");
-#endif
-                // todo : Create input system instance and set appropriate callbacks
-                //Set-up input context.
-                Input.Initialize(_native.CreateInput());
+                Debug.Assert(_instance is null, "Window is null !");
+                _instance!._isFullscreen = value;
+                _instance!.RefreshWindow();
+            }
+        }
 
-                _native.Center();
-                if ( _icon is not null )
-                {
-                    var raw = _icon.Raw;
-                    _native.SetWindowIcon(ref raw);
-                }
-
-                OnLoad?.Invoke();
-            };
-
-            _native.Update += deltaTime => OnUpdate?.Invoke(deltaTime);
-            _native.Render += _ => OnRender?.Invoke();
-            _native.Closing += () => OnClose?.Invoke();
-
-            _native.Resize += s =>
+        public Vector2 GameScale
+        {
+            get
             {
-                var position = _native.Position;
-                if (s.X < info.MinimalSize.X)
-                {
-                    _native.Size = new Vector2D<int>(info.MinimalSize.X, s.Y);
-                }
-                if (s.Y < info.MinimalSize.Y)
-                {
-                    _native.Size = new Vector2D<int>(s.X, info.MinimalSize.Y);
-                }
-                _native.Position = position;
-            };
+                if (_native.ClientBounds.Width <= 0 || _native.ClientBounds.Height <= 0)
+                    return Vector2.One;
 
-            // Handle resizes
-            _native.FramebufferResize += s =>
+                return new(
+                    Game.Settings.GameWidth / (float)_native.ClientBounds.Width,
+                    Game.Settings.GameHeight / (float)_native.ClientBounds.Height);
+            }
+        }
+
+        public int Width => _native.ClientBounds.Width;
+        public int Height => _native.ClientBounds.Height;
+        public Point Size => new(_native.ClientBounds.Width, _native.ClientBounds.Height);
+
+        public Window(
+            WindowInfo info,
+            Microsoft.Xna.Framework.GameWindow native,
+            ref Microsoft.Xna.Framework.GraphicsDeviceManager graphics)
+        {
+            _instance = this;
+
+            _native = native;
+            _graphics = graphics;
+            _info = info;
+
+            _native.Title = _info.Title;
+            _native.AllowUserResizing = _info.Resizable;
+        }
+
+        protected virtual void SetWindowSize(Point size)
+        {
+            if (IsFullscreen)
             {
-                var position = _native.Position;
-                if ((_native.Size.X >= info.MinimalSize.X && _native.Size.Y >= info.MinimalSize.Y) 
-                    || (_native.Size.X <= info.MaximalSize.X && _native.Size.Y <= info.MaximalSize.Y))
+                // collect fullscreen size
+                _info.WindowedSize = new(_graphics.GraphicsDevice.Viewport.Bounds.Width, _graphics.GraphicsDevice.Viewport.Bounds.Height);
+
+                _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            }
+            else
+            {
+                if (_info.WindowedSize.X > _info.MinimalWindowedSize.X && _info.WindowedSize.Y > _info.MinimalWindowedSize.Y)
                 {
-                    // add if OpenGL
-                    Core.Graphics.Graphics.Gl.Viewport(s);
-                    Camera.Main.UpdateSize(s.X, s.Y);
+                    // set window info size
+                    _graphics.PreferredBackBufferWidth = _info.WindowedSize.X;
+                    _graphics.PreferredBackBufferHeight = _info.WindowedSize.Y;
                 }
-                _native.Position = position;
-            };
-        }
+                else
+                {
+                    // set custom size
+                    _graphics.PreferredBackBufferWidth = size.X;
+                    _graphics.PreferredBackBufferHeight = size.Y;
+                }
+            }
 
-        internal IWindow Native () => _native;
+            _graphics.ApplyChanges();
 
-        public void Run ()
-        {
+            // set window according to fullscreen settings
+            _graphics.IsFullScreen = IsFullscreen;
+            _native.IsBorderlessEXT = IsFullscreen;
 #if DEBUG
-            Console.WriteLine($"Run window");
+            _graphics.SynchronizeWithVerticalRetrace = IsFullscreen;
 #endif
-            _native.Run();
         }
 
-        public void Close ()
+        internal virtual void RefreshWindow()
         {
-#if DEBUG
-            Console.WriteLine($"Close window");
-#endif
-            _native.Close();
+            SetWindowSize(new(Game.Settings.GameWidth, Game.Settings.GameHeight));
         }
 
-        public void Dispose ()
-        {
-            OnLoad = null;
-            OnUpdate = null;
-            OnRender = null;
-            OnClose = null;
-
-            _native.Dispose();
-            GC.SuppressFinalize(this);
-        }
     }
 }

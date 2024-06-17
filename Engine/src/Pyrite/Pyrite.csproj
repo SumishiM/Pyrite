@@ -24,12 +24,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Pyrite.FNA" Version="24.6.0" />
 		<PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Silk.NET.OpenGL" Version="2.20.0" />
-		<PackageReference Include="Silk.NET.Vulkan" Version="2.20.0" />
-		<PackageReference Include="Silk.NET.Windowing" Version="2.20.0" />
-		<PackageReference Include="Silk.NET.Input" Version="2.20.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -50,17 +47,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.2" />
-		<PackageReference Include="StbImageSharp" Version="2.27.13" />
-		<PackageReference Include="System.Drawing.Common" Version="8.0.1" />
-	</ItemGroup>
+		<ProjectReference Include="..\Ignite\Ignite\Ignite.csproj" />
 
-	<ItemGroup>
 		<ProjectReference Include="..\Ignite\Analyzers\Ignite.Generator\Ignite.Generator.csproj">
 			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
 			<OutputItemType>Analyzer</OutputItemType>
 		</ProjectReference>
-		<ProjectReference Include="..\Ignite\Ignite\Ignite.csproj" />
+		
+		<ProjectReference Include="..\Pyrite.Generator\Pyrite.Generator.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<OutputItemType>Analyzer</OutputItemType>
+		</ProjectReference>
 	</ItemGroup>
 
 </Project>

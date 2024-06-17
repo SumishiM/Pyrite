@@ -1,5 +1,5 @@
-﻿using Pyrite.Core.Geometry;
-using Silk.NET.Input;
+﻿using Microsoft.Xna.Framework.Input;
+using Pyrite.Core.Geometry;
 
 namespace Pyrite.Core.Inputs
 {
@@ -65,51 +65,45 @@ namespace Pyrite.Core.Inputs
         /// <returns>Whether the binding listen to the button.</returns>
         internal readonly bool ListenToInput(MouseButtons button) => Source == InputSource.Mouse && _mouse == button;
 
-        public readonly bool IsPressed(IInputDevice device)
+        public readonly bool IsPressed(InputState state)
         {
             return Source switch
             {
-                InputSource.Keyboard => ((IKeyboard)device).IsKeyPressed((Key)_keyboard!.Value),
-                InputSource.Mouse => ((IMouse)device).IsButtonPressed((MouseButton)_mouse!.Value),
-                InputSource.Gamepad => _gamepad!.Value switch
+                InputSource.Keyboard => state.Keyboard.IsKeyDown(_keyboard!.Value.ToXna()),
+                InputSource.Gamepad => state.Gamepad.IsButtonDown(_gamepad!.Value.ToXna()),
+                InputSource.Mouse => _mouse!.Value switch
                 {
-                    GamepadButtons.RightTrigger => ((IGamepad)device).Triggers[0].Position > 0f,
-                    GamepadButtons.LeftTrigger => ((IGamepad)device).Triggers[1].Position > 0f,
-                    _ => ((IGamepad)device).Buttons[(int)_gamepad!.Value].Pressed,
+                    MouseButtons.Left => state.Mouse.LeftButton == ButtonState.Pressed,
+                    MouseButtons.Right => state.Mouse.RightButton == ButtonState.Pressed,
+                    MouseButtons.Middle => state.Mouse.MiddleButton == ButtonState.Pressed,
+                    MouseButtons.Button1 => state.Mouse.XButton1 == ButtonState.Pressed,
+                    MouseButtons.Button2 => state.Mouse.XButton2 == ButtonState.Pressed,
+                    _ => false,
                 },
                 _ => false,
             };
         }
 
-        public readonly Vector2 GetAxis(IInputDevice device)
+        public readonly Vector2 GetAxis(InputState state)
         {
             if (Source != InputSource.GamepadAxis)
                 return Vector2.Zero;
 
-            if (device is IGamepad gamepad)
+            return _axis switch
             {
-                return _axis switch
-                {
-                    GamepadAxis.LeftThumbstick => new(gamepad.LeftThumbstick().X, gamepad.LeftThumbstick().Y),
-                    GamepadAxis.RightThumbstick => new(gamepad.RightThumbstick().X, gamepad.RightThumbstick().Y),
-                    GamepadAxis.Dpad => FromDPad(
-                        gamepad.DPadUp().Pressed, 
-                        gamepad.DPadDown().Pressed, 
-                        gamepad.DPadLeft().Pressed, 
-                        gamepad.DPadRight().Pressed),
-                    _ => Vector2.Zero,
-                };
-            }
-
-            return Vector2.Zero;
+                GamepadAxis.LeftThumbstick => new(state.Gamepad.ThumbSticks.Left.X, -state.Gamepad.ThumbSticks.Left.Y),
+                GamepadAxis.RightThumbstick => new(state.Gamepad.ThumbSticks.Right.X, -state.Gamepad.ThumbSticks.Right.Y),
+                GamepadAxis.Dpad => FromDPad(state.Gamepad.DPad),
+                _ => Vector2.Zero,
+            };
         }
 
-        private static Vector2 FromDPad(bool up, bool down, bool left, bool right)
+        private static Vector2 FromDPad(GamePadDPad DPad)
         {
-            int x = right ? 1 : 0;
-            int y = down ? 1 : 0;
-            x -= left ? 1 : 0;
-            y -= up ? 1 : 0;
+            int x = DPad.Right == ButtonState.Pressed ? 1 : 0;
+            int y = DPad.Down == ButtonState.Pressed ? 1 : 0;
+            x -= DPad.Left == ButtonState.Pressed ? 1 : 0;
+            y -= DPad.Up == ButtonState.Pressed ? 1 : 0;
 
             return new(x, y);
         }
