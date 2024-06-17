@@ -1,5 +1,6 @@
 ﻿using Ignite.Attributes;
 using Ignite.Systems;
+using Microsoft.Xna.Framework.Graphics;
 using Pyrite.Components;
 using Pyrite.Components.Graphics;
 using Pyrite.Core.Graphics;
@@ -8,7 +9,7 @@ namespace Pyrite.Systems.Graphics
 {
     [FilterComponent(Context.AccessFilter.AllOf, typeof(SpriteComponent))]
     [FilterComponent(Context.AccessFilter.NoneOf, typeof(InvisibleComponent))]
-    public partial class DefaultRendererSystem : IStartSystem, IRenderSystem
+    public partial class DefaultRendererSystem : IRenderSystem
     {
         public void Start(Context context)
         {

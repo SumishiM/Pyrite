@@ -1,7 +1,8 @@
-﻿using Pyrite.Core.Graphics;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyrite.Assets
 {
@@ -13,65 +14,45 @@ namespace Pyrite.Assets
         };
 
         internal Dictionary<Guid, GameAsset> AllAssets = [];
-        internal Dictionary<Guid, Texture> UniqueTextures = [];
         internal Guid MissingTextureGuid;
 
-        public Texture MissingTexture => UniqueTextures[MissingTextureGuid];
+        public AssetReference<TextureAsset> MissingTextureAssetRef = AssetReference<TextureAsset>.Empty;
 
         public AssetDatabase()
         {
         }
 
-        internal void Initialize()
+        public static Guid CreateGuidFromAssetPath(string assetPath)
+		{
+			if (string.IsNullOrEmpty(assetPath))
+				throw new ArgumentNullException("assetPath cannot be null nor empty.");
+
+			byte[] hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(assetPath));
+
+			// Take the first 16 bytes of the hash to create a GUID
+			byte[] result = new byte[16];
+			Array.Copy(hashBytes, result, Math.Min(hashBytes.Length, 16));
+
+			return new Guid(result);
+		}
+
+		internal void Initialize()
         {
-            Texture.Create("Content\\Empty.png");
-            MissingTextureGuid = HashTexturePath("Content\\Empty.png");
+            TextureAsset missingTexture = new("Content\\Empty.png");
+
+            MissingTextureAssetRef = new(missingTexture.Guid);
         }
 
-        public bool TryGetTexture(string path, [NotNullWhen(true)] out Texture? texture)
+        public bool TryAddAsset(GameAsset asset)
         {
-            texture = null;
-            if (UniqueTextures.TryGetValue(HashTexturePath(path), out Texture? value))
+            if (asset.Guid == Guid.Empty)
             {
-                texture = value;
-                return true;
-            }
-            return false;
-        }
-
-        internal void AddTexture(string path, Texture texture)
-        {
-            Guid guid = HashTexturePath(path);
-            AllAssets.Add(guid, new GameAsset(path));
-            UniqueTextures.TryAdd(guid, texture);
-            Lookup[typeof(Texture)].Add(guid);
-        }
-
-
-        public static Guid HashTexturePath(string path)
-        {
-            return new(MD5.HashData(Encoding.UTF8.GetBytes(path)));
-        }
-
-        public GameAsset? TryGetAsset(Guid id)
-        {
-            if (AllAssets.TryGetValue(id, out GameAsset? asset))
-            {
-                return asset;
+                asset.Guid = new();
             }
 
-            return default;
+            return AllAssets.TryAdd(asset.Guid, asset);
         }
 
-        public T? TryGetAsset<T>(Guid id) where T : GameAsset
-        {
-            if (TryGetAsset(id) is T asset)
-            {
-                return asset;
-            }
-
-            return default;
-        }
         public T GetAsset<T>(Guid id) where T : GameAsset
         {
             if (TryGetAsset<T>(id) is T asset)
@@ -98,6 +79,41 @@ namespace Pyrite.Assets
             }
 
             throw new ArgumentException($"Unable to find the asset with id: {id} in database.");
+        }
+
+        public GameAsset? TryGetAsset(Guid id)
+        {
+            if (AllAssets.TryGetValue(id, out GameAsset? asset))
+            {
+                return asset;
+            }
+
+            return default;
+        }
+
+        public T? TryGetAsset<T>(Guid id) where T : GameAsset
+        {
+            if (TryGetAsset(id) is T asset)
+            {
+                return asset;
+            }
+
+            return default;
+        }
+
+        public T GetOrCreateAsset<T>(string path) where T : GameAsset
+        {
+            if (TryGetAsset<T>(CreateGuidFromAssetPath(path)) is T asset)
+            {
+                return asset;
+            }
+
+			if ((asset = Activator.CreateInstance<T>()) is not null)
+            {
+                typeof(T).GetConstructor([typeof(string)])?.Invoke(asset, [path]);
+                return asset;
+            }
+            throw new Exception($"Unable to create {typeof(T).Name} from {path}");
         }
     }
 }

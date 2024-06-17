@@ -1,48 +1,59 @@
 ﻿using Ignite.Attributes;
+using Ignite.Components;
+using Pyrite.Assets;
 using Pyrite.Components;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace Pyrite.Core.Graphics
 {
     [RequireComponent(typeof(TransformComponent))]
-    public struct SpriteComponent : IDrawable
+    public struct SpriteComponent : IComponent
     {
-        public Texture Texture { get; init; } = Texture.Empty;
+        public AssetReference<TextureAsset> AssetRef;
 
-        public int SortingOrder { get; set; }
+        public float ZOrder { get; set; }
 
         /// <summary>
         /// Create sprite as empty
         /// </summary>
         public SpriteComponent()
         {
-            Texture = Texture.Empty;
+            AssetRef = Game.Data.MissingTextureAssetRef;
         }
 
         /// <summary>
         /// Create a sprite from path
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Asset file path</param>
         public SpriteComponent(string path)
         {
-            Texture = Texture.Create(path);
+            AssetRef = new(Game.Data.GetOrCreateAsset<TextureAsset>(path).Guid);
         }
 
         /// <summary>
-        /// Create sprite from texture
+        /// Create a sprite from an asset <see cref="Guid"/>
         /// </summary>
-        /// <param name="texture"></param>
-        public SpriteComponent([NotNull] Texture texture)
+        /// <param name="guid">Asset Guid</param>
+        public SpriteComponent(Guid guid)
         {
-            Texture = texture;
+            if (guid == Guid.Empty)
+            {
+                AssetRef = new(Game.Data.MissingTextureGuid);
+            }
+            else
+            {
+                AssetRef = new(guid);
+            }
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Create sprite a <see cref="TextureAsset"/>
+        /// </summary>
+        /// <param name="texture">Texture asset</param>
+        public SpriteComponent([NotNull] TextureAsset texture)
         {
-
-            GC.SuppressFinalize(this);
+            AssetRef = new(texture.Guid);
         }
     }
 }

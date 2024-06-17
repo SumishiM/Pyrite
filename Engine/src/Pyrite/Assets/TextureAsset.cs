@@ -1,20 +1,9 @@
-﻿using Pyrite.Core.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyrite.Assets
 {
-    public class TextureAsset : GameAsset
+    public class TextureAsset(string path) : GameAsset(path)
     {
-        Texture Texture { get; set; }
-
-        public TextureAsset(string path, Texture texture) : base(path)
-        {
-            Texture = texture;
-        }
-
-    }
+		Texture Texture { get; set; } = Game.Instance.Content.Load<Texture2D>(path);
+	}
 }
