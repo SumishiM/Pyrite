@@ -72,6 +72,7 @@ namespace Pyrite
 
         private readonly Window _window;
         public new Window Window =>_window;
+        public SpriteBatch SpriteBatch;
 
         private float _timeUntilFixedUpdate = 0f;
 
@@ -129,6 +130,9 @@ namespace Pyrite
         protected override void LoadContent()
         {
             base.LoadContent();
+            SpriteBatch = new(GraphicsDevice);
+
+            Data.TryAddAsset(new TextureAsset("Content\\toothless.png"));
 
         }
 

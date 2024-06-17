@@ -1,17 +1,27 @@
 ﻿using Ignite.Attributes;
 using Ignite.Components;
 using Pyrite.Assets;
-using Pyrite.Components;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 
-namespace Pyrite.Core.Graphics
+namespace Pyrite.Components.Graphics
 {
+    /// <summary>
+    /// Default Pyrite sprite component.
+    /// <para>
+    /// Filtered by : <see cref="Pyrite.Systems.Graphics.DefaultRendererSystem"/>
+    /// </para>
+    /// </summary>
     [RequireComponent(typeof(TransformComponent))]
     public struct SpriteComponent : IComponent
     {
-        public AssetReference<TextureAsset> AssetRef;
+        /// <summary>
+        /// <see cref="TextureAsset"/> reference
+        /// </summary>
+        public readonly AssetReference<TextureAsset> AssetRef;
 
+        /// <summary>
+        /// Z Display order
+        /// </summary>
         public float ZOrder { get; set; }
 
         /// <summary>
@@ -20,22 +30,24 @@ namespace Pyrite.Core.Graphics
         public SpriteComponent()
         {
             AssetRef = Game.Data.MissingTextureAssetRef;
+            ZOrder = 0;
         }
 
         /// <summary>
         /// Create a sprite from path
         /// </summary>
         /// <param name="path">Asset file path</param>
-        public SpriteComponent(string path)
+        public SpriteComponent(string path, float zOrder = 0f)
         {
             AssetRef = new(Game.Data.GetOrCreateAsset<TextureAsset>(path).Guid);
+            ZOrder = zOrder;
         }
 
         /// <summary>
         /// Create a sprite from an asset <see cref="Guid"/>
         /// </summary>
-        /// <param name="guid">Asset Guid</param>
-        public SpriteComponent(Guid guid)
+        /// <param name="guid">Asset <see cref="Guid"/></param>
+        public SpriteComponent(Guid guid, float zOrder = 0f)
         {
             if (guid == Guid.Empty)
             {
@@ -45,15 +57,17 @@ namespace Pyrite.Core.Graphics
             {
                 AssetRef = new(guid);
             }
+            ZOrder = zOrder;
         }
 
         /// <summary>
         /// Create sprite a <see cref="TextureAsset"/>
         /// </summary>
         /// <param name="texture">Texture asset</param>
-        public SpriteComponent([NotNull] TextureAsset texture)
+        public SpriteComponent([NotNull] TextureAsset texture, float zOrder = 0f)
         {
             AssetRef = new(texture.Guid);
+            ZOrder = zOrder;
         }
     }
 }

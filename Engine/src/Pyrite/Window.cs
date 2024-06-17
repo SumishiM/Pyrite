@@ -86,6 +86,7 @@ namespace Pyrite
             _native.Title += $" | v{game.Version}";
 #endif
             _native.AllowUserResizing = _info.Resizable;
+            _native.ClientSizeChanged += (s, e) => { RefreshWindow();};
         }
 
         protected virtual void SetWindowSize(Point size)

@@ -4,6 +4,9 @@ namespace Pyrite.Assets
 {
     public class TextureAsset(string path) : GameAsset(path)
     {
-		Texture Texture { get; set; } = Game.Instance.Content.Load<Texture2D>(path);
+        /// <summary>
+        /// Loaded texture 
+        /// </summary>
+		public Texture2D Texture { get; internal set; } = Texture2D.FromStream(Game.GraphicsDevice, File.Open(path, FileMode.Open));
 	}
 }

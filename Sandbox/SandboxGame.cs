@@ -1,10 +1,10 @@
 using Ignite;
 using Pyrite;
 using Pyrite.Components;
+using Pyrite.Components.Graphics;
 using Pyrite.Components.Physics;
 using Pyrite.Core;
 using Pyrite.Core.Geometry;
-using Pyrite.Core.Graphics;
 using Pyrite.Systems.Graphics;
 using Pyrite.Systems.Physics;
 

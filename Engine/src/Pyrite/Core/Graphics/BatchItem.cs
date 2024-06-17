@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Pyrite.Core.Geometry;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
 using XnaVector3 = Microsoft.Xna.Framework.Vector3;
+using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
+using XnaColor = Microsoft.Xna.Framework.Color;
 
 
 namespace Pyrite.Core.Graphics
@@ -22,11 +24,11 @@ namespace Pyrite.Core.Graphics
             Texture2D texture,
             XnaVector2 position,
             XnaVector2 destinationSize,
-            Rectangle? sourceRectangle,
+            XnaRectangle? sourceRectangle,
             float rotation,
             XnaVector2 scale,
             ImageFlip flip,
-            Color color,
+            XnaColor color,
             XnaVector2 origin,
             XnaVector3 colorBlend,
             float layerDepth = 1f)
@@ -94,28 +96,15 @@ namespace Pyrite.Core.Graphics
 
             if ((flip & ImageFlip.Horizontal) != ImageFlip.None)
             {
-                XnaVector2 texCoord = VertexData[1].TextureCoordinate;
-                VertexData[1].TextureCoordinate = VertexData[0].TextureCoordinate;
-                VertexData[0].TextureCoordinate = texCoord;
+				(VertexData[0].TextureCoordinate, VertexData[1].TextureCoordinate) = (VertexData[1].TextureCoordinate, VertexData[0].TextureCoordinate);
+				(VertexData[3].TextureCoordinate, VertexData[2].TextureCoordinate) = (VertexData[2].TextureCoordinate, VertexData[3].TextureCoordinate);
+			}
 
-                texCoord = VertexData[2].TextureCoordinate;
-                VertexData[2].TextureCoordinate = VertexData[3].TextureCoordinate;
-                VertexData[3].TextureCoordinate = texCoord;
-            }
-
-            if ((flip & ImageFlip.Vertical) != ImageFlip.None)
+			if ((flip & ImageFlip.Vertical) != ImageFlip.None)
             {
-                XnaVector2 texCoord = VertexData[2].TextureCoordinate;
-                VertexData[2].TextureCoordinate = VertexData[1].TextureCoordinate;
-                VertexData[1].TextureCoordinate = texCoord;
-
-                texCoord = VertexData[3].TextureCoordinate;
-                VertexData[3].TextureCoordinate = VertexData[0].TextureCoordinate;
-                VertexData[0].TextureCoordinate = texCoord;
-            }
-        }
-
-
+				(VertexData[1].TextureCoordinate, VertexData[2].TextureCoordinate) = (VertexData[2].TextureCoordinate, VertexData[1].TextureCoordinate);
+				(VertexData[0].TextureCoordinate, VertexData[3].TextureCoordinate) = (VertexData[3].TextureCoordinate, VertexData[0].TextureCoordinate);
+			}
+		}
     }
-
 }

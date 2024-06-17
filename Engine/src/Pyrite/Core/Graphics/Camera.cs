@@ -1,10 +1,7 @@
-﻿using Ignite;
-using Ignite.Extentions;
-using Pyrite.Components;
+﻿using Pyrite.Components;
 using Pyrite.Components.Graphics;
 using Pyrite.Core.Geometry;
 using Pyrite.Utils;
-using System.Collections.Immutable;
 
 namespace Pyrite.Core.Graphics
 {
@@ -17,7 +14,7 @@ namespace Pyrite.Core.Graphics
         public Rectangle SafeBounds { get; private set; }
 
         private readonly Vector2 _origin = Vector2.Zero;
-        private Transform _transform;
+        public Transform Transform;
         private float _zoom = 1;
 
         private bool _locked;
@@ -72,7 +69,7 @@ namespace Pyrite.Core.Graphics
             Height = height;
 
             _main ??= this;
-            _transform = Transform.Empty;
+            Transform = Transform.Empty;
 
             // Origin will be the center of the camera.
             _origin = new Vector2(0.5f, 0.5f);
@@ -83,19 +80,19 @@ namespace Pyrite.Core.Graphics
         {
             get
             {
-                if (_main is null || _main?._transform is null)
+                if (_main is null || _main?.Transform is null)
                 {
                     // should never be null while the scene is running
                     var node = SceneManager.CurrentScene.World
                         .GetNodesWith(typeof(CameraComponent))
-                        .FirstOrDefault(n => n.Name == "Main Camera" /*Todo : compare with tag*/) 
+                        .FirstOrDefault(n => n.Name == "Main Camera" /*Todo : compare with tag ?*/) 
                         ?? 
                         throw new NullReferenceException(
                             "Camera.Main is null, is the simulation world loaded ? " +
                             "or is there no CameraComponent in the world ?");
 
                     _main = node.GetComponent<CameraComponent>();
-                    _main._transform = node.GetComponent<TransformComponent>();
+                    _main.Transform = node.GetComponent<TransformComponent>();
                 }
 
                 return _main;
@@ -122,7 +119,7 @@ namespace Pyrite.Core.Graphics
 
         private Matrix GetWorldView()
         {
-            Point position = _transform.Position;
+            Point position = Transform.Position;
             Point center = (_origin * new Vector2(Width, Height));
 
             // First, let's start with our initial position.
@@ -140,7 +137,7 @@ namespace Pyrite.Core.Graphics
                 z: 0);
 
             // Now, we will apply the scale operation.
-            view *= Matrix.CreateRotationZ(_transform.Rotation.ToRadians());
+            view *= Matrix.CreateRotationZ(Transform.Rotation.ToRadians());
 
             // And our zoom!
             view *= Matrix.CreateScale(_zoom, _zoom, 1);
@@ -176,7 +173,7 @@ namespace Pyrite.Core.Graphics
         internal void Reset()
         {
             Unlock();
-            _transform.Position = Vector2.Zero;
+            Transform.Position = Vector2.Zero;
             Zoom = 1;
         }
     }

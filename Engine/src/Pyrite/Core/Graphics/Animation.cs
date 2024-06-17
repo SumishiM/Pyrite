@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 
 namespace Pyrite.Core.Graphics
 {
-    public struct Animation : IDisposable
+    public struct Animation
     {
         /// <summary>
         /// Define the animation play mode
@@ -58,60 +58,5 @@ namespace Pyrite.Core.Graphics
         /// </summary>
         private readonly ImmutableArray<FrameInfo> _frames;
 
-        /// <summary>
-        /// Animation <see cref="PlayMode"/>
-        /// </summary>
-        /// <value></value>
-        public PlayMode Mode { get; set; }
-        public Texture? Texture { get; init; }
-        public int SortingOrder { get; set; }
-
-        private float _maxDuration = -1f;
-
-        public float MaxDuration
-        {
-            get
-            {
-                if (_maxDuration == -1f)
-                {
-                    _maxDuration = 0f;
-                    foreach (var frame in _frames)
-                    {
-                        _maxDuration += frame.Duration;
-                    }
-                }
-                return _maxDuration; 
-            }
-        }
-
-        [Obsolete]
-        public Animation() { }
-
-        public Animation(string path, PlayMode playMode = PlayMode.Single, params FrameInfo[] frames)
-        {
-            Texture = new(path);
-            Mode = playMode;
-            _frames = [.. frames];
-        }
-
-        public Animation(Texture texture, PlayMode playMode = PlayMode.Single, params FrameInfo[] frames)
-        {
-            Texture = texture;
-            Mode = playMode;
-            _frames = [.. frames];
-        }
-
-        public void SetPlayMode(PlayMode playMode)
-        {
-            Mode = playMode;
-        }
-
-        public void Dispose()
-        {
-            //Shader?.Dispose();
-            //Texture?.Dispose();
-
-            GC.SuppressFinalize(this);
-        }
     }
 }
