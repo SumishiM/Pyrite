@@ -5,6 +5,7 @@ using Pyrite.Core.Inputs;
 using Pyrite.Utils;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
+using Microsoft.Xna.Framework;
 
 namespace Pyrite
 {
@@ -74,7 +75,7 @@ namespace Pyrite
 
         private float _timeUntilFixedUpdate = 0f;
 
-        public Game(IPyriteGame? game = null)
+        public Game(IPyriteGame game)
         {
 #if DEBUG
             var startTime = DateTime.Now;
@@ -85,7 +86,7 @@ namespace Pyrite
             _graphicsDeviceManager = new(this);
 
             _window = new(
-                _game?.GameWindowInfo ?? WindowInfo.Default,
+                _game,
                 base.Window,
                 ref _graphicsDeviceManager
             );

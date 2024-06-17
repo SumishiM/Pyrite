@@ -10,11 +10,6 @@ namespace Pyrite
     public struct WindowInfo
     {
         /// <summary>
-        /// Window title
-        /// </summary>
-        public string Title;
-
-        /// <summary>
         /// Window size while windowed
         /// </summary>
         public Point WindowedSize;
@@ -31,7 +26,6 @@ namespace Pyrite
 
         public static WindowInfo Default => new()
         {
-            Title = "Pyrite Application",
             WindowedSize = new(1080, 720),
             MinimalWindowedSize = new(1080, 720),
             Resizable = true
@@ -77,7 +71,7 @@ namespace Pyrite
         public Point Size => new(_native.ClientBounds.Width, _native.ClientBounds.Height);
 
         public Window(
-            WindowInfo info,
+            IPyriteGame game,
             Microsoft.Xna.Framework.GameWindow native,
             ref Microsoft.Xna.Framework.GraphicsDeviceManager graphics)
         {
@@ -85,9 +79,12 @@ namespace Pyrite
 
             _native = native;
             _graphics = graphics;
-            _info = info;
+            _info = game.GameWindowInfo;
 
-            _native.Title = _info.Title;
+            _native.Title = game.Name;
+#if DEBUG
+            _native.Title += $" | v{game.Version}";
+#endif
             _native.AllowUserResizing = _info.Resizable;
         }
 
