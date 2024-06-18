@@ -5,7 +5,7 @@ namespace Pyrite.Core.Tilemap
 {
     public class Tilemap
     {
-        public static byte ChunkSize = 16;
+        /*public static byte ChunkSize = 16;
         public byte TileSize = 16;
 
         /// <summary>
@@ -81,6 +81,6 @@ namespace Pyrite.Core.Tilemap
             BuildingChunks?.Clear();
 
             return this;
-        }
+        }*/
     }
 }

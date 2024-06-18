@@ -11,7 +11,7 @@ namespace Pyrite.Core
 
         private readonly World.Builder _defaultWorldBuilder = 
             World.CreateBuilder()
-                .AddNode("Main Camera", typeof(CameraComponent))
+                //.AddNode("Main Camera", typeof(CameraComponent))
                 .AddNode("Global Light");
 
         private World? _world = null;

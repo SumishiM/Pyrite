@@ -1,4 +1,5 @@
-﻿using Pyrite.Components;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Pyrite.Components;
 using Pyrite.Components.Graphics;
 using Pyrite.Core.Geometry;
 using Pyrite.Utils;
@@ -14,7 +15,18 @@ namespace Pyrite.Core.Graphics
         public Rectangle SafeBounds { get; private set; }
 
         private readonly Vector2 _origin = Vector2.Zero;
-        public Transform Transform;
+
+        protected Transform _transform;
+        public Transform Transform
+        {
+            get => _transform;
+            set
+            {
+                _transform = value;
+                _cachedWorldViewProjection = null;
+            }
+        }
+
         private float _zoom = 1;
 
         private bool _locked;
@@ -34,12 +46,6 @@ namespace Pyrite.Core.Graphics
         public void ClearCache()
         {
             _cachedWorldViewProjection = null;
-        }
-
-        public Vector2 ConvertWorldToScreenPosition(Vector2 position, Point viewportSize)
-        {
-            Vector2 scale = new Vector2(Width * 1f / viewportSize.X, Height * 1f / viewportSize.Y);
-            return WorldToScreenPosition(position * scale);
         }
 
         public float Zoom
@@ -62,31 +68,50 @@ namespace Pyrite.Core.Graphics
         public Point Size => new(Width, Height);
 
         public float Aspect => Width / (float)Height;
+        public Viewport Viewport;
 
         public Camera(int width, int height)
         {
-            Width = width; 
+            Width = width;
             Height = height;
 
             _main ??= this;
-            Transform = Transform.Empty;
+            _transform = Transform.Empty;
 
             // Origin will be the center of the camera.
             _origin = new Vector2(0.5f, 0.5f);
+
+            Viewport = new()
+            {
+                Width = width,
+                Height = height
+            };
+
+            _cachedWorldViewProjection = null;
         }
+
+        public float Top => Vector2.Transform(Vector2.Zero, Matrix.Invert(WorldViewProjection)).Y;
+        public float Bottom => Vector2.Transform(Vector2.UnitY * Viewport.Height, Matrix.Invert(WorldViewProjection)).Y;
+        public float Left => Vector2.Transform(Vector2.Zero, Matrix.Invert(WorldViewProjection)).X;
+        public float Right => Vector2.Transform(Vector2.UnitX * Viewport.Width, Matrix.Invert(WorldViewProjection)).X;
 
         internal static Camera? _main;
         public static Camera Main
         {
             get
             {
+                if (_main is null)
+                {
+                    _main = new Camera(Game.Settings.GameWidth, Game.Settings.GameHeight);
+                }
+                return _main;
                 if (_main is null || _main?.Transform is null)
                 {
                     // should never be null while the scene is running
                     var node = SceneManager.CurrentScene.World
                         .GetNodesWith(typeof(CameraComponent))
-                        .FirstOrDefault(n => n.Name == "Main Camera" /*Todo : compare with tag ?*/) 
-                        ?? 
+                        .FirstOrDefault(n => n.Name == "Main Camera" /*Todo : compare with tag ?*/)
+                        ??
                         throw new NullReferenceException(
                             "Camera.Main is null, is the simulation world loaded ? " +
                             "or is there no CameraComponent in the world ?");
@@ -104,7 +129,7 @@ namespace Pyrite.Core.Graphics
             return Vector2.Transform(screenPosition, Matrix.Invert(WorldViewProjection));
         }
 
-        public Vector2 WorldToScreenPosition(Vector2 screenPosition)
+        public Vector2 WorldToScreenPosition(Vector3 screenPosition)
         {
             return Vector2.Transform(screenPosition, WorldViewProjection);
         }
@@ -117,47 +142,21 @@ namespace Pyrite.Core.Graphics
             _cachedWorldViewProjection = null;
         }
 
+        internal void UpdateSize(Point size)
+        {
+            Width = Math.Max(1, size.X);
+            Height = Math.Max(1, size.Y);
+
+            _cachedWorldViewProjection = null;
+        }
+
         private Matrix GetWorldView()
         {
-            Point position = Transform.Position;
-            Point center = (_origin * new Vector2(Width, Height));
-
-            // First, let's start with our initial position.
-            Matrix view = Matrix.CreateTranslation(
-                x: -position.X,
-                y: -position.Y,
-                z: 0);
-
-            // Now, overcompensate the origin by changing our relative position.
-            // This will make sure we are ready for any rotation and scale operations
-            // with the correct relative position.
-            view *= Matrix.CreateTranslation(
-                x: -center.X,
-                y: -center.Y,
-                z: 0);
-
-            // Now, we will apply the scale operation.
-            view *= Matrix.CreateRotationZ(Transform.Rotation.ToRadians());
-
-            // And our zoom!
-            view *= Matrix.CreateScale(_zoom, _zoom, 1);
-
-            // Okay, we are done. Now go back to our correct position.
-            view *= Matrix.CreateTranslation(
-                x: center.X,
-                y: center.Y,
-                z: 0);
-
-            var inverseMatrix = Matrix.Invert(view);
-            var topLeftCorner = Vector2.Transform(new Vector2(0, 0), inverseMatrix);
-            var bottomRightCorner = Vector2.Transform(new Vector2(Width, Height), inverseMatrix);
-
-            Matrix orthographicMatrix = System.Numerics.Matrix4x4.CreateOrthographicOffCenter(
-                topLeftCorner.X, bottomRightCorner.X, bottomRightCorner.Y, topLeftCorner.Y, 0.01f, 100f);
-
-            Bounds = new Rectangle(topLeftCorner, (bottomRightCorner - topLeftCorner));
-            //SafeBounds = Bounds.Expand(Grid.CellSize * 2);
-            return orthographicMatrix;
+            return Microsoft.Xna.Framework.Matrix.Identity *
+                    Microsoft.Xna.Framework.Matrix.CreateTranslation(new Vector3(-new Vector2(MathF.Floor(Transform.Position.X), MathF.Floor(Transform.Position.Y)), 0f)) *
+                    Microsoft.Xna.Framework.Matrix.CreateRotationZ(Transform.Rotation) *
+                    Microsoft.Xna.Framework.Matrix.CreateScale(Zoom) *
+                    Microsoft.Xna.Framework.Matrix.CreateTranslation(Vector3.Zero);
         }
 
         public void Lock()
@@ -173,7 +172,7 @@ namespace Pyrite.Core.Graphics
         internal void Reset()
         {
             Unlock();
-            Transform.Position = Vector2.Zero;
+            Transform.Position = Vector3.Zero;
             Zoom = 1;
         }
     }

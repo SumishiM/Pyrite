@@ -152,5 +152,32 @@ namespace Pyrite.Utils
             // Normalize the angle to be within the range [0, 2π)
             return (angle % (2 * MathF.PI) + 2 * MathF.PI) % (2 * MathF.PI);
         }
+
+        public static float Approach(float from, float target, float amount)
+        {
+            if (from > target)
+                return Math.Max(from - amount, target);
+            else
+                return Math.Min(from + amount, target);
+        }
+
+        public static Vector2 Approach(in Vector2 from, in Vector2 target, float amount)
+        {
+            if (from == target)
+                return target;
+
+            var diff = target - from;
+            if (diff.LengthSquared() <= amount * amount)
+                return target;
+            else
+                return from + diff.Normalized() * amount;
+        }
+
+        public static Vector2 Normalized(this in Vector2 vector2)
+        {
+            var result = vector2;
+            result.Normalized();
+            return result;
+        }
     }
 }

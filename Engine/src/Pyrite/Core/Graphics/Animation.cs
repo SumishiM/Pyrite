@@ -56,7 +56,7 @@ namespace Pyrite.Core.Graphics
         /// <summary>
         /// Array of <see cref="FrameInfo"/>s of the animation 
         /// </summary>
-        private readonly ImmutableArray<FrameInfo> _frames;
+        //private readonly ImmutableArray<FrameInfo> _frames = [];
 
     }
 }

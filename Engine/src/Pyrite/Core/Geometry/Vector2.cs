@@ -109,6 +109,8 @@ namespace Pyrite.Core.Geometry
         public static Vector2 operator /(Vector2 p, int s) => new(p.X / s, p.Y / s);
         public static Vector2 operator /(Vector2 p, float s) => new(p.X / s, p.Y / s);
 
+        public static Vector2 operator -(Vector2 v) => new(-v.X, -v.Y);
+
         #endregion
 
         public override readonly string ToString()

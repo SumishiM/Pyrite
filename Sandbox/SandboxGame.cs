@@ -5,6 +5,7 @@ using Pyrite.Components.Graphics;
 using Pyrite.Components.Physics;
 using Pyrite.Core;
 using Pyrite.Core.Geometry;
+using Pyrite.Core.Graphics;
 using Pyrite.Systems.Graphics;
 using Pyrite.Systems.Physics;
 
@@ -34,11 +35,16 @@ namespace Sandbox
             Node toothless =
                 Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")
                     .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
-                    .AddComponent<SpinComponent>(new() { SpinSpeed = 36f })
-                    .AddComponent<VelocityComponent>(new Vector2(250f))
+                    .AddComponent<SpinComponent>(new() { SpinSpeed = 0f })
+                    .AddComponent<VelocityComponent>(new Vector2(0))
                     .AddComponent<FrictionComponent>(new(0.5f));
 
-            toothless.GetComponent<TransformComponent>().Position = new Vector2(300, 300);
+            Console.WriteLine(Camera.Main.Top);
+            Console.WriteLine(Camera.Main.Bottom);
+            Console.WriteLine(Camera.Main.Left);
+            Console.WriteLine(Camera.Main.Right);
+
+            toothless.GetComponent<TransformComponent>().Position = new Vector2(0, 0);
         }
     }
 }

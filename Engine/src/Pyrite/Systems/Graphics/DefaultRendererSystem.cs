@@ -18,9 +18,6 @@ namespace Pyrite.Systems.Graphics
             if (Camera.Main == null)
                 throw new NullReferenceException("No main camera found for render.");
 
-            //ClearScreen();
-            Game.GraphicsDevice.Clear(Color.Black);
-            Game.Instance.SpriteBatch.Begin();
 
             foreach (var (sprite, transform) in context.Get<SpriteComponent, TransformComponent>())
             {
@@ -29,14 +26,12 @@ namespace Pyrite.Systems.Graphics
                     transform.Position,
                     null,
                     Color.White, 
-                    transform.Rotation,
+                    Calculator.ToRadians(transform.Rotation),
                     (Vector2)sprite.AssetRef.Asset.Texture.Size() / 2f,
                     transform.Scale,
                     SpriteEffects.None,
                     sprite.ZOrder);
             }
-            
-            Game.Instance.SpriteBatch.End();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pyrite.Core.Geometry
 {
@@ -210,13 +211,25 @@ namespace Pyrite.Core.Geometry
             result.M44 = (float)((double)m * (double)num20 - (double)m2 * (double)num22 + (double)m3 * (double)num23) * num11;
         }
 
-        public static implicit operator Matrix(Matrix4x4 m) =>
+		public static implicit operator Matrix(Matrix4x4 m) =>
             new(m.M11, m.M12, m.M13, m.M14,
                 m.M21, m.M22, m.M23, m.M24,
                 m.M31, m.M32, m.M33, m.M34,
                 m.M41, m.M42, m.M43, m.M44);
 
         public static implicit operator Matrix4x4(Matrix m) =>
+            new(m.M11, m.M12, m.M13, m.M14,
+                m.M21, m.M22, m.M23, m.M24,
+                m.M31, m.M32, m.M33, m.M34,
+                m.M41, m.M42, m.M43, m.M44);
+
+        public static implicit operator Matrix(Microsoft.Xna.Framework.Matrix m) =>
+            new(m.M11, m.M12, m.M13, m.M14,
+                m.M21, m.M22, m.M23, m.M24,
+                m.M31, m.M32, m.M33, m.M34,
+                m.M41, m.M42, m.M43, m.M44);
+
+        public static implicit operator Microsoft.Xna.Framework.Matrix(Matrix m) =>
             new(m.M11, m.M12, m.M13, m.M14,
                 m.M21, m.M22, m.M23, m.M24,
                 m.M31, m.M32, m.M33, m.M34,

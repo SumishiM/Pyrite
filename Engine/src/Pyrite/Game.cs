@@ -5,7 +5,8 @@ using Pyrite.Core.Inputs;
 using Pyrite.Utils;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
-using Microsoft.Xna.Framework;
+using Pyrite.Core.Graphics;
+using System.Collections.Specialized;
 
 namespace Pyrite
 {
@@ -71,8 +72,11 @@ namespace Pyrite
         private static readonly AssetDatabase _assetDatabase = new();
 
         private readonly Window _window;
-        public new Window Window =>_window;
+        public new Window Window => _window;
+
+#nullable disable
         public SpriteBatch SpriteBatch;
+#nullable enable
 
         private float _timeUntilFixedUpdate = 0f;
 
@@ -91,6 +95,8 @@ namespace Pyrite
                 base.Window,
                 ref _graphicsDeviceManager
             );
+
+            new Camera(Settings.GameWidth, Settings.GameHeight);
 
             Content.RootDirectory = "Content";
 
@@ -133,6 +139,8 @@ namespace Pyrite
             SpriteBatch = new(GraphicsDevice);
 
             Data.TryAddAsset(new TextureAsset("Content\\toothless.png"));
+            
+            Data.ShaderSprite = new BasicEffect(GraphicsDevice);
 
         }
 
@@ -163,8 +171,27 @@ namespace Pyrite
         protected override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             base.Draw(gameTime);
+
+            GraphicsDevice.Clear(Color.Black);
+            //GraphicsDevice.SetRenderTarget(new(GraphicsDevice, Settings.GameWidth, Settings.GameHeight));
+
+            
+            SpriteBatch.Begin(
+                SpriteSortMode.Deferred, 
+                BlendState.AlphaBlend, 
+                SamplerState.LinearClamp, 
+                DepthStencilState.None, 
+                RasterizerState.CullNone, 
+                Data.ShaderSprite,
+                Camera.Main.WorldViewProjection * Window.ScreenMatrix);
+
             SceneManager.CurrentScene.Render();
+            
             _game?.OnDraw();
+
+            //SpriteBatch.Draw((Texture2D)GraphicsDevice.GetRenderTargets()[0].RenderTarget, new Rectangle(0, 0, Window.Width, Window.Height), Color.White);
+
+            SpriteBatch.End();
         }
 
         protected override void OnExiting(object sender, EventArgs args)

@@ -69,6 +69,7 @@ namespace Pyrite
         public int Width => _native.ClientBounds.Width;
         public int Height => _native.ClientBounds.Height;
         public Point Size => new(_native.ClientBounds.Width, _native.ClientBounds.Height);
+        public Matrix ScreenMatrix = Matrix.Identity;
 
         public Window(
             IPyriteGame game,
@@ -86,7 +87,10 @@ namespace Pyrite
             _native.Title += $" | v{game.Version}";
 #endif
             _native.AllowUserResizing = _info.Resizable;
-            _native.ClientSizeChanged += (s, e) => { RefreshWindow();};
+            _native.ClientSizeChanged += (s, e) =>
+            {
+                RefreshWindow();
+            };
         }
 
         protected virtual void SetWindowSize(Point size)
@@ -101,17 +105,26 @@ namespace Pyrite
             }
             else
             {
-                if (_info.WindowedSize.X > _info.MinimalWindowedSize.X && _info.WindowedSize.Y > _info.MinimalWindowedSize.Y)
+                if (_native.ClientBounds.Width > _info.MinimalWindowedSize.X)
                 {
                     // set window info size
+                    _info.WindowedSize.X = _native.ClientBounds.Width;
                     _graphics.PreferredBackBufferWidth = _info.WindowedSize.X;
-                    _graphics.PreferredBackBufferHeight = _info.WindowedSize.Y;
                 }
                 else
                 {
                     // set custom size
-                    _graphics.PreferredBackBufferWidth = size.X;
-                    _graphics.PreferredBackBufferHeight = size.Y;
+                    _graphics.PreferredBackBufferWidth = _info.MinimalWindowedSize.X;
+                }
+
+                if (_native.ClientBounds.Height > _info.MinimalWindowedSize.Y)
+                {
+                    _info.WindowedSize.Y = _native.ClientBounds.Height;
+                    _graphics.PreferredBackBufferHeight = _info.WindowedSize.Y;
+                }
+                else
+                {
+                    _graphics.PreferredBackBufferHeight = _info.MinimalWindowedSize.Y;
                 }
             }
 
@@ -128,6 +141,7 @@ namespace Pyrite
         internal virtual void RefreshWindow()
         {
             SetWindowSize(new(Game.Settings.GameWidth, Game.Settings.GameHeight));
+            ScreenMatrix = Microsoft.Xna.Framework.Matrix.CreateScale(_native.ClientBounds.Width / (float)Width);
         }
 
     }

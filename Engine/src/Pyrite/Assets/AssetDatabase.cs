@@ -15,6 +15,12 @@ namespace Pyrite.Assets
 
         internal Dictionary<Guid, GameAsset> AllAssets = [];
         internal Guid MissingTextureGuid;
+        /// <summary>
+        /// A shader specialized for rendering pixel art.
+        /// </summary>
+        public Effect? ShaderPixel = null;
+        public Effect? ShaderSimple = null;
+        public Effect? ShaderSprite = null;
 
         public AssetReference<TextureAsset> MissingTextureAssetRef = AssetReference<TextureAsset>.Empty;
 
@@ -39,7 +45,7 @@ namespace Pyrite.Assets
 		internal void Initialize()
         {
             TextureAsset missingTexture = new("Content\\Empty.png");
-
+            MissingTextureGuid = missingTexture.Guid;
             MissingTextureAssetRef = new(missingTexture.Guid);
         }
 
