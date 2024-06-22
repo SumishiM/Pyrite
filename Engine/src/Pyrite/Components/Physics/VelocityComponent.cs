@@ -10,10 +10,11 @@ namespace Pyrite.Components.Physics
         public Vector2 Velocity { get; set; }
 
         public VelocityComponent() => Velocity = Vector2.Zero;
+        public VelocityComponent(float x, float y) => Velocity = new(x, y);
         public VelocityComponent(Vector2 velocity) => Velocity = velocity;
 
-        // cast from and to Vector2
-        public static implicit operator VelocityComponent(Vector2 vector) => new(vector);
+		// cast from and to Vector2
+		public static implicit operator VelocityComponent(Vector2 vector) => new(vector);
         public static implicit operator Vector2(VelocityComponent velocity) => velocity.Velocity;
     }
 }

@@ -2,11 +2,18 @@
 
 namespace Pyrite.Assets
 {
-    public class TextureAsset(string path) : GameAsset(path)
+    public class TextureAsset : GameAsset
     {
         /// <summary>
         /// Loaded texture 
         /// </summary>
-		public Texture2D Texture { get; internal set; } = Texture2D.FromStream(Game.GraphicsDevice, File.Open(path, FileMode.Open));
-	}
+		public Texture2D Texture { get; internal set; }
+
+        public TextureAsset() {}
+
+        public TextureAsset(string path) : base(path)
+        {
+            Texture = Texture2D.FromStream(Game.GraphicsDevice, File.Open(path, FileMode.Open));
+        }
+    }
 }

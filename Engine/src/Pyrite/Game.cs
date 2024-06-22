@@ -95,6 +95,7 @@ namespace Pyrite
                 base.Window,
                 ref _graphicsDeviceManager
             );
+            _window.UpdateView();
 
             new Camera(Settings.GameWidth, Settings.GameHeight);
 
@@ -140,8 +141,11 @@ namespace Pyrite
 
             Data.TryAddAsset(new TextureAsset("Content\\toothless.png"));
             
-            Data.ShaderSprite = new BasicEffect(GraphicsDevice);
-
+            Data.ShaderSprite = new Effect(GraphicsDevice, File.ReadAllBytes("Content\\Shaders\\simple.fxb"));
+            if (Data.ShaderSprite.Techniques.FirstOrDefault(t => t.Name == "DefaultTechnique") is var technique)
+            {
+                Data.ShaderSprite.CurrentTechnique = technique;
+            }
         }
 
         /// <summary>
@@ -172,18 +176,24 @@ namespace Pyrite
         {
             base.Draw(gameTime);
 
-            GraphicsDevice.Clear(Color.Black);
             //GraphicsDevice.SetRenderTarget(new(GraphicsDevice, Settings.GameWidth, Settings.GameHeight));
 
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Viewport = Window.Viewport;
+            GraphicsDevice.Clear(Color.Black);
             
             SpriteBatch.Begin(
                 SpriteSortMode.Deferred, 
                 BlendState.AlphaBlend, 
-                SamplerState.LinearClamp, 
+                SamplerState.PointClamp, 
                 DepthStencilState.None, 
                 RasterizerState.CullNone, 
                 Data.ShaderSprite,
                 Camera.Main.WorldViewProjection * Window.ScreenMatrix);
+
+            Data.ShaderSprite.Parameters["MatrixTransform"]?.SetValue(Camera.Main.WorldViewProjection * Window.ScreenMatrix);
+
+            Console.WriteLine(((Microsoft.Xna.Framework.Matrix)(Camera.Main.WorldViewProjection * Window.ScreenMatrix)).ToString());
 
             SceneManager.CurrentScene.Render();
             

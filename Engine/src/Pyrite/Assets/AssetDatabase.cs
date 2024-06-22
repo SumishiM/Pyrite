@@ -119,6 +119,7 @@ namespace Pyrite.Assets
                 typeof(T).GetConstructor([typeof(string)])?.Invoke(asset, [path]);
                 return asset;
             }
+
             throw new Exception($"Unable to create {typeof(T).Name} from {path}");
         }
     }

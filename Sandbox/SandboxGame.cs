@@ -32,12 +32,13 @@ namespace Sandbox
 
             SceneManager.LoadScene(ref toothlessScene);
 
-            Node toothless =
-                Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")
+            var builder = Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")
                     .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
-                    .AddComponent<SpinComponent>(new() { SpinSpeed = 0f })
-                    .AddComponent<VelocityComponent>(new Vector2(0))
+                    .AddComponent<SpinComponent>(new(0f))
+                    .AddComponent<VelocityComponent>(new(20, 0))
                     .AddComponent<FrictionComponent>(new(0.5f));
+
+            Node toothless = builder.ToNode();
 
             Console.WriteLine(Camera.Main.Top);
             Console.WriteLine(Camera.Main.Bottom);

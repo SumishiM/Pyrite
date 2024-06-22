@@ -70,6 +70,7 @@ namespace Pyrite
         public int Height => _native.ClientBounds.Height;
         public Point Size => new(_native.ClientBounds.Width, _native.ClientBounds.Height);
         public Matrix ScreenMatrix = Matrix.Identity;
+        public Viewport Viewport;
 
         public Window(
             IPyriteGame game,
@@ -87,11 +88,52 @@ namespace Pyrite
             _native.Title += $" | v{game.Version}";
 #endif
             _native.AllowUserResizing = _info.Resizable;
-            _native.ClientSizeChanged += (s, e) =>
-            {
-                RefreshWindow();
-            };
+            _native.ClientSizeChanged += OnClientSizeChanged;
+            
         }
+
+        protected virtual void OnClientSizeChanged(object? sender, EventArgs e)
+        {
+            if (_native.ClientBounds.Width > 0 && _native.ClientBounds.Height > 0)
+            {
+                _graphics.PreferredBackBufferWidth = _native.ClientBounds.Width;
+                _graphics.PreferredBackBufferHeight = _native.ClientBounds.Height;
+                UpdateView();
+            }
+        }
+
+        internal void UpdateView()
+        {
+            float screenWidth = _graphics.PreferredBackBufferWidth;
+            float screenHeight = _graphics.PreferredBackBufferHeight;
+
+            int viewWidth = 0;
+            int viewHeight = 0;
+
+            if (screenHeight / Game.Settings.GameWidth > screenHeight / Game.Settings.GameHeight)
+            {
+                viewWidth = (int)(screenHeight / Game.Settings.GameHeight * Game.Settings.GameWidth);
+                viewHeight = (int)screenHeight;
+            }
+            else
+            {
+                viewWidth = (int)screenWidth;
+                viewHeight = (int)(screenWidth / Game.Settings.GameWidth * Game.Settings.GameHeight);
+            }
+
+            var aspect = viewHeight / viewWidth;
+            ScreenMatrix = Microsoft.Xna.Framework.Matrix.CreateScale(viewWidth / (float)Game.Settings.GameWidth);
+
+            Viewport = new Viewport()
+            {
+                X = (int)(screenWidth / 2f - viewWidth / 2f),
+                Y = (int)(screenHeight / 2f - viewHeight / 2f),
+                Width = viewWidth,
+                Height = viewHeight,
+                MinDepth = 0,
+                MaxDepth = 1
+            };
+        } 
 
         protected virtual void SetWindowSize(Point size)
         {
@@ -141,7 +183,7 @@ namespace Pyrite
         internal virtual void RefreshWindow()
         {
             SetWindowSize(new(Game.Settings.GameWidth, Game.Settings.GameHeight));
-            ScreenMatrix = Microsoft.Xna.Framework.Matrix.CreateScale(_native.ClientBounds.Width / (float)Width);
+            ScreenMatrix = Microsoft.Xna.Framework.Matrix.CreateScale(_graphics.GraphicsDevice.Viewport.Bounds.Width / (float)Game.Settings.GameWidth);
         }
 
     }
