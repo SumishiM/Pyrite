@@ -10,7 +10,7 @@ namespace Pyrite.Components.Graphics
     /// <summary>
     /// Default Pyrite sprite component.
     /// <para>
-    /// Filtered by : <see cref="Pyrite.Systems.Graphics.DefaultRendererSystem"/>
+    /// Filtered by : <see cref="Pyrite.Systems.Graphics.SpriteRendererSystem"/>
     /// </para>
     /// </summary>
     [RequireComponent(typeof(TransformComponent))]
@@ -56,7 +56,7 @@ namespace Pyrite.Components.Graphics
         }
 
         /// <summary>
-        /// Create a sprite from an asset <see cref="Guid"/>
+        /// Create a sprite from a <see cref="Guid"/>
         /// </summary>
         /// <param name="guid">Asset <see cref="Guid"/></param>
         public SpriteComponent(Guid guid, float zOrder = 0f)
@@ -73,7 +73,7 @@ namespace Pyrite.Components.Graphics
         }
 
         /// <summary>
-        /// Create sprite a <see cref="TextureAsset"/>
+        /// Create sprite from a <see cref="TextureAsset"/>
         /// </summary>
         /// <param name="texture">Texture asset</param>
         public SpriteComponent([NotNull] TextureAsset texture, float zOrder = 0f)

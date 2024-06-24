@@ -9,10 +9,19 @@ using Pyrite.Utils;
 
 namespace Pyrite.Systems.Graphics
 {
+    /// <summary>
+    /// Simple sprite renderer
+	/// <para>
+	/// Filters : <see cref="SpriteComponent"/>
+	/// </para>
+    /// </summary>
     [FilterComponent(Context.AccessFilter.AllOf, typeof(SpriteComponent))]
     [FilterComponent(Context.AccessFilter.NoneOf, typeof(InvisibleComponent))]
     public struct SpriteRendererSystem : IRenderSystem
     {
+		/// <summary>
+		/// Game render target
+		/// </summary>
         private RenderTarget2D? _renderTarget;
 
         public void Render(Context context)
@@ -48,12 +57,12 @@ namespace Pyrite.Systems.Graphics
             Game.Instance.SpriteBatch.End();
 
             Game.Instance.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
-
+            
             // draw game to screen
             // set the render target to null to draw on window
             Game.GraphicsDevice.SetRenderTarget(null);
 
-            var factor = (float)Game.Instance.Window.Width / (float)Game.Settings.GameWidth;
+            float factor = (float)Game.Instance.Window.Width / (float)Game.Settings.GameWidth;
 
             // draw the game render target upscaled on window
             Game.Instance.SpriteBatch.Draw(

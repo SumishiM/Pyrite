@@ -146,6 +146,9 @@ namespace Pyrite
             {
                 Data.ShaderSprite.CurrentTechnique = technique;
             }
+
+            _game?.LoadContent();
+            //_game?.LoadContentAsync();
         }
 
         /// <summary>
@@ -181,7 +184,7 @@ namespace Pyrite
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Viewport = Window.Viewport;
             GraphicsDevice.Clear(Color.Black);
-            
+
             SceneManager.CurrentScene.Render();
             
             _game?.OnDraw();

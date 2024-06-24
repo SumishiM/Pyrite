@@ -20,6 +20,8 @@ namespace Pyrite.Utils
             => new(v.X, v.Y, 0f);
         public static Microsoft.Xna.Framework.Vector2 ToXnaVector2(this Microsoft.Xna.Framework.Point v)
             => new(v.X, v.Y);
+        public static Vector2 ToVector2(this Microsoft.Xna.Framework.Point v)
+            => new(v.X, v.Y);
     }
 
 }

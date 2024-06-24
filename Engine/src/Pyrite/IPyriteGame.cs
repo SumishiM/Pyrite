@@ -17,6 +17,7 @@ namespace Pyrite
 
         public virtual void Initialize() { }
 
+        public virtual void LoadContent() { }
         public virtual Task LoadContentAsync() => Task.CompletedTask;
 
         public virtual void OnUpdate() { }

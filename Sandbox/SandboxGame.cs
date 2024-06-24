@@ -1,5 +1,6 @@
 using Ignite;
 using Pyrite;
+using Pyrite.Assets;
 using Pyrite.Components;
 using Pyrite.Components.Graphics;
 using Pyrite.Components.Physics;
@@ -24,7 +25,7 @@ namespace Sandbox
         {
             Scene toothlessScene =
                 new("Toothless scene",
-                    typeof(SpriteRendererSystem),
+                    typeof(SpriteStackRendererSystem),
                     typeof(SpinSystem),
                     typeof(VelocitySystem),
                     typeof(FrictionSystem)
@@ -32,16 +33,27 @@ namespace Sandbox
 
             SceneManager.LoadScene(ref toothlessScene);
 
-            var builder = Node.CreateBuilder(SceneManager.CurrentScene.World, "Toothless")
-                    .AddComponent<SpriteComponent>(new("Content\\toothless.png"))
-                    .AddComponent<SpinComponent>(new(0f))
-                    .AddComponent<VelocityComponent>(new(20, 0))
-                    .AddComponent<FrictionComponent>(new(0.5f));
+            Node car =
+                Node.CreateBuilder(SceneManager.CurrentScene.World, "Car")
+                    .AddComponent<SpriteStackComponent>(new([
+                        "Content\\Car\\Car0.png",
+                        "Content\\Car\\Car1.png",
+                        "Content\\Car\\Car2.png",
+                        "Content\\Car\\Car3.png",
+                        "Content\\Car\\Car4.png",
+                        "Content\\Car\\Car5.png",
+                        "Content\\Car\\Car6.png",
+                    ]))
+                    .AddComponent<SpinComponent>(new(45f));
+            car.GetComponent<TransformComponent>().Position = new Vector2(160, 90);
+        }
 
-            Node toothless = builder.ToNode();
-
-            toothless.GetComponent<TransformComponent>().Position = new Vector2(0, 0);
-            toothless.GetComponent<TransformComponent>().Rotation = 23f;
+        public void LoadContent()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                Game.Data.TryAddAsset(new TextureAsset($"Content\\Car\\Car{i}.png"));
+            }
         }
     }
 }
