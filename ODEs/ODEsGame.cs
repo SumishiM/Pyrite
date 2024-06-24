@@ -17,7 +17,7 @@ namespace ODEs
         {
             Scene MainScene =
                 new("ODEs",
-                    typeof(DefaultRendererSystem),
+                    typeof(SpriteRendererSystem),
                     typeof(Attractor1),
                     typeof(ParticleSpawner),
                     typeof(LifeTimeSystem)

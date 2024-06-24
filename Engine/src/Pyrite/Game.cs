@@ -182,26 +182,9 @@ namespace Pyrite
             GraphicsDevice.Viewport = Window.Viewport;
             GraphicsDevice.Clear(Color.Black);
             
-            SpriteBatch.Begin(
-                SpriteSortMode.Deferred, 
-                BlendState.AlphaBlend, 
-                SamplerState.PointClamp, 
-                DepthStencilState.None, 
-                RasterizerState.CullNone, 
-                Data.ShaderSprite,
-                Camera.Main.WorldViewProjection * Window.ScreenMatrix);
-
-            Data.ShaderSprite.Parameters["MatrixTransform"]?.SetValue(Camera.Main.WorldViewProjection * Window.ScreenMatrix);
-
-            Console.WriteLine(((Microsoft.Xna.Framework.Matrix)(Camera.Main.WorldViewProjection * Window.ScreenMatrix)).ToString());
-
             SceneManager.CurrentScene.Render();
             
             _game?.OnDraw();
-
-            //SpriteBatch.Draw((Texture2D)GraphicsDevice.GetRenderTargets()[0].RenderTarget, new Rectangle(0, 0, Window.Width, Window.Height), Color.White);
-
-            SpriteBatch.End();
         }
 
         protected override void OnExiting(object sender, EventArgs args)

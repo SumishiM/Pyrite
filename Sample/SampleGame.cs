@@ -18,7 +18,7 @@ namespace Sample
             // Create default scene
             Scene MainScene =
                 new("SampleScene",
-                    typeof(DefaultRendererSystem),
+                    typeof(SpriteRendererSystem),
                     typeof(SamplePercistantSystem)
             );
 

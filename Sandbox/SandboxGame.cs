@@ -24,7 +24,7 @@ namespace Sandbox
         {
             Scene toothlessScene =
                 new("Toothless scene",
-                    typeof(DefaultRendererSystem),
+                    typeof(SpriteRendererSystem),
                     typeof(SpinSystem),
                     typeof(VelocitySystem),
                     typeof(FrictionSystem)
@@ -40,12 +40,8 @@ namespace Sandbox
 
             Node toothless = builder.ToNode();
 
-            Console.WriteLine(Camera.Main.Top);
-            Console.WriteLine(Camera.Main.Bottom);
-            Console.WriteLine(Camera.Main.Left);
-            Console.WriteLine(Camera.Main.Right);
-
             toothless.GetComponent<TransformComponent>().Position = new Vector2(0, 0);
+            toothless.GetComponent<TransformComponent>().Rotation = 23f;
         }
     }
 }

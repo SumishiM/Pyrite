@@ -1,6 +1,8 @@
 ﻿using Ignite.Attributes;
 using Ignite.Components;
+using Microsoft.Xna.Framework.Graphics;
 using Pyrite.Assets;
+using Pyrite.Core.Graphics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Pyrite.Components.Graphics
@@ -18,6 +20,16 @@ namespace Pyrite.Components.Graphics
         /// <see cref="TextureAsset"/> reference
         /// </summary>
         public readonly AssetReference<TextureAsset> AssetRef;
+
+        /// <summary>
+        /// Sprite <see cref="Texture2D"/> or the default engine missing texture
+        /// </summary>
+        public readonly Texture2D Texture => AssetRef.TryAsset?.Texture ?? Game.Data.MissingTextureAssetRef.Asset.Texture; 
+
+        /// <summary>
+        /// Sprite render color
+        /// </summary>
+        public Color Color = Color.White;
 
         /// <summary>
         /// Z Display order
