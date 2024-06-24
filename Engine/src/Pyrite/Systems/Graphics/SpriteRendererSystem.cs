@@ -43,12 +43,12 @@ namespace Pyrite.Systems.Graphics
             {
                 Game.Instance.SpriteBatch.Draw(
                     sprite.Texture,
-                    transform.Position,
+                    transform.Position + Camera.Main.Transform.Position,
                     null,
                     sprite.Color,
-                    transform.Rotation.ToRadians(),
+                    transform.Rotation.ToRadians() + Camera.Main.Transform.Rotation.ToRadians(),
                     sprite.Texture.Bounds.Center.ToXnaVector2(),
-                    Vector2.One,
+                    Vector2.One * Camera.Main.Zoom,
                     SpriteEffects.None,
                     sprite.ZOrder);
             }

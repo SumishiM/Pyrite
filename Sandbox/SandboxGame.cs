@@ -3,10 +3,8 @@ using Pyrite;
 using Pyrite.Assets;
 using Pyrite.Components;
 using Pyrite.Components.Graphics;
-using Pyrite.Components.Physics;
 using Pyrite.Core;
 using Pyrite.Core.Geometry;
-using Pyrite.Core.Graphics;
 using Pyrite.Systems.Graphics;
 using Pyrite.Systems.Physics;
 
@@ -26,6 +24,7 @@ namespace Sandbox
             Scene toothlessScene =
                 new("Toothless scene",
                     typeof(SpriteStackRendererSystem),
+                    //typeof(MoveCameraSystem),
                     typeof(SpinSystem),
                     typeof(VelocitySystem),
                     typeof(FrictionSystem)
@@ -44,7 +43,8 @@ namespace Sandbox
                         "Content\\Car\\Car5.png",
                         "Content\\Car\\Car6.png",
                     ]))
-                    .AddComponent<SpinComponent>(new(45f));
+                    .AddComponent<SpinComponent>(new(0f));
+
             car.GetComponent<TransformComponent>().Position = new Vector2(160, 90);
         }
 

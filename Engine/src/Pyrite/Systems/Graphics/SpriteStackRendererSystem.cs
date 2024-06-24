@@ -60,12 +60,12 @@ namespace Pyrite.Systems.Graphics
 				{
 					Game.Instance.SpriteBatch.Draw(
 						textures[i],
-						transform.Position - Vector2.UnitY * i * Spread, // up from one stack unit
+						transform.Position - Vector2.UnitY * i * Spread + Camera.Main.Transform.Position, // up from one stack unit
 						null,
 						stack.Color,
-						transform.Rotation.ToRadians(),
+						transform.Rotation.ToRadians() + Camera.Main.Transform.Rotation.ToRadians(),
 						stack.Center,
-						Vector2.One,
+						Vector2.One * Camera.Main.Zoom,
 						SpriteEffects.None,
 						(stack.ZOrder + i * Spread) / 100f); // up from one stack unit to respect depth foreach stacks
 				}

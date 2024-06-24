@@ -100,8 +100,8 @@ namespace Pyrite.Core.Graphics
         {
             get
             {
-                _main ??= new Camera(Game.Settings.GameWidth, Game.Settings.GameHeight);
-                return _main;
+                //_main ??= new Camera(Game.Settings.GameWidth, Game.Settings.GameHeight);
+                //return _main;
                 if (_main is null || _main?.Transform is null)
                 {
                     // should never be null while the scene is running
