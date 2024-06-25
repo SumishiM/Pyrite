@@ -9,7 +9,7 @@ namespace Pyrite.Assets
         /// </summary>
 		public Texture2D Texture { get; internal set; }
 
-        public TextureAsset() {}
+        public TextureAsset() {  }
 
         public TextureAsset(string path) : base(path)
         {

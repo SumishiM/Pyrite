@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Pyrite.Assets
 {
-    public class GameAsset
+    public abstract class GameAsset
     {
         public string? Name { get; set; }
         public string? Path { get; set; }

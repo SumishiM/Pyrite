@@ -29,7 +29,7 @@ namespace Pyrite.Core.Graphics
 
         private float _zoom = 1;
 
-        private bool _locked;
+        //private bool _locked;
 
 
         private Matrix? _cachedWorldViewProjection;
@@ -107,7 +107,7 @@ namespace Pyrite.Core.Graphics
                     // should never be null while the scene is running
                     var node = SceneManager.CurrentScene.World
                         .GetNodesWith(typeof(CameraComponent))
-                        .FirstOrDefault(n => n.Name == "Main Camera" /*Todo : compare with tag ?*/)
+                        .FirstOrDefault(n => n.Name == "Main Camera" /*Todo : compare with flags ?*/)
                         ??
                         throw new NullReferenceException(
                             "Camera.Main is null, is the simulation world loaded ? " +
@@ -158,12 +158,12 @@ namespace Pyrite.Core.Graphics
 
         public void Lock()
         {
-            _locked = true;
+            //_locked = true;
         }
 
         public void Unlock()
         {
-            _locked = false;
+            //_locked = false;
         }
 
         internal void Reset()

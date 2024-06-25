@@ -83,7 +83,8 @@ namespace Pyrite
         public Game(IPyriteGame game)
         {
 #if DEBUG
-            var startTime = DateTime.Now;
+            var startTime = new Stopwatch();
+            startTime.Restart();
             Console.WriteLine($"Creating {_game?.Name ?? "Pyrite Application"}.");
 #endif
             _instance = this;
@@ -97,7 +98,7 @@ namespace Pyrite
             );
             _window.UpdateView();
 
-            new Camera(Settings.GameWidth, Settings.GameHeight);
+            _ = new Camera(Settings.GameWidth, Settings.GameHeight);
 
             Content.RootDirectory = "Content";
 
@@ -107,14 +108,15 @@ namespace Pyrite
             _timeUntilFixedUpdate = Time.FixedDeltaTime;
 
 #if DEBUG
-            Console.WriteLine($"{_game?.Name ?? "Pyrite Application"} created in {(DateTime.Now - startTime).TotalMilliseconds}ms.");
+            Console.WriteLine($"{_game?.Name ?? "Pyrite Application"} created in {startTime.ElapsedMilliseconds}ms.");
 #endif
         }
 
         protected override void Initialize()
         {
 #if DEBUG
-            var startTime = DateTime.Now;
+            var startTime = new Stopwatch();
+            startTime.Restart();
             Console.WriteLine($"Initializing...");
 #endif
             base.Initialize();
@@ -130,7 +132,7 @@ namespace Pyrite
             SceneManager.CurrentScene.Start();
 
 #if DEBUG
-            Console.WriteLine($"Initialized in {(DateTime.Now - startTime).TotalMilliseconds}ms.");
+            Console.WriteLine($"Initialized in {startTime.ElapsedMilliseconds}ms.");
 #endif
         }
 

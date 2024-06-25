@@ -34,18 +34,19 @@ namespace Sandbox
 
             Node car =
                 Node.CreateBuilder(SceneManager.CurrentScene.World, "Car")
-                    .AddComponent<SpriteStackComponent>(new([
-                        "Content\\Car\\Car0.png",
-                        "Content\\Car\\Car1.png",
-                        "Content\\Car\\Car2.png",
-                        "Content\\Car\\Car3.png",
-                        "Content\\Car\\Car4.png",
-                        "Content\\Car\\Car5.png",
-                        "Content\\Car\\Car6.png",
-                    ]))
+                    //[.. Enumerable.Range(0, 7).Select(i => $"Content\\Car\\Car{i}.png")]
+                    .AddComponent<SpriteStackComponent>(new([.. from i in Enumerable.Range(0, 7) select $"Content\\Car\\Car{i}.png"]))
                     .AddComponent<SpinComponent>(new(0f));
 
             car.GetComponent<TransformComponent>().Position = new Vector2(160, 90);
+
+            SceneManager.CurrentScene.World.Q<SpriteStackComponent, TransformComponent>((c) =>
+            {
+                foreach (var (stack, transform) in c.Get<SpriteStackComponent, TransformComponent>())
+                {
+                    transform.Rotation = 45f * 3f;
+                }
+            }, true);
         }
 
         public void LoadContent()

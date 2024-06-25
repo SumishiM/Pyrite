@@ -57,7 +57,14 @@ namespace Pyrite.Components.Graphics
         /// </summary>
         public float ZOrder { get; set; }
 
+		/// <summary>
+		/// Empty sprite stack
+		/// </summary>
         public static SpriteStackComponent Empty => new();
+
+		/// <summary>
+		/// Whether the stack is empty or not, when there is no asset refs registered not atlases
+		/// </summary>
         public readonly bool IsEmpty => AssetRefs is null || AssetRefs.Length == 0;
 
         /// <summary>
