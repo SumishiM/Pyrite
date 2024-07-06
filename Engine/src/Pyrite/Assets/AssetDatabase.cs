@@ -31,6 +31,8 @@ namespace Pyrite.Assets
 
         public static Guid CreateGuidFromAssetPath(string assetPath)
 		{
+            assetPath = assetPath.Replace("\\", "/");
+            
 			if (string.IsNullOrEmpty(assetPath))
 				throw new ArgumentNullException("assetPath cannot be null nor empty.");
 
@@ -111,6 +113,7 @@ namespace Pyrite.Assets
 
         public T GetOrCreateAsset<T>(string path) where T : GameAsset
         {
+            path  = path.Replace("\\", "/");
             if (TryGetAsset<T>(CreateGuidFromAssetPath(path)) is T asset)
             {
                 return asset;
