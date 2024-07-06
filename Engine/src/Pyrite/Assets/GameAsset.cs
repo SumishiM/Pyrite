@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pyrite.Assets
+﻿namespace Pyrite.Assets
 {
     public abstract class GameAsset
     {
@@ -23,8 +15,9 @@ namespace Pyrite.Assets
 
         public GameAsset(string path)
         {
-            Name = System.IO.Path.GetFileNameWithoutExtension(path.Split('\\', '/').Last());
-            Extention = System.IO.Path.GetExtension(path.Split('\\', '/').Last());
+            path  = path.Replace("\\", "/");
+            Name = System.IO.Path.GetFileNameWithoutExtension(path.Split('/').Last());
+            Extention = System.IO.Path.GetExtension(path.Split('/').Last());
             Path = path.Replace(Name + Extention, string.Empty);
             Guid = AssetDatabase.CreateGuidFromAssetPath(path);
         }

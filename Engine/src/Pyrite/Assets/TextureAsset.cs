@@ -4,16 +4,22 @@ namespace Pyrite.Assets
 {
     public class TextureAsset : GameAsset
     {
+
+        protected Texture2D? _texture;
         /// <summary>
         /// Loaded texture 
         /// </summary>
-		public Texture2D Texture { get; internal set; }
+		public virtual Texture2D Texture
+        {
+            get => _texture ?? Game.Data.MissingTexture;
+            internal set => _texture = value;
+        }
 
-        public TextureAsset() {  }
+        public TextureAsset() { }
 
         public TextureAsset(string path) : base(path)
         {
-            Texture = Texture2D.FromStream(Game.GraphicsDevice, File.Open(path, FileMode.Open));
+            _texture = Texture2D.FromStream(Game.GraphicsDevice, File.Open(path, FileMode.Open));
         }
     }
 }

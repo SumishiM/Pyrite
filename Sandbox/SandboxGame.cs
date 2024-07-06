@@ -35,7 +35,7 @@ namespace Sandbox
             Node car =
                 Node.CreateBuilder(SceneManager.CurrentScene.World, "Car")
                     //[.. Enumerable.Range(0, 7).Select(i => $"Content\\Car\\Car{i}.png")]
-                    .AddComponent<SpriteStackComponent>(new([.. from i in Enumerable.Range(0, 7) select $"Content\\Car\\Car{i}.png"]))
+                    .AddComponent<SpriteStackComponent>(new([.. from i in Enumerable.Range(0, 7) select $"Content/Car/Car{i}.png"]))
                     .AddComponent<SpinComponent>(new(0f));
 
             car.GetComponent<TransformComponent>().Position = new Vector2(160, 90);
@@ -53,7 +53,7 @@ namespace Sandbox
         {
             for (int i = 0; i < 7; i++)
             {
-                Game.Data.TryAddAsset(new TextureAsset($"Content\\Car\\Car{i}.png"));
+                Game.Data.TryAddAsset(new TextureAsset($"Content/Car/Car{i}.png"));
             }
         }
     }

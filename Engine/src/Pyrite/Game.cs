@@ -141,13 +141,8 @@ namespace Pyrite
             base.LoadContent();
             SpriteBatch = new(GraphicsDevice);
 
-            Data.TryAddAsset(new TextureAsset("Content\\toothless.png"));
+            Data.TryAddAsset(new TextureAsset("Content/toothless.png"));
             
-            Data.ShaderSprite = new Effect(GraphicsDevice, File.ReadAllBytes("Content\\Shaders\\simple.fxb"));
-            if (Data.ShaderSprite.Techniques.FirstOrDefault(t => t.Name == "DefaultTechnique") is var technique)
-            {
-                Data.ShaderSprite.CurrentTechnique = technique;
-            }
 
             _game?.LoadContent();
             //_game?.LoadContentAsync();
@@ -214,15 +209,15 @@ namespace Pyrite
         public readonly int TargetFPS = 60;
         public readonly float FixedUpdateFactor = 2f;
 
-        public readonly string AsepriteFolderPath = "aseprite\\";
-        public readonly string AssetsFolderPath = "assets\\";
-        public readonly string AtlasFolderPath = "atlas\\";
-        public readonly string ConfigFolderPath = "config\\";
-        public readonly string ECSFolderPath = "ecs\\";
-        public readonly string FontFolderPath = "fonts\\";
-        public readonly string ShaderFolderPath = "shaders\\";
-        public readonly string SoundsFolderPath = "sounds\\";
+        public readonly string AsepriteFolderPath = "aseprite/";
+        public readonly string AssetsFolderPath = "assets/";
+        public readonly string AtlasFolderPath = "atlas/";
+        public readonly string ConfigFolderPath = "config/";
+        public readonly string ECSFolderPath = "ecs/";
+        public readonly string FontFolderPath = "fonts/";
+        public readonly string ShaderFolderPath = "shaders/";
+        public readonly string SoundsFolderPath = "sounds/";
 
-        public readonly string GenericAssetsFolderPath = "data\\";
+        public readonly string GenericAssetsFolderPath = "data/";
     }
 }
